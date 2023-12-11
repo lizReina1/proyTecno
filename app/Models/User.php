@@ -24,9 +24,22 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+         'id',
+         'ci',
+         'nombre',
+         'apellido',
+         'fechaNacimiento',
+         'celular',
+         'tipo',
+         'genero',
+         'residenciaActual',
+         'email',
+         'password',
+         'urlFoto',
+         'formacion',
+         'sueldo',
+         'hijo',
+         'ocupacion'
     ];
 
     /**
@@ -58,4 +71,14 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public static function medicos()
+    {
+        return self::where('tipo', 'M')->get();
+    }
+    public static function personal()
+    {
+        return self::whereIn('tipo', ['M', 'E'])->get();
+    }
+    
 }

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\EstiloController;
+use App\Http\Controllers\Web\ClienteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +15,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [ClienteController::class,'inicial'])->name('welcome');
 
+Route::get('/configuracion',function(){
+   return view('cliente.configuracion');
+})->name('configuracion');
+
+Route::get('/servicios',[ClienteController::class,'servicios'])->name('servicio');
+
+Route::get('/cita',function(){
+    return view('cliente.cita');
+ })->name('cita');
+
+ Route::get('/pago',function(){
+    return view('cliente.pago');
+ })->name('pago');
+
+Route::get('/home', function () {
+    return "Bienvenido a home";
+})->name('home');
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -26,3 +43,13 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+Route::get('login', function () {
+    return "ir a login";
+})->name('login');
+Route::get('register', function () {
+    return "ir a register";
+})->name('register');
+
+
+Route::post('cambiar-estilo', [EstiloController::class,'cambiarEstilo'])->name('cambiar.estilo');
