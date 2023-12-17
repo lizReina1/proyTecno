@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,9 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/payments', function () {
-    return view('payments.payment');
-});
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -28,3 +27,7 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+// ************** payment *********************
+Route::get('/payments', [PaymentController::class, 'index']);
+Route::get('/payments/generate_payment', [PaymentController::class, 'generatePayment']);

@@ -1,93 +1,336 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.modeDarkBootstrap')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <!-- Enlace a Bootstrap por CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+@section('title', 'Pagos')
 
-     <!-- Referencia al script payments -->
-     <script src="{{ asset('') }}"></script>
-</head>
+@section('content')
 
-<body data-bs-theme="dark">
-
-    <div class="dropdown" data-bs-theme="light">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonLight"
-            data-bs-toggle="dropdown" aria-expanded="false">
-            Default dropdown
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonLight">
-            <li><a class="dropdown-item active" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-            <li>
-                <hr class="dropdown-divider">
-            </li>
-            <li><a class="dropdown-item" href="#">Separated link</a></li>
-        </ul>
+    <div id="loadingSpinner" class="d-none vh-100 vw-100 d-flex justify-content-center align-items-center flex-column">
+        <!-- Icono de carga de Bootstrap -->
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+        <!-- Mensaje de carga -->
+        <br>
+        <p class="mt-2">Cargando...</p>
     </div>
 
-    <div class="dropdown" data-bs-theme="dark">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonDark"
-            data-bs-toggle="dropdown" aria-expanded="false">
-            Dark dropdown
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonDark">
-            <li><a class="dropdown-item active" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-            <li>
-                <hr class="dropdown-divider">
-            </li>
-            <li><a class="dropdown-item" href="#">Separated link</a></li>
-        </ul>
-    </div>
-
-    <div class="container mt-5">
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                <h2 class="mb-0">Realizar Pago</h2>
-            </div>
-            <div class="card-body">
-                <form action="" method="POST">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="nombre_tarjeta" class="form-label">Nombre en la Tarjeta</label>
-                        <input type="text" name="nombre_tarjeta" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="numero_tarjeta" class="form-label">Número de Tarjeta</label>
-                        <input type="text" name="numero_tarjeta" class="form-control" required>
-                    </div>
+    <div class="row px-4 py-3 mx-auto" id="content">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Ecografia abdominales</h5>
+                    {{-- <p class="card-text" id="cost" data-cost="{{ $cost }}">Costo : {{$cost}} Bs</p> --}}
                     <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="fecha_expiracion" class="form-label">Fecha de Expiración</label>
-                            <input type="text" name="fecha_expiracion" class="form-control" placeholder="MM/AA"
-                                required>
+                        <div class="row col-md-6">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">Costo Bs </span>
+                                <input type="text" class="form-control" placeholder="Costo del servicio "
+                                    aria-label="cost" aria-describedby="basic-addon1" id="cost"
+                                    value="{{ $cost }}" oninput="validateNumber(this)">
+                            </div>
+                            <span id="error_cost" style="color: red;"></span>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="cvc" class="form-label">CVC</label>
-                            <input type="text" name="cvc" class="form-control" required>
+                        <div class="row col-md-6">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">Descuento Bs </span>
+                                <input type="text" class="form-control" placeholder="Descuento del servicio "
+                                    aria-label="cost" aria-describedby="basic-addon1" id="discount" value=""
+                                    oninput="validateNumber(this)">
+                            </div>
+                            <span id="error_discount" style="color: red;"></span>
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="monto" class="form-label">Monto a Pagar</label>
-                        <input type="text" name="monto" class="form-control" required>
+                        <div class="form-floating">
+                            <select class="form-select" id="doctor_id" aria-label="Floating label select example">
+                                <option selected value="">Seleccione un medico</option>
+                                @foreach ($medicos as $name)
+                                    <option value={{ $name['id'] }}>{{ $name['name'] }}</option>
+                                @endforeach
+                            </select>
+                            <label for="doctor_id">Seleccione el medico: </label>
+                        </div>
+                        <span id="error_doctor_id" style="color: red;"></span>
                     </div>
-                    <button type="submit"  onclick="testQuery()" class="btn btn-success">Pagar</button>
-                </form>
+                    <div class="mb-3">
+                        @php
+                            $fechaActual = now()->format('Y-m-d');
+                        @endphp
+                        <div>
+                            <label for="">Seleccione fecha de servicio</label>
+                            <input class="form-control" id="dateService" type="date" min="{{ $fechaActual }}">
+                        </div>
+                        <span id="error_dateService" style="color: red;"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="">Horario de atencion : </label>
+                        <br>
+                        <label>{{ $day }}</label>
+                        @foreach ($horarios as $key => $hora)
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="schedule" id="horario_id"
+                                    value="{{ $hora['id'] }}" {{ $key === 0 ? 'checked' : '' }}>
+                                <label class="form-check-label" for={{ $hora['id'] }}>
+                                    {{ $hora['schedule'] }}
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            <select class="form-select" id="type_service" aria-label="Floating label select example">
+                                <option value="1">Pagar por Qr</option>
+                                <option value="2">Pagar por tigo money</option>
+                            </select>
+                            <label for="type_service">Seleccione tipo de servicio: </label>
+                        </div>
+                        <span id="error_type_service" style="color: red;"></span>
+                    </div>
+                    {{-- <a href="#" class="btn btn-primary">Go somewhere</a> --}}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Datos del pago</h5>
+                    <div class="mb-3">
+                        <label for="basic-url" class="form-label">Nit </label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">#</span>
+                            <input type="text" class="form-control" placeholder="Introduzca Nit o carnet de identidad"
+                                aria-label="Username" aria-describedby="basic-addon1" id="nit">
+                            <br>
+                        </div>
+                        <span id="error_nit" style="color: red;"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="basic-url" class="form-label">Razon social </label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">#</span>
+                            <input type="text" class="form-control" placeholder="Introduzca Razon social o nombre"
+                                aria-label="Username" aria-describedby="basic-addon1" id="businessName">
+                        </div>
+                        <span id="error_businessName" style="color: red;"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="basic-url" class="form-label">Correo </label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">@</span>
+                            <input type="email" class="form-control" placeholder="Introduzca su correo"
+                                aria-label="Username" aria-describedby="basic-addon1" id="email">
+                        </div>
+                        <span id="error_email" style="color: red;"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="basic-url" class="form-label">Celular </label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">#</span>
+                            <input type="text" class="form-control" placeholder="Introduzca su numero de celular"
+                                aria-label="Username" aria-describedby="basic-addon1" id="cellphone">
+                        </div>
+                        <span id="error_cellphone" style="color: red;"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="basic-url" class="form-label">Costo total </label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">Bs </span>
+                            <input type="text" class="form-control" placeholder="Costo total a pagar"
+                                aria-label="Username" id="totalCost" aria-describedby="basic-addon1"
+                                oninput="validateNumber(this)" disabled>
+                        </div>
+                        <span id="error_totalCost" style="color: red;"></span>
+                    </div>
+                    <div class="text-center ">
+                        <button type="button" onclick="generatePayment()" class="btn btn-primary ">Generar pago</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="qrCodeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Código QR</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="cerrarModal()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <button id="downloadButton" class="btn btn-primary" onclick="download()">Descargar Código QR</button>
+
+                        <img id="qrCodeImage" alt="Código QR" class="img-fluid">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="cerrarModal()" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    </div>
 
-    <!-- Scripts de Bootstrap y Popper.js (si es necesario) por CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var cost = document.getElementById('cost').value;
 
-</html>
+            var discountInput = document.getElementById('discount');
+            discountInput.value = cost - 0.01;
+            calculateTotalCost();
+
+            var select_doctor_id = document.getElementById('doctor_id');
+            select_doctor_id.addEventListener('change', function() {
+                var selectedValue = select_doctor_id.value;
+                console.log('Valor seleccionado del doctor => ', selectedValue, cost);
+            });
+            var costServicio = document.getElementById('cost');
+            costServicio.addEventListener('input', function() {
+                var selectedValue = costServicio.value;
+                console.log('Valor seleccionado del costo del servicio => ', selectedValue);
+                calculateTotalCost();
+            });
+            var discount = document.getElementById('discount');
+            discount.addEventListener('input', function() {
+                var selectedValue = discount.value;
+                console.log('Valor seleccionado del descuento del servicio => ', selectedValue);
+                calculateTotalCost();
+            });
+
+        });
+
+        function calculateTotalCost() {
+            var cost = document.getElementById('cost').value;
+            var discount = document.getElementById('discount').value;
+
+            var totalCost = document.getElementById('totalCost');
+            totalCost.value = (cost - discount).toFixed(2);
+        }
+
+        function generatePayment() {
+            let data = detailsToMakePayment();
+            var themeActually = getTheme() == 'dark' ? true : false;
+            if(data.success == false){
+                return ;
+            }
+            mostrarSwal('Alerta', 'Esta seguro de continuar con el pago', 'warning', themeActually, makeThePayment,
+                cancelThePayment, data);
+        }
+
+        function detailsToMakePayment() {
+            var cost = getValueWithValidation('cost', 'campo requerido');
+            var discount = getValueWithValidation('discount', 'campo requerido');
+            var doctor_id = getValueWithValidation('doctor_id', 'campo requerido');
+            var dateService = getValueWithValidation('dateService', 'campo requerido');
+            var radioButtons = document.querySelectorAll('input[name="schedule"]:checked');
+            var schedule_id = radioButtons[0].value;
+
+            var nit = getValueWithValidation('nit', 'campo requerido');
+            var businessName = getValueWithValidation('businessName', 'campo requerido');
+            var email = getValueWithValidation('email', 'campo requerido');
+            var cellphone = getValueWithValidation('cellphone', 'campo requerido');
+            var totalCost = getValueWithValidation('totalCost', 'campo requerido');
+            var type_service = getValueWithValidation('type_service', 'campo requerido');
+
+            let success = true;
+            if ((totalCost && cellphone && email && businessName && nit && schedule_id && dateService && doctor_id &&
+                    discount && cost) == '') {
+                success = false;
+            }
+
+            var data = {
+                cost: cost,
+                discount: discount,
+                doctor_id: doctor_id,
+                dateService: dateService,
+                schedule_id: schedule_id,
+                nit: nit,
+                businessName: businessName,
+                email: email,
+                cellphone: cellphone,
+                totalCost: totalCost,
+                type_service: type_service,
+                success: success
+            }
+            return data;
+        }
+
+        function getValueWithValidation(nameInput, valueShow) {
+            try {
+                var dataValue = document.getElementById(nameInput).value;
+                if (dataValue.trim() === '') {
+                    document.getElementById('error_' + nameInput).innerText = valueShow;
+                } else {
+                    document.getElementById('error_' + nameInput).innerText = '';
+                }
+                return dataValue;
+            } catch (error) {
+                console.error('ha obcurrido un error en getValueWithValidation => ', error);
+                return null; // Puedes devolver un valor predeterminado o null en caso de error
+            }
+        }
+
+        function makeThePayment(data) {
+            console.log('realiza el pago', data);
+            // Con fetch API (sin jQuery)
+            showLoadingSpinner();
+            var url = new URL('/payments/generate_payment', window.location.origin);
+            url.search = new URLSearchParams(data).toString();
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    abrirModal();
+                    console.log('response de makethepayment', data.success);
+                    
+                    var qrCodeImage = document.getElementById('qrCodeImage');
+                    qrCodeImage.src = data.img;
+                    hideLoadingSpinner();
+                })
+                .catch(error => {
+                    hideLoadingSpinner();
+                    console.error('Error en la petición fetch', error);
+                });
+        }
+
+        function cancelThePayment() {
+            console.log('cancela el pago');
+        }
+        function abrirModal() {
+            document.getElementById('qrCodeModal').classList.add('show');
+            document.getElementById('qrCodeModal').style.display = 'block';
+            document.body.classList.add('modal-open');
+        }
+        function cerrarModal() {
+            document.getElementById('qrCodeModal').classList.remove('show');
+            document.getElementById('qrCodeModal').style.display = 'none';
+            document.body.classList.remove('modal-open');
+        }
+        function download(){
+            var base64Image = document.getElementById('qrCodeImage').src;
+            // Crea un enlace temporal
+            var downloadLink = document.createElement('a');
+            downloadLink.href = base64Image;
+            downloadLink.download = 'codigo-qr.png';
+            // Simula el clic en el enlace para iniciar la descarga
+            downloadLink.click();
+        }
+        // Función para mostrar el indicador de carga
+        function showLoadingSpinner() {
+            document.getElementById('loadingSpinner').classList.remove('d-none');
+            document.getElementById('content').classList.add('d-none');
+        }
+
+        // Función para ocultar el indicador de carga
+        function hideLoadingSpinner() {
+            document.getElementById('loadingSpinner').classList.add('d-none');
+            document.getElementById('content').classList.remove('d-none');
+        }
+    </script>
+
+@endsection
