@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
+Route::get('/payments', function () {
+    return view('payments.payment');
+});
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
