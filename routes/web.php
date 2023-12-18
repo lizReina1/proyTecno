@@ -34,6 +34,7 @@ Route::get('/cita',function(){
 Route::get('/home', function () {
     return "Bienvenido a home";
 })->name('home');
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -45,10 +46,10 @@ Route::middleware([
 });
 
 Route::get('login', function () {
-    return "ir a login";
+    return view('auth.login');
 })->name('login');
 Route::get('register', function () {
-    return "ir a register";
+    return view('auth.register');
 })->name('register');
 
 
