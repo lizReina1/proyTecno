@@ -5,181 +5,187 @@
 
 @section('contenido')
     @include('layouts.modeDarkBootstrap')
-
+<div class="body-background">
     {{-- @section('content') --}}
-    <div class="card w-100">
-        <div id="loadingSpinner" class="d-none vh-100 vw-100 d-flex justify-content-center align-items-center flex-column">
-            <!-- Icono de carga de Bootstrap -->
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Cargando...</span>
+    {{-- <div class="card w-100 body-background"> --}}
+    <div id="loadingSpinner" class="d-none vh-100 vw-100 d-flex justify-content-center align-items-center flex-column body-background">
+        <!-- Icono de carga de Bootstrap -->
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+        <!-- Mensaje de carga -->
+        <br>
+        <p class="mt-2">Cargando...</p>
+    </div>
+
+    <div class="row px-4 py-3 mx-auto body-background" id="content">
+        <div class="col-sm-6 mb-3 mb-sm-0 ">
+            <div class="card body-background">
+                <div class="card-body body-background">
+                    <h5 class="card-title subtitulo1">{{ $servicio->nombre }}</h5>
+                    <p class="card-text" id="service_id" data-service="{{ $servicio->id }}" hidden>servicio_id :
+                        {{ $servicio->id }} </p>
+                    <div class="row">
+                        <div class="row col-md-6">
+                            <div class="input-group mb-3 ">
+                                <span class="input-group-text card-background" id="basic-addon1">Costo Bs </span>
+                                <input type="text" class="form-control card-background" placeholder="Costo del servicio "
+                                    aria-label="cost" aria-describedby="basic-addon1" id="cost"
+                                    value="{{ $servicio->costo }}" oninput="validateNumber(this)">
+                            </div>
+                            <span id="error_cost" style="color: red;"></span>
+                        </div>
+                        <div class="row col-md-6">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">Descuento Bs </span>
+                                <input type="text" class="form-control" placeholder="Descuento del servicio "
+                                    aria-label="cost" aria-describedby="basic-addon1" id="discount" value=""
+                                    oninput="validateNumber(this)">
+                            </div>
+                            <span id="error_discount" style="color: red;"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            <select class="form-select" id="doctor_id" aria-label="Floating label select example">
+                                <option selected value="">Seleccione un medico</option>
+                                @foreach ($medicos as $name)
+                                    <option value={{ $name['id'] }}>{{ $name['name'] }} {{ $name['lastname'] }}</option>
+                                @endforeach
+                            </select>
+                            <label for="doctor_id">Seleccione el medico: </label>
+                        </div>
+                        <span id="error_doctor_id" style="color: red;"></span>
+                    </div>
+                    <div class="mb-3">
+                        @php
+                            $fechaActual = now()->format('Y-m-d');
+                        @endphp
+                        <div>
+                            <label for="" class="subtitulo4">Seleccione fecha de servicio</label>
+                            <input class="form-control" id="dateService" type="date" min="{{ $fechaActual }}">
+                        </div>
+                        <span id="error_dateService" style="color: red;"></span>
+                    </div>
+                    <div class="mb-3 body-background" id="horarioContent" hidden>
+                        <label for="" class="mb-3 body-background subtitulo4 " >Horario de atencion : </label>
+                        <br>
+                        <label id="day_atentions" class="subtitulo4 " >{{ $day }}</label>
+                        <div id="horarioContainer">
+                            @foreach ($horarios as $key => $hora)
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="schedule" id="horario_id"
+                                        value="{{ $hora['id'] }}" {{ $key === 0 ? 'checked' : '' }}>
+                                    <label class="form-check-label" for={{ $hora['id'] }}>
+                                        {{ $hora['schedule'] }}
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                        <span id="error_horario_id" style="color: red;"></span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            <select class="form-select" id="type_service" aria-label="Floating label select example">
+                                <option value="1">Pagar por Qr</option>
+                                <option value="2">Pagar por tigo money</option>
+                            </select>
+                            <label for="type_service">Seleccione tipo de servicio: </label>
+                        </div>
+                        <span id="error_type_service" style="color: red;"></span>
+                    </div>
+                    {{-- <a href="#" class="btn btn-primary">Go somewhere</a> --}}
+                </div>
             </div>
-            <!-- Mensaje de carga -->
-            <br>
-            <p class="mt-2">Cargando...</p>
         </div>
 
-        <div class="row px-4 py-3 mx-auto" id="content">
-            <div class="col-sm-6 mb-3 mb-sm-0">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{$servicio->nombre}}</h5>
-                        <p class="card-text" id="service_id" data-service="{{ $servicio->id }}" hidden>servicio_id : {{$servicio->id}} </p>
-                        <div class="row">
-                            <div class="row col-md-6">
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text" id="basic-addon1">Costo Bs </span>
-                                    <input type="text" class="form-control" placeholder="Costo del servicio "
-                                        aria-label="cost" aria-describedby="basic-addon1" id="cost"
-                                        value="{{ $servicio->costo }}" oninput="validateNumber(this)">
-                                </div>
-                                <span id="error_cost" style="color: red;"></span>
-                            </div>
-                            <div class="row col-md-6">
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text" id="basic-addon1">Descuento Bs </span>
-                                    <input type="text" class="form-control" placeholder="Descuento del servicio "
-                                        aria-label="cost" aria-describedby="basic-addon1" id="discount" value=""
-                                        oninput="validateNumber(this)">
-                                </div>
-                                <span id="error_discount" style="color: red;"></span>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="form-floating">
-                                <select class="form-select" id="doctor_id" aria-label="Floating label select example">
-                                    <option selected value="">Seleccione un medico</option>
-                                    @foreach ($medicos as $name)
-                                        <option value={{ $name['id'] }}>{{ $name['name'] }} {{ $name['lastname'] }}</option>
-                                    @endforeach
-                                </select>
-                                <label for="doctor_id">Seleccione el medico: </label>
-                            </div>
-                            <span id="error_doctor_id" style="color: red;"></span>
-                        </div>
-                        <div class="mb-3">
-                            @php
-                                $fechaActual = now()->format('Y-m-d');
-                            @endphp
-                            <div>
-                                <label for="">Seleccione fecha de servicio</label>
-                                <input class="form-control" id="dateService" type="date" min="{{ $fechaActual }}">
-                            </div>
-                            <span id="error_dateService" style="color: red;"></span>
-                        </div>
-                        <div class="mb-3" id="horarioContent"  hidden>
-                            <label for="">Horario de atencion : </label>
+        <div class="col-sm-6 body-background">
+            <div class="card">
+                <div class="card-body body-background">
+                    <h5 class="card-title subtitulo1">Datos del pago</h5>
+                    <div class="mb-3">
+                        <label for="basic-url" class="form-label subtitulo4">Nit </label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">#</span>
+                            <input type="text" class="form-control" placeholder="Introduzca Nit o carnet de identidad"
+                                aria-label="Username" aria-describedby="basic-addon1" id="nit"
+                                value="{{ $paciente->nit }}" oninput="validateNumberWithGuion(this)">
                             <br>
-                            <label id="day_atentions">{{ $day }}</label>
-                            <div id="horarioContainer">
-                                @foreach ($horarios as $key => $hora)
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="schedule" id="horario_id"
-                                            value="{{ $hora['id'] }}" {{ $key === 0 ? 'checked' : '' }}>
-                                        <label class="form-check-label" for={{ $hora['id'] }}>
-                                            {{ $hora['schedule'] }}
-                                        </label>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <span id="error_horario_id" style="color: red;"></span>
                         </div>
-                        <div class="mb-3">
-                            <div class="form-floating">
-                                <select class="form-select" id="type_service" aria-label="Floating label select example">
-                                    <option value="1">Pagar por Qr</option>
-                                    <option value="2">Pagar por tigo money</option>
-                                </select>
-                                <label for="type_service">Seleccione tipo de servicio: </label>
-                            </div>
-                            <span id="error_type_service" style="color: red;"></span>
+                        <span id="error_nit" style="color: red;"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="basic-url" class="form-label subtitulo4">Razon social </label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">#</span>
+                            <input type="text" class="form-control" placeholder="Introduzca Razon social o nombre"
+                                aria-label="Username" aria-describedby="basic-addon1" id="businessName"
+                                value="{{ $paciente->razon_social }}">
                         </div>
-                        {{-- <a href="#" class="btn btn-primary">Go somewhere</a> --}}
+                        <span id="error_businessName" style="color: red;"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="basic-url" class="form-label subtitulo4">Correo </label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">@</span>
+                            <input type="email" class="form-control" placeholder="Introduzca su correo"
+                                aria-label="Username" aria-describedby="basic-addon1" id="email"
+                                value="{{ $paciente->email }}">
+                        </div>
+                        <span id="error_email" style="color: red;"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="basic-url" class="form-label subtitulo4">Celular </label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">#</span>
+                            <input type="text" class="form-control" placeholder="Introduzca su numero de celular"
+                                aria-label="Username" aria-describedby="basic-addon1" id="cellphone"
+                                value="{{ $paciente->celular }}" oninput="validateOnlyNumber(this)">
+                        </div>
+                        <span id="error_cellphone" style="color: red;"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="basic-url" class="form-label subtitulo4">Costo total </label>
+                        <div class="input-group mb-3 card-background">
+                            <span class="input-group-text card-background" id="basic-addon1">Bs </span>
+                            <input type="text" class="form-control card-background" placeholder="Costo total a pagar"
+                                aria-label="Username" id="totalCost" aria-describedby="basic-addon1"
+                                oninput="validateNumber(this)" disabled>
+                        </div>
+                        <span id="error_totalCost" style="color: red;"></span>
+                    </div>
+                    <div class="text-center ">
+                        <button type="button" onclick="generatePayment()"
+                            class="btn btn-primary background-button">Generar
+                            pago</button>
                     </div>
                 </div>
             </div>
-
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Datos del pago</h5>
-                        <div class="mb-3">
-                            <label for="basic-url" class="form-label">Nit </label>
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon1">#</span>
-                                <input type="text" class="form-control"
-                                    placeholder="Introduzca Nit o carnet de identidad" aria-label="Username"
-                                    aria-describedby="basic-addon1" id="nit" value="{{$paciente->nit}}">
-                                <br>
-                            </div>
-                            <span id="error_nit" style="color: red;"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="basic-url" class="form-label">Razon social </label>
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon1">#</span>
-                                <input type="text" class="form-control" placeholder="Introduzca Razon social o nombre"
-                                    aria-label="Username" aria-describedby="basic-addon1" id="businessName" value="{{$paciente->razon_social}}">
-                            </div>
-                            <span id="error_businessName" style="color: red;"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="basic-url" class="form-label">Correo </label>
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon1">@</span>
-                                <input type="email" class="form-control" placeholder="Introduzca su correo"
-                                    aria-label="Username" aria-describedby="basic-addon1" id="email" value="{{$paciente->email}}">
-                            </div>
-                            <span id="error_email" style="color: red;"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="basic-url" class="form-label">Celular </label>
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon1">#</span>
-                                <input type="text" class="form-control" placeholder="Introduzca su numero de celular"
-                                    aria-label="Username" aria-describedby="basic-addon1" id="cellphone" value="{{$paciente->celular}}">
-                            </div>
-                            <span id="error_cellphone" style="color: red;"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label for="basic-url" class="form-label">Costo total </label>
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon1">Bs </span>
-                                <input type="text" class="form-control" placeholder="Costo total a pagar"
-                                    aria-label="Username" id="totalCost" aria-describedby="basic-addon1"
-                                    oninput="validateNumber(this)" disabled>
-                            </div>
-                            <span id="error_totalCost" style="color: red;"></span>
-                        </div>
-                        <div class="text-center ">
-                            <button type="button" onclick="generatePayment()" class="btn btn-primary ">Generar
-                                pago</button>
-                        </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade body-background" id="qrCodeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered body-background" role="document">
+                <div class="modal-content body-background">
+                    <div class="modal-header body-background">
+                        <h5 class=" subtitulo1" id="exampleModalLabel">Código QR</h5>
+                        <button type="button" class="close background-button" data-dismiss="modal" aria-label="Close"
+                            onclick="cerrarModal()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                </div>
-            </div>
-            <!-- Modal -->
-            <div class="modal fade" id="qrCodeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Código QR</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                                onclick="cerrarModal()">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body text-center">
-                            <button id="downloadButton" class="btn btn-primary" onclick="download()">Descargar Código
-                                QR</button>
+                    <div class="modal-body text-center body-background">
+                        <button id="downloadButton" class="btn btn-primary background-button" onclick="download()">Descargar Código
+                            QR</button>
 
-                            <img id="qrCodeImage" alt="Código QR" class="img-fluid">
-                        </div>
+                        <img id="qrCodeImage" alt="Código QR" class="img-fluid">
+                    </div>
+                    <div class="body-background">
                         <div class="modal-footer">
-                            <button type="button" onclick="cerrarModal()" class="btn btn-secondary"
+                            <button type="button" onclick="cerrarModal()" class="btn btn-secondary background-button"
                                 data-dismiss="modal">Cerrar</button>
                         </div>
                     </div>
@@ -187,8 +193,7 @@
             </div>
         </div>
     </div>
-    </div>
-
+</div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
         var paciente = @json($paciente);
@@ -234,7 +239,8 @@
                 getTurn(servicioId, doctor_id, dayOfWeekName);
             });
         });
-        function dataForGetTurn(){
+
+        function dataForGetTurn() {
             var doctor_id = getValueWithValidation('doctor_id', 'campo requerido');
             var dateService = getValueWithValidation('dateService', 'campo requerido');
             var data = {
@@ -253,6 +259,7 @@
             }
             return data;
         }
+
         function calculateTotalCost() {
             var cost = document.getElementById('cost').value;
             var discount = document.getElementById('discount').value;
@@ -310,8 +317,8 @@
                 cellphone: cellphone,
                 totalCost: totalCost,
                 type_service: type_service,
-                paciente_id : paciente.id,
-                servicio_id : servicio.id,
+                paciente_id: paciente.id,
+                servicio_id: servicio.id,
                 success: success
             }
             return data;
@@ -369,7 +376,7 @@
             document.getElementById('qrCodeModal').classList.remove('show');
             document.getElementById('qrCodeModal').style.display = 'none';
             document.body.classList.remove('modal-open');
-            
+
             window.location.href = '/servicios';
         }
 
@@ -393,11 +400,12 @@
             document.getElementById('loadingSpinner').classList.add('d-none');
             document.getElementById('content').classList.remove('d-none');
         }
+
         function getTurn(servicioId, doctor_id, dayOfWeekName) {
             var data = {
                 service_id: servicioId,
                 doctor_id: doctor_id,
-                dayOfWeekName: dayOfWeekName, 
+                dayOfWeekName: dayOfWeekName,
                 _token: '{{ csrf_token() }}',
             }
             showLoadingSpinner();
@@ -421,7 +429,8 @@
                     console.error('Error en la petición fetch', error);
                 });
         }
-        function modifiedLabel(id_label, new_value){
+
+        function modifiedLabel(id_label, new_value) {
             var labelElement = document.getElementById(id_label);
             // Verifica si el elemento existe antes de intentar cambiar su valor
             if (labelElement) {
@@ -431,7 +440,8 @@
                 console.error('No se encontró el elemento con el ID day_atentions');
             }
         }
-        function selectSchedules(data){
+
+        function selectSchedules(data) {
             var horarioContent = document.getElementById('horarioContent');
             horarioContent.hidden = false;
             var horarioContainer = document.getElementById('horarioContainer');
@@ -442,19 +452,23 @@
                 console.log('aaaaaaaaa', valor);
                 var radioButton = document.createElement('input');
                 radioButton.type = 'radio';
-                radioButton.name = 'schedule';  // Asegúrate de asignar el mismo nombre a todos los nuevos radio buttons
-                radioButton.id = 'horario_' + indice;  // Asigna un ID único a cada radio button si es necesario
+                radioButton.name =
+                'schedule'; // Asegúrate de asignar el mismo nombre a todos los nuevos radio buttons
+                radioButton.id = 'horario_' + indice; // Asigna un ID único a cada radio button si es necesario
                 radioButton.value = valor.id;
+                
                 var label = document.createElement('label');
                 label.innerHTML = valor.schedule;
                 label.setAttribute('for', 'horario_' + indice);
                 // Crear label
                 var label = document.createElement('label');
-                        label.innerHTML = valor.schedule;
-                        label.setAttribute('for', 'horario_' + indice);
+                label.innerHTML = valor.schedule;
+                label.setAttribute('for', 'horario_' + indice);
+                // Añadir una clase al elemento label
+                label.classList.add('subtitulo4'); // Reemplaza 'tu-clase-aqui' con la clase que desees
 
-                        // Establecer margen a la derecha del radio button
-                        radioButton.style.marginRight = '15px'; // Puedes ajustar el valor según tus preferencias
+                // Establecer margen a la derecha del radio button
+                radioButton.style.marginRight = '15px'; // Puedes ajustar el valor según tus preferencias
 
                 // Añadir radio button y label al contenedor
                 horarioContainer.appendChild(radioButton);
@@ -467,5 +481,5 @@
             });
         }
     </script>
-    {{-- @endsection --}}
+
 @endsection
