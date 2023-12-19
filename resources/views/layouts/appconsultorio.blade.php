@@ -120,7 +120,7 @@
                                     @guest
                                         <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
                                             tabindex="-1" id="user-menu-item-0">Register</a>
-                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
+                                        <a href="{{route('login')}}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
                                             tabindex="-1" id="user-menu-item-2">Login</a>
                                         <a href="{{ route('configuracion') }}"
                                             class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"

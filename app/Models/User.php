@@ -24,18 +24,17 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-         'id',
          'ci',
-         'nombre',
-         'apellido',
-         'fechaNacimiento',
+         'name',
+         'lastname',
+         'birth_date',
          'celular',
          'tipo',
          'genero',
-         'residenciaActual',
+         'residencia_actual',
          'email',
          'password',
-         'urlFoto',
+         'url_foto',
          'formacion',
          'sueldo',
          'hijo',
@@ -80,5 +79,11 @@ class User extends Authenticatable
     {
         return self::whereIn('tipo', ['M', 'E'])->get();
     }
-    
+    public static function getPersonal()
+    {
+        return self::where(function ($query) {
+            $query->where('tipo', 'E')
+                  ->orWhere('tipo', 'M');
+        })->get();
+    }
 }
