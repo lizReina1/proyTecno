@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\AtencionController;
 use App\Http\Controllers\EstiloController;
 use App\Http\Controllers\Web\ClienteController;
+use App\Http\Controllers\PaymentController;
+use App\Models\Atencion;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,3 +56,10 @@ Route::get('register', function () {
 
 
 Route::post('cambiar-estilo', [EstiloController::class,'cambiarEstilo'])->name('cambiar.estilo');
+// ************** payment *********************
+Route::get('/payments', [PaymentController::class, 'index'])->name('payment_index');
+Route::get('/payments/generate_payment', [PaymentController::class, 'generatePayment']);
+
+//************************* atenciones ****************************/
+Route::post('/attentions/get_attentions_turn', [AtencionController::class, 'getAttentionsDoctor']);
+

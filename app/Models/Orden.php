@@ -21,7 +21,18 @@ class Orden extends Model
         'ficha_id',
         'paciente_id',
         'servicio_id',
+        'costo_servicio',
+        'descuento',
+        'nit',
+        'razon_social',
+        'email',
+        'celular',
     ];
+
+    static function getNumberOrden(){
+        $ultima_orden = self::latest()->first()->id;
+        return $ultima_orden + 1;
+    }
 
 
 }
