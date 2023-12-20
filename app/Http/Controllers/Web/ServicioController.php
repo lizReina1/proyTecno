@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Servicio;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ServicioController extends Controller
 {
@@ -12,7 +15,12 @@ class ServicioController extends Controller
      */
     public function index()
     {
-        //
+        $doctor_id = 2; //17;
+        $doctor = User::find(Auth::user()->id);
+        // $servicios = Servicio::getServicesDoctor($doctor->id);
+        $servicios = Servicio::getServicesDoctor($doctor_id);
+        // dd($servicios);
+        return view('servicio.index', compact('servicios'));
     }
 
     /**

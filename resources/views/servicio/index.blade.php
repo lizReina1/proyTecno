@@ -9,7 +9,7 @@
                     <div class="sm:flex sm:items-center sm:justify-between">
                         <div>
                             <div class="flex items-center gap-x-3">
-                                <h2 class="text-lg font-medium text-gray-800 dark:text-white">Cita</h2>
+                                <h2 class="text-lg font-medium text-gray-800 dark:text-white">Servicios</h2>
 
                                 {{-- <span
                                     class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">240
@@ -58,15 +58,15 @@
                             class="inline-flex overflow-hidden bg-white border divide-x rounded-lg dark:bg-gray-900 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700">
                             <button
                                 class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm dark:bg-gray-800 dark:text-gray-300">
-                                Ver todo
-                            </button>
-
-                            {{-- <button
-                                class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
-                                Médicos
+                                Mis servicios
                             </button>
 
                             <button
+                                class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
+                                Ver todo
+                            </button>
+
+                            {{--<button
                                 class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
                                 Enfermeras
                             </button> --}}
@@ -98,7 +98,7 @@
                                                 <th scope="col"
                                                     class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                                     <button class="flex items-center gap-x-3 focus:outline-none">
-                                                        <span>Paciente</span>
+                                                        <span>Nombre Servicio</span>
 
                                                         <svg class="h-3" viewBox="0 0 10 11" fill="none"
                                                             xmlns="http://www.w3.org/2000/svg">
@@ -120,20 +120,20 @@
 
                                                 <th scope="col"
                                                     class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                    Fecha Atencion
-                                                </th>
-
-                                                <th scope="col"
-                                                    class="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                                     Costo
                                                 </th>
+
+                                                {{-- <th scope="col"
+                                                    class="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                                    Costo
+                                                </th> --}}
                                                 {{-- <th scope="col"
                                                     class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                                     CI</th> --}}
 
-                                                <th scope="col"
+                                                {{-- <th scope="col"
                                                     class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                    Estado de la cita</th>
+                                                    Estado de la cita</th> --}}
 
                                                 <th scope="col" class="relative py-3.5 px-4">
                                                     <span class="sr-only">Edit</span>
@@ -142,41 +142,30 @@
                                         </thead>
                                         <tbody
                                             class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                                            @foreach ($citas as $cita)
+                                            @foreach ($servicios as $servicio)
                                                 <tr>
                                                     <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                                         <div class="flex min-w-0 gap-x-4">
                                                             <img class="h-16 w-16 flex-none rounded-full bg-gray-50"
-                                                                src="{{ $cita->url_foto }}" alt="">
+                                                                src="{{ $servicio->url_foto }}" alt="">
                                                             <div class="min-w-0 flex-auto">
+                                                                <br>
                                                                 <p
-                                                                    class="text-sm font-semibold leading-6 text-gray-900">
-                                                                    {{ $cita->name }} {{ $cita->lastname }}</p>
-                                                                <p
+                                                                    class="mt-1  text-sm font-semibold leading-6 text-gray-900">
+                                                                    {{ $servicio->nombre }}</p>
+                                                                {{-- <p
                                                                     class="mt-1 truncate text-xs leading-5 text-gray-500">
-                                                                    {{ $cita->email }}</p>
+                                                                    {{ $servicio->email }}</p>
                                                                 <p
                                                                     class="mt-1 truncate text-xs leading-5 text-gray-400">
-                                                                    ci: {{ $cita->ci }}</p>
-                                                            </div>
+                                                                    ci: {{ $servicio->ci }}</p>
+                                                            </div> --}}
                                                         </div>
                                                     </td>
                                                     <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                        <div>
-                                                            <h4 class="text-gray-700 dark:text-gray-200">
-                                                                {{ date('Y-m-d', strtotime($cita->fecha_cita)) }}</h4>
-                                                            {{ date('H:i:s', strtotime($cita->fecha_cita)) }}</h4>
-
-                                                            {{-- <p class="text-gray-500 dark:text-gray-400">Brings all your
-                                                                news into one place</p> --}}
-                                                        </div>
+                                                        {{ $servicio->costo }} Bs
                                                     </td>
-                                                    <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                        {{ $cita->costo_cita }} Bs
-                                                    </td>
-                                                    <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                        {{ $cita->estado_cita == true ? 'Realizado' : 'Por realizar' }}
-                                                    </td>
+                                                   
                                                     <td class="px-4 py-4 text-sm whitespace-nowrap">
                                                         <div x-data="{ isOpen: false }">
                                                         <button

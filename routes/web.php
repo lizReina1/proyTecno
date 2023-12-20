@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AtencionController;
+use App\Http\Controllers\CitaController;
 use App\Http\Controllers\PaymentController;
 use App\Models\Atencion;
 use App\Http\Controllers\DashboardController;
@@ -101,5 +102,11 @@ Route::get('/orden', [OrdenController::class, 'index'])->name('orden_index');
 
 //********************** reporte *********************************/
 Route::get('/report/order/pdf', [OrdenController::class, 'generatePdfOrder']);
+
+//************************* cita  *********************/
+Route::get('/cita', [CitaController::class, 'index'])->name('cita_index');
+Route::get('/cita/create', [CitaController::class, 'create'])->name('cita_create');
+Route::post('/cita/store', [CitaController::class, 'store'])->name('cita_store');
+
 
 

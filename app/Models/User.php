@@ -96,4 +96,9 @@ class User extends Authenticatable
                   ->orWhere('tipo', 'M');
         })->get();
     }
+    
+    public static function patients()
+    {
+        return self::where('tipo', 'P')->get();
+    }
 }
