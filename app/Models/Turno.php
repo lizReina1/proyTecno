@@ -10,13 +10,19 @@ class Turno extends Model
     use HasFactory;
     protected $guarded = [''];
 
-    static function getTurnOfServicedDoctor($servicioId, $doctor_id, $dayOfWeekName){
+    static function getTurnOfServicedDoctor($servicioId, $doctor_id, $dayOfWeekName)
+    {
         return self::select('turnos.*')
-                ->join('atencions', 'atencions.turno_id', 'turnos.id')
-                ->where('atencions.user_id', $doctor_id)
-                ->where('atencions.servicio_id', $servicioId)
-                ->where('turnos.dia', $dayOfWeekName)
-                ->distinct()
-                ->get();
+            ->join('atencions', 'atencions.turno_id', 'turnos.id')
+            ->where('atencions.user_id', $doctor_id)
+            ->where('atencions.servicio_id', $servicioId)
+            ->where('turnos.dia', $dayOfWeekName)
+            ->distinct()
+            ->get();
+    }
+
+    public function atencions()
+    {
+        return $this->hasMany(Atencion::class);
     }
 }

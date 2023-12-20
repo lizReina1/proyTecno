@@ -62,10 +62,10 @@ class PersonalController extends Controller
             $user->password = bcrypt("12345678");
             $user->save();
 
-            return redirect()->route('personal.index')->with('mensaje', "Usuario creado exitosamente");
+            return redirect()->route('personal.index')->with('mensaje', "Personal creado exitosamente");
         } else {
 
-            return redirect()->route('personal.index')->with('error', "Error al crear el usuario, intente denuevo");
+            return redirect()->route('personal.index')->with('error', "Error al crear el personal, intente denuevo");
         }
     }
 
@@ -132,9 +132,9 @@ class PersonalController extends Controller
             $user->password = bcrypt("12345678");
             $user->save();
 
-            return redirect()->route('personal.index')->with('mensaje', "Usuario actualizado exitosamente");
+            return redirect()->route('personal.index')->with('mensaje', "Personal actualizado exitosamente");
         } else {
-            return redirect()->route('personal.index')->with('error', "Error al actualizar");
+            return redirect()->route('personal.index')->with('error', "Error al actualizar al personal");
         }
     }
 
@@ -143,6 +143,12 @@ class PersonalController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::find($id);
+        if (isset($user)) {
+            $user->delete();
+            return redirect()->route('personal.index')->with('mensaje', "Personal ".$user->name." ".$user->lastname." eliminado exitosamente");
+        } else {
+            return redirect()->route('personal.index')->with('error', "Error al eliminar al personal");
+        }
     }
 }

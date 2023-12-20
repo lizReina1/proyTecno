@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+
 class Orden extends Model
 {
     use HasFactory;
-    protected $fillable=[
+    protected $fillable = [
         'servicio',
         'medico',
         'costo',
@@ -29,7 +30,12 @@ class Orden extends Model
         'celular',
     ];
 
-    static function getNumberOrden(){
+    public function servicio()
+    {
+        return $this->belongsTo(Servicio::class);
+    }
+    static function getNumberOrden()
+    {
         // $ultima_orden = self::latest()->first()->id;
         $nombreSecuencia = 'ordens_id_seq';
 
@@ -39,6 +45,4 @@ class Orden extends Model
         $siguienteValor = $resultado[0]->siguiente_valor;
         return $siguienteValor + 1;
     }
-
-
 }

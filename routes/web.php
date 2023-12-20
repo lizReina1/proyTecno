@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AtencionController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Web\TurnoController;
 use App\Models\Atencion;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataFeedController;
@@ -76,19 +77,21 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     // Gestionar Personal
     Route::resource('/personal', PersonalController::class)->names('personal');
-     // Gestionar Servicio
-     Route::resource('/servicio', ServicioController::class)->names('servicio');
+    // Gestionar Servicio
+    Route::resource('/servicio', ServicioController::class)->names('servicio');
+    //Gestionar Turno
+    Route::resource('/turno', TurnoController::class)->names('turno');
 });
 
-Route::get('login', function () {
-    return "ir a login";
-})->name('login');
-Route::get('register', function () {
-    return "ir a register";
-})->name('register');
+// Route::get('login', function () {
+//     return "ir a login";
+// })->name('login');
+// Route::get('register', function () {
+//     return "ir a register";
+// })->name('register');
 
 
-Route::post('cambiar-estilo', [EstiloController::class,'cambiarEstilo'])->name('cambiar.estilo');
+Route::post('cambiar-estilo', [EstiloController::class, 'cambiarEstilo'])->name('cambiar.estilo');
 // ************** payment *********************
 Route::get('/payments', [PaymentController::class, 'index'])->name('payment_index');
 Route::get('/payments/generate_payment', [PaymentController::class, 'generatePayment']);
@@ -98,5 +101,3 @@ Route::post('/attentions/get_attentions_turn', [AtencionController::class, 'getA
 
 //********************** reporte *********************************/
 Route::get('/report/order/pdf', [OrdenController::class, 'generatePdfOrder']);
-
-

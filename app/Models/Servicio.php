@@ -16,4 +16,11 @@ class Servicio extends Model
         'url_imagen'
     ];
 
+    public function atencions(){
+        return $this->hasMany(Atencion::class);
+    }
+
+    public function ordens(){
+        return $this->hasMany(Orden::class);
+    }
 }

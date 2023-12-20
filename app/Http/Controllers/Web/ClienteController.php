@@ -17,7 +17,7 @@ class ClienteController extends Controller
             ->groupBy('ordens.servicio_id', 'servicios.nombre', 'servicios.url_imagen', 'servicios.costo')
             ->orderByDesc('cantidad')
             ->get();
-        $personals = User::personal();
+                  $personals = User::personal();
         return view('cliente.inicio', compact('servicios', 'personals'));
     }
     public function servicios(){

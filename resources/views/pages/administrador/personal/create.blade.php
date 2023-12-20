@@ -107,7 +107,7 @@
                                     <div class="mt-2">
                                         <select type="text" name="tipo" id="tipo"
                                             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                            <option value="M">Médico</option>
+                                            <option value="M" selected>Médico</option>
                                             <option value="E">Enfermería</option>
                                         </select>
                                     </div>
@@ -119,7 +119,7 @@
                                     <div class="mt-2">
                                         <select type="text" name="genero" id="genero" autocomplete="genero"
                                             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                            <option value="M">Masculino</option>
+                                            <option value="M" selected>Masculino</option>
                                             <option value="F">Femenino</option>
                                         </select>
                                     </div>
@@ -232,7 +232,7 @@
         // Para mostrar las imágenes cargadas en el input file
         const inputPhoto = document.getElementById('imagen');
         const previewImage = document.getElementById('preview');
-        const noImageText = document.getElementById('noImageText');
+        //const noImageText = document.getElementById('noImageText');
 
         inputPhoto.addEventListener('change', function() {
             const file = this.files[0];
@@ -241,7 +241,7 @@
                 reader.onload = function(event) {
                     previewImage.style.display = 'block';
                     previewImage.src = event.target.result;
-                    noImageText.style.display = 'none';
+                    //noImageText.style.display = 'none';
                 };
                 reader.readAsDataURL(file);
             } else {
