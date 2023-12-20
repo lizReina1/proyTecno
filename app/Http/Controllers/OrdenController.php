@@ -10,10 +10,20 @@ use App\Models\Turno;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\Auth;
 
 class OrdenController extends Controller
 {
     
+    public function index(){
+        // $doctor_id = 2; //17;
+        $doctor = User::find(Auth::user()->id);
+        $ordens = Orden::getOrdensForDoctorId($doctor->id);
+        // $ordens = Orden::getOrdensForDoctorId($doctor_id);
+        return view('orden.orden', compact('ordens'));
+    }
+
     public function createOrden(Request $request){
         try {
             
@@ -38,7 +48,7 @@ class OrdenController extends Controller
             
             $orden = Orden::create([
                 'servicio' => $service->nombre,
-                'medico' => $doctor->name . $doctor->lastname,
+                'medico' => $doctor->name . " " . $doctor->lastname,
                 'costo' => $request->totalCost,
                 'direccion_consultorio' => 'Av. Transcontinental, plan 3000',
                 'fecha_atencion' => $request->dateService,
@@ -48,6 +58,7 @@ class OrdenController extends Controller
                 'fecha_pago' => $fechaHoraFormateada,
                 'ficha_id' => $ficha->id,
                 'paciente_id' => $paciente->id,
+                // 'doctor_id' => $doctor->id,
                 'servicio_id' => $service->id,
                 'costo_servicio' => $request->cost,
                 'descuento' => $request->discount,
@@ -61,5 +72,23 @@ class OrdenController extends Controller
             // Devuelve una respuesta de error al cliente
             throw response()->json('Ha ocurrido un error crear el pago.' . $e->getMessage(), 500);
         }
+    }
+    public function generatePdfOrder(Request $request ){
+        $prueba = $request->all();
+        $keyarray = key($prueba);
+        $orden = json_decode($keyarray);
+
+        // dd($orden, $orden->id);
+        $data = [
+            'orden' => $orden, 
+        ];
+        $pdf = app('dompdf.wrapper');
+            $pdf
+                ->setPaper('legal', 'portrait') //landscape
+                ->loadView(
+                    'report.reportOrden',
+                    $data
+                );
+        return $pdf->stream('archivo.pdf');
     }
 }

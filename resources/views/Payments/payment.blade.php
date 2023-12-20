@@ -198,6 +198,7 @@
     <script>
         var paciente = @json($paciente);
         var servicio = @json($servicio);
+        let orden = {};
         document.addEventListener('DOMContentLoaded', function() {
             var cost = document.getElementById('cost').value;
 
@@ -353,6 +354,7 @@
 
                     var qrCodeImage = document.getElementById('qrCodeImage');
                     qrCodeImage.src = data.img;
+                    orden = data.orden;
                     hideLoadingSpinner();
                 })
                 .catch(error => {
@@ -376,10 +378,18 @@
             document.getElementById('qrCodeModal').classList.remove('show');
             document.getElementById('qrCodeModal').style.display = 'none';
             document.body.classList.remove('modal-open');
-
+            abrirVentana();
             window.location.href = '/servicios';
         }
+        function abrirVentana() {
+            // Llama a tu endpoint para generar el PDF
+            let path = window.location.origin;
+            let url = path + "/report/order/pdf?"+ JSON.stringify(orden);;
 
+            var win = window.open(url, "_blank");
+            win.focus();
+
+        }
         function download() {
             var base64Image = document.getElementById('qrCodeImage').src;
             // Crea un enlace temporal

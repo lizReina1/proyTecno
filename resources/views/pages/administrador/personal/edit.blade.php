@@ -3,12 +3,14 @@
         <div class="card" style="width: 100%;">
 
             <div class="card-body bg-white p-5">
-                <form action="{{ route('personal.store') }}" method="POST" enctype="multipart/form-data" id="formPersonal">
+                <form action="{{ route('personal.update', $personal->id) }}" method="POST" enctype="multipart/form-data"
+                    id="formPersonal">
                     @csrf
+                    @method('PUT')
                     <div class="space-y-12">
                         <div class="border-b border-gray-900/10 pb-4">
-                            <h2 class="text-base font-semibold leading-7 text-gray-900">Crear personal</h2>
-                            <p class="mt-1 text-sm leading-6 text-gray-600">Registrar un nuevo médico o enfermera/o.</p>
+                            <h2 class="text-base font-semibold leading-7 text-gray-900">Editar personal</h2>
+                            <p class="mt-1 text-sm leading-6 text-gray-600">Actualizar los datos del médico o enfermera/o.</p>
 
                             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                 <div class="sm:col-span-3">
@@ -16,6 +18,7 @@
                                         class="block text-sm font-medium leading-6 text-gray-900">CI</label>
                                     <div class="mt-2">
                                         <input type="text" name="ci" id="ci" autocomplete="given-ci"
+                                            value={{ $personal->ci }}
                                             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         @error('ci')
                                             <div class="error-message mt-1 text-sm leading-6 text-pink-600">
@@ -30,6 +33,7 @@
                                         class="block text-sm font-medium leading-6 text-gray-900">Nombre</label>
                                     <div class="mt-2">
                                         <input type="text" name="name" id="name" autocomplete="given-name"
+                                            value={{ $personal->name }}
                                             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         @error('name')
                                             <div class="error-message mt-1 text-sm leading-6 text-pink-600">
@@ -45,6 +49,7 @@
                                         class="block text-sm font-medium leading-6 text-gray-900">Apellido</label>
                                     <div class="mt-2">
                                         <input type="text" name="lastname" id="lastname" autocomplete="family-name"
+                                            value={{ $personal->lastname }}
                                             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         @error('lastname')
                                             <div class="error-message mt-1 text-sm leading-6 text-pink-600">
@@ -60,7 +65,7 @@
                                         nacimiento</label>
                                     <div class="mt-2">
                                         <input type="date" name="birth_date" id="birth_date"
-                                            autocomplete="family-name"
+                                            value={{ $personal->birth_date }} autocomplete="family-name"
                                             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         @error('birth_date')
                                             <div class="error-message mt-1 text-sm leading-6 text-pink-600">
@@ -75,6 +80,7 @@
                                         class="block text-sm font-medium leading-6 text-gray-900">Celular</label>
                                     <div class="mt-2">
                                         <input type="number" name="celular"; id="celular"; autocomplete="family-name"
+                                            value={{ $personal->celular }}
                                             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         @error('celular')
                                             <div class="error-message mt-1 text-sm leading-6 text-pink-600">
@@ -88,7 +94,7 @@
                                     <label for="correo"
                                         class="block text-sm font-medium leading-6 text-gray-900">Correo</label>
                                     <div class="mt-2">
-                                        <input type="email" name="email" id="email" autocomplete="correo"
+                                        <input type="email" name="email" id="email" autocomplete="correo" value="{{ $personal->email }}"
                                             class="peer block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         @error('email')
                                             <div class="error-message mt-1 text-sm leading-6 text-pink-600">
@@ -107,8 +113,11 @@
                                     <div class="mt-2">
                                         <select type="text" name="tipo" id="tipo"
                                             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                            <option value="M" selected>Médico</option>
-                                            <option value="E">Enfermería</option>
+                                            <option value="M" {{ $personal->tipo == 'M' ? 'selected' : '' }}>Médico
+                                            </option>
+                                            <option value="E" {{ $personal->tipo == 'E' ? 'selected' : '' }}>
+                                                Enfermería
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -119,8 +128,10 @@
                                     <div class="mt-2">
                                         <select type="text" name="genero" id="genero" autocomplete="genero"
                                             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                            <option value="M" selected>Masculino</option>
-                                            <option value="F">Femenino</option>
+                                            <option value="M" {{ $personal->genero == 'M' ? 'selected' : '' }}>
+                                                Masculino</option>
+                                            <option value="F" {{ $personal->genero == 'F' ? 'selected' : '' }}>
+                                                Femenino</option>
                                         </select>
                                     </div>
                                 </div>
@@ -131,7 +142,7 @@
                                         residencia</label>
                                     <div class="mt-2">
                                         <input type="text" name="residencia" id="residencia"
-                                            autocomplete="residencia"
+                                            autocomplete="residencia" value={{ $personal->residencia_actual }}
                                             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         @error('residencia_actual')
                                             <div class="error-message mt-1 text-sm leading-6 text-pink-600">
@@ -145,7 +156,7 @@
                                     <label for="sueldo"
                                         class="block text-sm font-medium leading-6 text-gray-900">Sueldo</label>
                                     <div class="mt-2">
-                                        <input type="number" name="sueldo" id="sueldo" autocomplete="sueldo"
+                                        <input type="number" name="sueldo" id="sueldo" autocomplete="sueldo" value="{{ $personal->sueldo }}"
                                             class="peer block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         @error('sueldo')
                                             <div class="error-message mt-1 text-sm leading-6 text-pink-600">
@@ -160,7 +171,7 @@
                                     <label for="formacion"
                                         class="block text-sm font-medium leading-6 text-gray-900">Formación</label>
                                     <div class="mt-2">
-                                        <input type="text" name="formacion" id="formacion"
+                                        <input type="text" name="formacion" id="formacion" value="{{ $personal->formacion  }}"
                                             autocomplete="formacion"
                                             class="peer block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         @error('formacion')
@@ -183,7 +194,7 @@
                                         <div class="flex items-center space-x-6">
                                             <div class="shrink-0">
                                                 <img id="preview" class="h-16 w-16 object-cover rounded-full"
-                                                    src="{{ asset('estilos_tecno/img/user_logo2.png') }}"
+                                                    src="{{ asset($personal->url_foto) }}"
                                                     alt="Current profile photo" />
                                                 @error('imagen')
                                                     <div class="error-message mt-1 text-sm leading-6 text-pink-600">
@@ -232,7 +243,7 @@
         // Para mostrar las imágenes cargadas en el input file
         const inputPhoto = document.getElementById('imagen');
         const previewImage = document.getElementById('preview');
-        //const noImageText = document.getElementById('noImageText');
+        const noImageText = document.getElementById('noImageText');
 
         inputPhoto.addEventListener('change', function() {
             const file = this.files[0];
@@ -241,7 +252,7 @@
                 reader.onload = function(event) {
                     previewImage.style.display = 'block';
                     previewImage.src = event.target.result;
-                    //noImageText.style.display = 'none';
+                    noImageText.style.display = 'none';
                 };
                 reader.readAsDataURL(file);
             } else {
@@ -329,10 +340,10 @@
                 errorFormacion.textContent = 'Por favor ingrese su formación';
                 return false; // Evitar que el formulario se envíe si hay errores
             }
-            if (imagenInput.value.trim() === '') {
-                errorImagen.textContent = 'Por favor ingrese su foto de perfil';
-                return false; // Evitar que el formulario se envíe si hay errores
-            }
+            // if (imagenInput.value.trim() === '') {
+            //     errorImagen.textContent = 'Por favor ingrese su foto de perfil';
+            //     return false; // Evitar que el formulario se envíe si hay errores
+            // }
 
 
 

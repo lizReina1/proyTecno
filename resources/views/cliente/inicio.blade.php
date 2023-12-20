@@ -17,7 +17,7 @@
             <div class="carousel-wrapper">
                 <!-- Contenido de cada slide -->
                 @foreach ($servicios as $servicio)
-                    <div class="carousel-item">
+                                  <div class="carousel-item">
                         <div
                             class="aspect-square w-full overflow-hidden {{ $logo == 'C' ? 'rounded-full' : 'rounded-md' }} bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-50">
                             <img src="{{ $servicio->url_imagen }}" alt="Front of men&#039;s Basic Tee in black."

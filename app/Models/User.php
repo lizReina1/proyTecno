@@ -97,7 +97,7 @@ class User extends Authenticatable
     {
         return self::where(function ($query) {
             $query->where('tipo', 'E')
-                  ->orWhere('tipo', 'M');
-        })->get();
+                ->orWhere('tipo', 'M');
+        })->orderBy('updated_at', 'desc')->get();
     }
 }

@@ -7,8 +7,6 @@ use Illuminate\Http\Request;
 
 class AtencionController extends Controller
 {
-    
-
     public function getAttentionsDoctor(Request $request){
         $turnos = Turno::getTurnOfServicedDoctor($request->service_id, $request->doctor_id, $request->dayOfWeekName);
         $turnos->each(function (&$item) {

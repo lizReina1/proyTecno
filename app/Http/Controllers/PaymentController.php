@@ -7,12 +7,14 @@ use App\Models\Servicio;
 use App\Models\User;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 class PaymentController extends Controller
 {
     public function index(Request $request)
     {
-        $user_id = 3; // $request->user_id // id del paciente
+        // $user_id = 3; // $request->user_id // id del paciente
+        $user_id = User::find(Auth::user()->id);
         $paciente = User::find($user_id);
         $medicos = User::medicosServices($request->servicio_id);
         $horarios = collect([
@@ -33,14 +35,6 @@ class PaymentController extends Controller
 
     public function generatePayment(Request $request)
     {
-        // return $request->all();
-        // $orden_description = 'Se creo el orden Correctamente';
-        // try {
-        //     $ordenController = new OrdenController();
-        //     $orden = $ordenController->createOrden($request);
-        // } catch (\Throwable $th) {
-        //     $orden_description = 'Error al crear el orden';
-        // }
         try {
             
             DB::beginTransaction();

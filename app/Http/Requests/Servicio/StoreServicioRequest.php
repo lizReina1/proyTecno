@@ -11,7 +11,7 @@ class StoreServicioRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class StoreServicioRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nombre' => 'required|string|unique:servicios,nombre',
+            'costo' => 'required',
+            'forma_compra' => 'required',
+            'atencion' => 'required',
+            'imagen' => 'required|image|mimes:jpeg,png,jpg|max:2048'
         ];
     }
 }

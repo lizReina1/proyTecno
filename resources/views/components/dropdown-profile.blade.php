@@ -1,6 +1,6 @@
 <div class="relative inline-flex">
     <button id="dropdownButton" class="inline-flex justify-center items-center group">
-        <img class="w-8 h-8 rounded-full" src="{{ Auth::user()->profile_photo_url }}" width="32" height="32" alt="{{ Auth::user()->name }}" />
+        <img class="w-8 h-8 rounded-full" src="{{ Auth::user()->url_foto }}" width="32" height="32" alt="{{ Auth::user()->name }}" />
         <div class="flex items-center truncate">
             <span class="truncate ml-2 text-sm font-medium dark:text-slate-300 group-hover:text-slate-800 dark:group-hover:text-slate-200">{{ Auth::user()->name }}</span>
             <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400" viewBox="0 0 12 12">
