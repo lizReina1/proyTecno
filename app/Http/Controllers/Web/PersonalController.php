@@ -91,7 +91,7 @@ class PersonalController extends Controller
      */
     public function update(UpdatePersonalRequest $request, string $id)
     {
-
+       // return $request;
         $urlImagen = null;
         $user = User::find($id);
         if (isset($user)) {
@@ -128,6 +128,7 @@ class PersonalController extends Controller
             $user->genero = $request->genero;
             $user->residencia_actual = $request->residencia;
             $user->sueldo = $request->sueldo;
+           
             $user->formacion = $request->formacion;
             $user->password = bcrypt("12345678");
             $user->save();
@@ -146,7 +147,7 @@ class PersonalController extends Controller
         $user = User::find($id);
         if (isset($user)) {
             $user->delete();
-            return redirect()->route('personal.index')->with('mensaje', "Personal ".$user->name." ".$user->lastname." eliminado exitosamente");
+            return redirect()->route('personal.index')->with('mensaje', "Personal " . $user->name . " " . $user->lastname . " eliminado exitosamente");
         } else {
             return redirect()->route('personal.index')->with('error', "Error al eliminar al personal");
         }

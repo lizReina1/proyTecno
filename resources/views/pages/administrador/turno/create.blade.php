@@ -11,7 +11,7 @@
                             <p class="mt-1 text-sm leading-6 text-gray-600">Registrar un nuevo servicio.</p>
 
                             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                                <div class="sm:col-span-3">
+                                {{-- <div class="sm:col-span-3">
                                     <label for="nombre"
                                         class="block text-sm font-medium leading-6 text-gray-900">Nombre del
                                         servicio</label>
@@ -39,7 +39,7 @@
                                         <span id="errorCosto"
                                             class="error-message mt-1 text-sm leading-6 text-pink-600"></span>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="sm:col-span-3">
                                     <label for="dia"
                                         class="block text-sm font-medium leading-6 text-gray-900">Día</label>
@@ -59,18 +59,19 @@
                                 </div>
 
                                 <div class="sm:col-span-3">
-                                    <label for="atencion"
+                                    <label for="turno_id"
                                         class="block text-sm font-medium leading-6 text-gray-900">Horario</label>
                                     <div class="mt-2">
-                                        <select type="text" name="atencion" id="atencion" autocomplete="atencion"
+                                        <select type="text" name="turno_id" id="turno_id" autocomplete="atencion"
                                             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                           @foreach ($dias["Lunes"] as $horario)
-                                               <option value={{$horario->id}}>{{$horario['']}}</option>
+                                           
+                                            @foreach ($dias["Lunes"] as $horario)
+                                               <option value={{$horario["id"]}}>{{$horario['hora_inicio']}} - {{$horario['hora_fin']}}</option>
                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-span-full">
+                                {{-- <div class="col-span-full">
                                     <label for="photo"
                                         class="block text-sm font-medium leading-6 text-gray-900">Imagen</label>
                                     <div class="mt-2 flex items-center gap-x-3">
@@ -106,8 +107,8 @@
                                         {{-- <div class="bg-white p7 rounded w-9/12 mx-auto">
                                          
                                         </div> --}}
-                                    </div>
-                                </div>
+                                    {{-- </div>
+                                </div> --}}
                             </div>
                         </div>
 

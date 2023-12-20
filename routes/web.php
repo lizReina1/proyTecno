@@ -74,13 +74,15 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::fallback(function () {
         return view('pages/utility/404');
     });
-
+    //ADMINISTRADOR
     // Gestionar Personal
-    Route::resource('/personal', PersonalController::class)->names('personal');
-    // Gestionar Servicio
-    Route::resource('/servicio', ServicioController::class)->names('servicio');
-    //Gestionar Turno
-    Route::resource('/turno', TurnoController::class)->names('turno');
+    Route::prefix('admin')->group(function () {
+        Route::resource('/personal', PersonalController::class)->names('personal');
+        // Gestionar Servicio
+        Route::resource('/servicio', ServicioController::class)->names('servicio');
+        //Gestionar Turno
+        Route::resource('/turno', TurnoController::class)->names('turno');
+    });
 });
 
 // Route::get('login', function () {
