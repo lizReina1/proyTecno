@@ -44,14 +44,14 @@ class CreateNewUser implements CreatesNewUsers
             'lastname' => $input['lastname'],
             'birth_date' => $input['birth_date'],
             'celular' => $input['celular'],
-            'tipo' => "C",
+            'tipo' => "P",
             'url_foto' => "vacio",
             'genero' => $input['genero'],
             'residencia_actual' => $input['residencia_actual'],
             'ocupacion' => $input['ocupacion'],
         ]);
 
-            $user->assignRole('cliente');
+            // $user->assignRole('cliente');
        
 
         if (isset($input['url_foto']) && $input['url_foto']) {

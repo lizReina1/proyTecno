@@ -59,10 +59,9 @@ class TurnoController extends Controller
     {
         $dias = Turno::all()->groupBy('dia');
         $personals = User::getPersonal();
-        $tipos = ['M', 'E'];
         $servicios = Servicio::all()->groupBy('atencion');
-       
-        return view('pages.administrador.turno.create', compact('dias', 'personals', 'tipos', 'servicios')); //falta implementar
+     
+        return view('pages.administrador.turno.create', compact('dias', 'personals', 'servicios')); //falta implementar
 
     }
 
@@ -71,7 +70,7 @@ class TurnoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $request;
     }
 
     /**
