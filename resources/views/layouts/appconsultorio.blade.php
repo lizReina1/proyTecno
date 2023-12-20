@@ -18,12 +18,14 @@
     <link rel="stylesheet" href="{{ asset('estilos_tecno/css/nav.css') }}">
     <link rel="stylesheet" href="{{ asset('estilos_tecno/css/animacion.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-    <script src="{{ asset('estilos_tecno/js/nav.js') }}"></script>
-    <script src="{{ asset('estilos_tecno/js/carousel.js') }}"></script>
+    <script src="{{ asset('../estilos_tecno/js/nav.js') }}"></script>
+    <script src="{{ asset('../estilos_tecno/js/carousel.js') }}"></script>
+    {{-- bootstrap 5 --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 
-<body class="h-full">
+<body class="h-full"  data-bs-theme="light">
     <!--
   This example requires updating your template:
 
@@ -98,9 +100,13 @@
 
                                     <!-- Menú si no está autenticado -->
                                     @guest
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Register</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Login</a>
-                                    <a href="{{ route('configuracion') }}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Configuración</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
+                                            tabindex="-1" id="user-menu-item-0">Register</a>
+                                        <a href="{{route('login')}}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
+                                            tabindex="-1" id="user-menu-item-2">Login</a>
+                                        <a href="{{ route('configuracion') }}"
+                                            class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
+                                            id="user-menu-item-1">Configuración</a>
                                     @endguest
                                 </div>
                             </div>

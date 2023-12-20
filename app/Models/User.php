@@ -29,7 +29,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-         'id',
          'ci',
          'name',
          'lastname',
@@ -80,9 +79,25 @@ class User extends Authenticatable
     {
         return self::where('tipo', 'M')->get();
     }
+    public static function medicosServices($service_id)
+    {
+        return self::select('users.*')
+                ->where('tipo', 'M')
+                ->join('atencions', 'atencions.user_id', 'users.id')
+                ->where('servicio_id', $service_id)
+                ->where('estado', true)
+                ->distinct()
+                ->get();
+    }
     public static function personal()
     {
         return self::whereIn('tipo', ['M', 'E'])->get();
     }
-    
+    public static function getPersonal()
+    {
+        return self::where(function ($query) {
+            $query->where('tipo', 'E')
+                  ->orWhere('tipo', 'M');
+        })->get();
+    }
 }
