@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -45,5 +46,19 @@ class UserSeeder extends Seeder
                 'sueldo'=>5000,
             ]
         ];
+
+        User::create([
+            'ci' => '3333333',
+            'name' => 'liz',
+            'lastname' => 'Reina',
+            'birth_date' => '2023-12-16',
+            'celular' => 78372872,
+            'tipo' => 'E',
+            'genero' => 'M',
+            'residencia_actual' => 'Santa Cruz',
+            'email' => 'liz@gmail.com',
+            'password' => bcrypt('12345678'),
+            'url_foto' => 'url.png',
+        ]);
     }
 }

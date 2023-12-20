@@ -18,38 +18,38 @@
                 <a class="font-medium text-sm text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center py-1 px-3" href="{{ route('profile.show') }}">Settings</a>
             </li>
             <li>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
 
-                    <a class="font-medium text-sm text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center py-1 px-3"
-                        href="{{ route('logout') }}"
-                    >
-                        {{ __('Sign Out') }}
-                    </a>
-                </form>                                
+
+                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white color-texto">
+                    Salir
+                </a>
+
+                <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">
+                    @csrf
+                </form>
             </li>
-        </ul>                
+        </ul>
     </div>
 </div>
 
 <script>
-document.getElementById('dropdownButton').addEventListener('click', function (event) {
-    event.preventDefault();
-    var dropdownContent = document.getElementById('dropdownContent');
-    if (dropdownContent.style.display === "none") {
-        dropdownContent.style.display = "block";
-    } else {
-        dropdownContent.style.display = "none";
-    }
-});
+    document.getElementById('dropdownButton').addEventListener('click', function(event) {
+        event.preventDefault();
+        var dropdownContent = document.getElementById('dropdownContent');
+        if (dropdownContent.style.display === "none") {
+            dropdownContent.style.display = "block";
+        } else {
+            dropdownContent.style.display = "none";
+        }
+    });
 
-document.addEventListener('click', function(event) {
-    var dropdownButton = document.getElementById('dropdownButton');
-    var dropdownContent = document.getElementById('dropdownContent');
-    var isClickInside = dropdownButton.contains(event.target);
+    document.addEventListener('click', function(event) {
+        var dropdownButton = document.getElementById('dropdownButton');
+        var dropdownContent = document.getElementById('dropdownContent');
+        var isClickInside = dropdownButton.contains(event.target);
 
-    if (!isClickInside && dropdownContent.style.display === "block") {
-        dropdownContent.style.display = "none";
-    }
-});
+        if (!isClickInside && dropdownContent.style.display === "block") {
+            dropdownContent.style.display = "none";
+        }
+    });
 </script>

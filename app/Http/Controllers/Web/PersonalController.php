@@ -8,6 +8,7 @@ use App\Http\Requests\Personal\UpdatePersonalRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 
 class PersonalController extends Controller
 {
@@ -62,7 +63,8 @@ class PersonalController extends Controller
             $user->password = bcrypt("12345678");
             $user->save();
 
-            return redirect()->route('personal.index')->with('mensaje', "Personal creado exitosamente");
+            session()->flash('success');
+            return redirect()->route('personal.index');
         } else {
 
             return redirect()->route('personal.index')->with('error', "Error al crear el personal, intente denuevo");
@@ -83,6 +85,7 @@ class PersonalController extends Controller
     public function edit(string $id)
     {
         $personal = User::find($id);
+
         return view('pages.administrador.personal.edit', compact('personal'));
     }
 

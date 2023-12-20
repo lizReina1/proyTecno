@@ -6,6 +6,7 @@ use App\Http\Controllers\Web\TurnoController;
 use App\Models\Atencion;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataFeedController;
+use App\Http\Controllers\EnfermeraController;
 use App\Http\Controllers\EstiloController;
 use App\Http\Controllers\OrdenController;
 use App\Http\Controllers\Web\ClienteController;
@@ -74,6 +75,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::fallback(function () {
         return view('pages/utility/404');
     });
+
     //ADMINISTRADOR
     // Gestionar Personal
     Route::prefix('admin')->group(function () {
@@ -83,14 +85,26 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         //Gestionar Turno
         Route::resource('/turno', TurnoController::class)->names('turno');
     });
+    Route::prefix('enfermeria')->group(function () {
+        Route::resource('/citas', EnfermeraController::class)->names('enfermeria.citas');
+        Route::resource('/citascreate', EnfermeraController::class)->names('enfermeria.citas.create');
+
+        // Ruta para mostrar el formulario de edición
+        Route::get('/citas/{cita}/edit', [EnfermeraController::class, 'edit'])->name('enfermeria.citas.edit');
+
+        // Ruta para actualizar la cita
+        Route::put('/citas/{cita}', [EnfermeraController::class, 'update'])->name('enfermeria.citas.update');
+        // Ruta para eliminar la cita
+        Route::delete('/citas/{cita}', [EnfermeraController::class, 'destroy'])->name('enfermeria.citas.destroy');
+    });
 });
 
-// Route::get('login', function () {
-//     return "ir a login";
-// })->name('login');
-// Route::get('register', function () {
-//     return "ir a register";
-// })->name('register');
+Route::get('login', function () {
+    return view('auth.login');
+})->name('login');
+Route::get('register', function () {
+    return view('auth.register');
+})->name('register');
 
 
 Route::post('cambiar-estilo', [EstiloController::class, 'cambiarEstilo'])->name('cambiar.estilo');
@@ -100,7 +114,6 @@ Route::get('/payments/generate_payment', [PaymentController::class, 'generatePay
 
 //************************* atenciones ****************************/
 Route::post('/attentions/get_attentions_turn', [AtencionController::class, 'getAttentionsDoctor']);
-
 //*********** orden *******************************/
 Route::get('/orden', [OrdenController::class, 'index'])->name('orden_index');
 

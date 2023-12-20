@@ -7,8 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+
+// use Spatie\Permission\Traits\HasRoles;
+
 
 class User extends Authenticatable
 {
@@ -17,6 +21,7 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+   // use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -24,21 +29,20 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'ci',
-        'name',
-        'lastname',
-        'birth_date',
-        'celular',
-        'tipo',
-        'genero',
-        'residencia_actual',
-        'email',
-        'password',
-        'url_foto',
-        'formacion',
-        'sueldo',
-        'hijo',
-        'ocupacion'
+         'ci',
+         'name',
+         'lastname',
+         'birth_date',
+         'celular',
+         'tipo',
+         'genero',
+         'residencia_actual',
+         'email',
+         'password',
+         'url_foto',
+         'formacion',
+         'sueldo',
+         'ocupacion'
     ];
 
     /**
