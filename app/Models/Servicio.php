@@ -25,4 +25,11 @@ class Servicio extends Model
                     ->distinct('servicios.id')
                     ->get();
     }
+    public function atencions(){
+        return $this->hasMany(Atencion::class);
+    }
+
+    public function ordens(){
+        return $this->hasMany(Orden::class);
+    }
 }

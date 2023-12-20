@@ -3,6 +3,7 @@
 use App\Http\Controllers\AtencionController;
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Web\TurnoController;
 use App\Models\Atencion;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataFeedController;
@@ -77,8 +78,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     // Gestionar Personal
     Route::resource('/personal', PersonalController::class)->names('personal');
-     // Gestionar Servicio
-     Route::resource('/servicio', ServicioController::class)->names('servicio');
+    // Gestionar Servicio
+    Route::resource('/servicio', ServicioController::class)->names('servicio');
+    //Gestionar Turno
+    Route::resource('/turno', TurnoController::class)->names('turno');
 });
 
 // Route::get('login', function () {
@@ -89,7 +92,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 // })->name('register');
 
 
-Route::post('cambiar-estilo', [EstiloController::class,'cambiarEstilo'])->name('cambiar.estilo');
+Route::post('cambiar-estilo', [EstiloController::class, 'cambiarEstilo'])->name('cambiar.estilo');
 // ************** payment *********************
 Route::get('/payments', [PaymentController::class, 'index'])->name('payment_index');
 Route::get('/payments/generate_payment', [PaymentController::class, 'generatePayment']);
@@ -104,9 +107,15 @@ Route::get('/orden', [OrdenController::class, 'index'])->name('orden_index');
 Route::get('/report/order/pdf', [OrdenController::class, 'generatePdfOrder']);
 
 //************************* cita  *********************/
-Route::get('/cita', [CitaController::class, 'index'])->name('cita_index');
-Route::get('/cita/create', [CitaController::class, 'create'])->name('cita_create');
-Route::post('/cita/store', [CitaController::class, 'store'])->name('cita_store');
+Route::get('/cita', [CitaController::class, 'medico_cita_index'])->name('medico_cita_index');
+Route::get('/cita/create', [CitaController::class, 'medico_cita_create'])->name('medico_cita_create');
+Route::post('/cita/store', [CitaController::class, 'medico_cita_store'])->name('medico_cita_store');
+Route::get('/cita/medico/edit/store', [CitaController::class, 'medico_cita_edit_store'])->name('medico_cita_edit_store');
+Route::post('/cita/medico/edit', [CitaController::class, 'medico_cita_edit'])->name('medico_cita_edit');
+Route::post('/cita/medico/delete', [CitaController::class, 'medico_cita_delete'])->name('medico_cita_delete');
+
+
+Route::post('/servicio/medico_index', [ServicioController::class, 'medico_index'])->name('medico_index');
 
 
 

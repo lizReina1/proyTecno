@@ -24,21 +24,21 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-         'ci',
-         'name',
-         'lastname',
-         'birth_date',
-         'celular',
-         'tipo',
-         'genero',
-         'residencia_actual',
-         'email',
-         'password',
-         'url_foto',
-         'formacion',
-         'sueldo',
-         'hijo',
-         'ocupacion'
+        'ci',
+        'name',
+        'lastname',
+        'birth_date',
+        'celular',
+        'tipo',
+        'genero',
+        'residencia_actual',
+        'email',
+        'password',
+        'url_foto',
+        'formacion',
+        'sueldo',
+        'hijo',
+        'ocupacion'
     ];
 
     /**
@@ -93,8 +93,8 @@ class User extends Authenticatable
     {
         return self::where(function ($query) {
             $query->where('tipo', 'E')
-                  ->orWhere('tipo', 'M');
-        })->get();
+                ->orWhere('tipo', 'M');
+        })->orderBy('updated_at', 'desc')->get();
     }
     
     public static function patients()

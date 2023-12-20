@@ -40,7 +40,7 @@
 
                                 <span>Import</span>
                             </button> --}}
-                            <a href="{{ route('cita_create') }}"
+                            <a href="{{ route('medico_cita_create') }}"
                                 class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
@@ -175,33 +175,29 @@
                                                         {{ $cita->costo_cita }} Bs
                                                     </td>
                                                     <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                        {{ $cita->estado_cita == true ? 'Realizado' : 'Por realizar' }}
+                                                        {{ $cita->estado_cita == true ? 'Realizado' : 'Pendiente' }}
                                                     </td>
                                                     <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                        <div x-data="{ isOpen: false }">
-                                                        <button
-                                                            class="px-1 py-1 text-gray-500 transition-colors duration-200 rounded-lg dark:text-gray-300 hover:bg-gray-100">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                viewBox="0 0 24 24" stroke-width="1.5"
-                                                                stroke="currentColor" class="w-6 h-6">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
-                                                            </svg>
-                                                        </button>
-                                                        <div x-show="isOpen" @click.away="isOpen = false"
-                                                            class="absolute right-0 mt-2 w-48 bg-white rounded-md overflow-hidden shadow-md">
-                                                            <!-- Aquí puedes agregar las opciones que deseas mostrar -->
-                                                            <button
-                                                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">Opción
-                                                                1</button>
-                                                            <button
-                                                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">Opción
-                                                                2</button>
-                                                            <button
-                                                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">Opción
-                                                                3</button>
-                                                        </div>
-                                                    </div>
+                                                        <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                                            <div class="dropdown">
+                                                                <button id="myButton" class="dropbtn">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                        viewBox="0 0 24 24" stroke-width="1.5"
+                                                                        stroke="currentColor" class="w-6 h-6">
+                                                                        <path stroke-linecap="round"
+                                                                            stroke-linejoin="round"
+                                                                            d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+                                                                    </svg>
+                                                                </button>
+                                                                <div id="myDropdown" class="dropdown-content">
+                                                                    <a href="{{ route('medico_cita_edit_store', ['cita_id' => $cita->id]) }}"
+                                                                        class="hover:bg-gray-200">Editar</a>
+                                                                    <a href="{{ route('medico_cita_delete', ['cita_id' => $cita->id]) }}" data-id={{ $cita->id }}
+                                                                        data-name="{{ $cita->name }} {{ $cita->lastname }}"
+                                                                        class="deleteBtn hover:bg-gray-200">Eliminar</a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -278,7 +274,67 @@
     {{-- JS --}}
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        // Obtén todos los menús desplegables
+        var dropdowns = document.getElementsByClassName("dropbtn");
+        // Agrega un evento de clic a cada botón
+        for (let i = 0; i < dropdowns.length; i++) {
+            dropdowns[i].addEventListener("click", function(event) {
+                event.stopPropagation();
 
+                // Encuentra el contenido del menú desplegable correspondiente
+                var dropdownContent = this.nextElementSibling;
+
+                // Cierra todos los menús desplegables abiertos
+                for (let j = 0; j < dropdowns.length; j++) {
+                    var openDropdown = dropdowns[j].nextElementSibling;
+                    if (openDropdown !== dropdownContent && openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+
+                // Muestra u oculta el contenido del menú desplegable
+                dropdownContent.classList.toggle("show");
+            });
+        }
+
+        // Cierra todos los menús desplegables cuando se hace clic fuera de ellos
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (let i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+        $('#btn-todo').click(function() {
+            $('.btn').removeClass('btn-activo');
+            $(this).addClass('btn-activo');
+            // Muestra todas las filas que no son de encabezado
+            $('#tabla-personal tr:not(.encabezado)').show();
+        });
+
+        $('#btn-medicos').click(function() {
+            $('.btn').removeClass('btn-activo');
+            $(this).addClass('btn-activo');
+            // Oculta todas las filas que no son de encabezado
+            $('#tabla-personal tr:not(.encabezado)').hide();
+            // Muestra solo las filas que corresponden a médicos
+            $('#tabla-personal tr[data-tipo="M"]:not(.encabezado)').show();
+        });
+
+        $('#btn-enfermeras').click(function() {
+            $('.btn').removeClass('btn-activo');
+            $(this).addClass('btn-activo');
+            // Oculta todas las filas que no son de encabezado
+            $('#tabla-personal tr:not(.encabezado)').hide();
+            // Muestra solo las filas que corresponden a enfermeras
+            $('#tabla-personal tr[data-tipo="E"]:not(.encabezado)').show();
+        });
+    </script>
 
     @if (session('success'))
         <script>
@@ -290,7 +346,43 @@
             toastr.success('Cita creada exitosamente');
         </script>
     @endif
+    <style>
+        /* Estilos para el botón y el contenido del menú desplegable */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
 
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            /* Alinea el borde derecho del contenido con el borde derecho del botón */
+            min-width: 160px;
+            z-index: 1;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            background-color: #f9f9f9;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        /* Muestra el menú desplegable cuando se hace clic en el botón */
+        .show {
+            display: block;
+        }
+
+        .btn-activo {
+            background-color: #f3f4f6;
+            /* color de fondo cuando está activo */
+            color: #374151;
+            /* color del texto cuando está activo */
+        }
+    </style>
     @if (session('error'))
         <script>
             toastr.options = {
@@ -298,7 +390,7 @@
                 "progressBar": true
             }
             console.log("ingresa a error")
-            toastr.error('Error al crear la cita');
+            toastr.error('cita eliminada');
         </script>
     @endif
 

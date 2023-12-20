@@ -3,12 +3,12 @@
         <div class="card" style="width: 100%;">
 
             <div class="card-body bg-white p-5">
-                <form action="{{ route('medico_cita_store') }}" method="POST" enctype="multipart/form-data" id="formCita">
+                <form action="{{ route('medico_cita_edit') }}" method="POST" enctype="multipart/form-data" id="formCita">
                     @csrf
                     <div class="space-y-12">
                         <div class="border-b border-gray-900/10 pb-4">
-                            <h2 class="text-base font-semibold leading-7 text-gray-900">Crear Cita</h2>
-                            <p class="mt-1 text-sm leading-6 text-gray-600">Registrar una nueva cita</p>
+                            <h2 class="text-base font-semibold leading-7 text-gray-900">Editar Cita</h2>
+                            <p class="mt-1 text-sm leading-6 text-gray-600">Editar una cita</p>
 
                             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                 <div class="sm:col-span-3">
@@ -16,7 +16,7 @@
                                         class="block text-sm font-medium leading-6 text-gray-900">Fecha de la cita</label>
                                     <div class="mt-2">
                                         <input type="datetime-local" name="date_cita" id="date_cita"
-                                            autocomplete="family-name"
+                                            autocomplete="family-name" value="{{$cita->fecha_formateada}}"
                                             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         @error('date_cita')
                                             <div class="error-message mt-1 text-sm leading-6 text-pink-600">
@@ -33,7 +33,8 @@
                                         <select name="patient" id="patient"
                                             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                             @foreach ($pacientes as $paciente)
-                                                <option value="{{ $paciente['id'] }}">{{ $paciente['name'] }} {{ $paciente['lastname'] }}</option>
+                                                <option value="{{ $paciente['id'] }}" {{ $paciente['id'] == $cita->paciente_id ? 'selected' : '' }} 
+                                                >{{ $paciente['name'] }} {{ $paciente['lastname'] }}</option>
                                             @endforeach
                                         </select>
                                         <span id="error_patient"
@@ -45,8 +46,36 @@
                                         class="block text-sm font-medium leading-6 text-gray-900">Costo</label>
                                     <div class="mt-2">
                                         <input type="number" name="costo" id="costo" autocomplete="costo"
-                                            class="peer block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                            class="peer block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" value="{{$cita->costo_cita}}">
                                         @error('costo')
+                                            <div class="error-message mt-1 text-sm leading-6 text-pink-600">
+                                                {{ $message }}</div>
+                                        @enderror
+                                        <span id="error_costo"
+                                            class="error-message mt-1 text-sm leading-6 text-pink-600"></span>
+
+                                    </div>
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <label for="estado_cita"
+                                        class="block text-sm font-medium leading-6 text-gray-900">Estado Cita</label>
+                                    <div class="mt-2">
+                                        <select name="estado_cita" id="estado_cita"
+                                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                                <option value="{{true}}" >Realizada</option>
+                                                <option value="{{false}}" >Pendiente</option>
+                                        </select>
+                                        <span id="error_patient"
+                                            class="error-message mt-1 text-sm leading-6 text-pink-600"></span>
+                                    </div>
+                                </div>
+                                <div class="sm:col-span-2" hidden>
+                                    <label for="cita_id"
+                                        class="block text-sm font-medium leading-6 text-gray-900">cita id</label>
+                                    <div class="mt-2">
+                                        <input type="number" name="cita_id" id="cita_id" autocomplete="cita_id"
+                                            class="peer block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" value="{{$cita->id}}">
+                                        @error('cita_id')
                                             <div class="error-message mt-1 text-sm leading-6 text-pink-600">
                                                 {{ $message }}</div>
                                         @enderror
