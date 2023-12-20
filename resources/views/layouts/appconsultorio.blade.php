@@ -109,19 +109,25 @@
                                     @auth
                                         <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
                                             tabindex="-1" id="user-menu-item-0">Perfil</a>
+                                        @if (Auth::user()->tipo != 'P')
+                                            <a href="{{route('dashboard')}}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
+                                                tabindex="-1" id="user-menu-item-0">Dashboard</a>
+                                        @endif
+
                                         <a href="{{ route('configuracion') }}"
                                             class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
                                             id="user-menu-item-1">Configuración</a>
                                         <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
                                             tabindex="-1" id="user-menu-item-2">Salir</a>
+
                                     @endauth
 
                                     <!-- Menú si no está autenticado -->
                                     @guest
                                         <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
                                             tabindex="-1" id="user-menu-item-0">Register</a>
-                                        <a href="{{route('login')}}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
-                                            tabindex="-1" id="user-menu-item-2">Login</a>
+                                        <a href="{{ route('login') }}" class="block px-4 py-2 text-sm text-gray-700"
+                                            role="menuitem" tabindex="-1" id="user-menu-item-2">Login</a>
                                         <a href="{{ route('configuracion') }}"
                                             class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
                                             id="user-menu-item-1">Configuración</a>

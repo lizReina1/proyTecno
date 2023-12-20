@@ -1,5 +1,4 @@
 <x-app-layout>
-    <div id="toastr-notifications"></div>
     <div class="container-fluid d-flex justify-content-center aling-items-center">
         <div class="card" style="width: 100%;">
 
@@ -56,18 +55,18 @@
                     <div class="mt-6 md:flex md:items-center md:justify-between">
                         <div
                             class="inline-flex overflow-hidden bg-white border divide-x rounded-lg dark:bg-gray-900 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700">
-                            <button
-                                class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm dark:bg-gray-800 dark:text-gray-300">
+                            <button id="btn-todo"
+                                class="px-5 py-2 btn btn-activo">
                                 Ver todo
                             </button>
 
-                            <button
-                                class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
+                            <button id="btn-medicos"
+                                class="px-5 py-2 btn text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
                                 Médicos
                             </button>
 
-                            <button
-                                class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
+                            <button id="btn-enfermeras"
+                                class="px-5 py-2 btn text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
                                 Enfermeras
                             </button>
                         </div>
@@ -92,9 +91,9 @@
                             <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                                 <div class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
                                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
-                                        id="tabla">
+                                        id="tabla-personal">
                                         <thead class="bg-gray-50 dark:bg-gray-800">
-                                            <tr>
+                                            <tr class="encabezado">
                                                 <th scope="col"
                                                     class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                                     <button class="flex items-center gap-x-3 focus:outline-none">
@@ -143,27 +142,27 @@
                                         </thead>
                                         <tbody
                                             class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                                            @foreach ($users as $user)
-                                                <tr>
+                                            @foreach ($personals as $personal)
+                                                <tr data-tipo="{{ $personal->tipo }}">
                                                     <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                                         <div class="flex min-w-0 gap-x-4">
-                                                            <img class="h-16 w-16 flex-none rounded-full bg-gray-50"
-                                                                src="{{ $user->url_foto }}" alt="">
+                                                            <img class="h-16 w-16 flex-none rounded-full bg-gray-900 object-cover"
+                                                                src="{{ $personal->url_foto }}" alt="">
                                                             <div class="min-w-0 flex-auto">
                                                                 <p
                                                                     class="text-sm font-semibold leading-6 text-gray-900">
-                                                                    {{ $user->name }} {{ $user->lastname }}</p>
+                                                                    {{ $personal->name }} {{ $personal->lastname }}</p>
                                                                 <p
                                                                     class="mt-1 truncate text-xs leading-5 text-gray-500">
-                                                                    {{ $user->email }}</p>
+                                                                    {{ $personal->email }}</p>
                                                                 <p
                                                                     class="mt-1 truncate text-xs leading-5 text-gray-400">
-                                                                    ci: {{ $user->ci }}</p>
+                                                                    ci: {{ $personal->ci }}</p>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
-                                                        @if ($user->tipo == 'M')
+                                                        @if ($personal->tipo == 'M')
                                                             <div
                                                                 class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
                                                                 Médico
@@ -179,25 +178,33 @@
                                                     <td class="px-4 py-4 text-sm whitespace-nowrap">
                                                         <div>
                                                             <h4 class="text-gray-700 dark:text-gray-200">
-                                                                {{ $user->birth_date }}</h4>
+                                                                {{ $personal->birth_date }}</h4>
                                                             {{-- <p class="text-gray-500 dark:text-gray-400">Brings all your
                                                                 news into one place</p> --}}
                                                         </div>
                                                     </td>
                                                     <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                        {{ $user->sueldo }}
+                                                        {{ $personal->sueldo }}
                                                     </td>
 
                                                     <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                        <button
-                                                            class="px-1 py-1 text-gray-500 transition-colors duration-200 rounded-lg dark:text-gray-300 hover:bg-gray-100">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                viewBox="0 0 24 24" stroke-width="1.5"
-                                                                stroke="currentColor" class="w-6 h-6">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
-                                                            </svg>
-                                                        </button>
+                                                        <div class="dropdown">
+                                                            <button id="myButton" class="dropbtn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor" class="w-6 h-6">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+                                                                </svg>
+                                                            </button>
+                                                            <div id="myDropdown" class="dropdown-content">
+                                                                <a href="{{ route('personal.edit', $personal->id) }}"
+                                                                    class="hover:bg-gray-200">Editar</a>
+                                                                <a href="#"
+                                                                    class="hover:bg-gray-200">Eliminar</a>
+                                                            </div>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -271,19 +278,57 @@
     </div> --}}
     {{-- CSS --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <style>
+        /* Estilos para el botón y el contenido del menú desplegable */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            /* Alinea el borde derecho del contenido con el borde derecho del botón */
+            min-width: 160px;
+            z-index: 1;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            background-color: #f9f9f9;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        /* Muestra el menú desplegable cuando se hace clic en el botón */
+        .show {
+            display: block;
+        }
+
+        .btn-activo {
+            background-color: #f3f4f6;
+            /* color de fondo cuando está activo */
+            color: #374151;
+            /* color del texto cuando está activo */
+        }
+    </style>
+
     {{-- JS --}}
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 
-    @if (session('success'))
+    @if (session('mensaje'))
         <script>
             toastr.options = {
                 "closeButton": true,
                 "progressBar": true
             }
             console.log("ingresa a success");
-            toastr.success('Usuario creado exitosamente');
+            toastr.success("{{ session('mensaje') }}");
         </script>
     @endif
 
@@ -294,47 +339,72 @@
                 "progressBar": true
             }
             console.log("ingresa a error")
-            toastr.error('Error al cargar la imagen');
+            toastr.error("{{ session('error') }}");
         </script>
     @endif
 
+    {{-- JS --}}
+    <script>
+        // Obtén todos los menús desplegables
+        var dropdowns = document.getElementsByClassName("dropbtn");
 
-    {{-- <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Get the input element and table
-        var input = document.getElementById('searchInput');
-        var table = document.getElementById('tabla');
+        // Agrega un evento de clic a cada botón
+        for (let i = 0; i < dropdowns.length; i++) {
+            dropdowns[i].addEventListener("click", function(event) {
+                event.stopPropagation();
 
-        // Add an input event listener to the input field
-        input.addEventListener('input', function () {
-            // Get the value entered in the input field
-            var searchText = input.value.toLowerCase();
+                // Encuentra el contenido del menú desplegable correspondiente
+                var dropdownContent = this.nextElementSibling;
 
-            // Get all rows in the table body
-            var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
-
-            // Loop through each row and hide/show based on the search text
-            for (var i = 0; i < rows.length; i++) {
-                var row = rows[i];
-                var cells = row.getElementsByTagName('td');
-                var found = false;
-
-                // Loop through each cell in the row
-                for (var j = 0; j < cells.length; j++) {
-                    var cellText = cells[j].innerText.toLowerCase();
-
-                    // Check if the cell text contains the search text
-                    if (cellText.includes(searchText)) {
-                        found = true;
-                        break;
+                // Cierra todos los menús desplegables abiertos
+                for (let j = 0; j < dropdowns.length; j++) {
+                    var openDropdown = dropdowns[j].nextElementSibling;
+                    if (openDropdown !== dropdownContent && openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
                     }
                 }
 
-                // Hide or show the row based on whether it matches the search text
-                row.style.display = found ? '' : 'none';
+                // Muestra u oculta el contenido del menú desplegable
+                dropdownContent.classList.toggle("show");
+            });
+        }
+
+        // Cierra todos los menús desplegables cuando se hace clic fuera de ellos
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (let i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
             }
+        }
+        $('#btn-todo').click(function() {
+            $('.btn').removeClass('btn-activo');
+            $(this).addClass('btn-activo');
+            // Muestra todas las filas que no son de encabezado
+            $('#tabla-personal tr:not(.encabezado)').show();
         });
-    });
-</script> --}}
+
+        $('#btn-medicos').click(function() {
+            $('.btn').removeClass('btn-activo');
+            $(this).addClass('btn-activo');
+            // Oculta todas las filas que no son de encabezado
+            $('#tabla-personal tr:not(.encabezado)').hide();
+            // Muestra solo las filas que corresponden a médicos
+            $('#tabla-personal tr[data-tipo="M"]:not(.encabezado)').show();
+        });
+
+        $('#btn-enfermeras').click(function() {
+            $('.btn').removeClass('btn-activo');
+            $(this).addClass('btn-activo');
+            // Oculta todas las filas que no son de encabezado
+            $('#tabla-personal tr:not(.encabezado)').hide();
+            // Muestra solo las filas que corresponden a enfermeras
+            $('#tabla-personal tr[data-tipo="E"]:not(.encabezado)').show();
+        });
+    </script>
 
 </x-app-layout>
