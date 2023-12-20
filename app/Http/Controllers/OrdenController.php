@@ -17,13 +17,10 @@ class OrdenController extends Controller
 {
     
     public function index(){
-        $doctor_id = 2; //17;
+        // $doctor_id = 2; //17;
         $doctor = User::find(Auth::user()->id);
-        
-        // $ordens = Orden::getOrdensForDoctorId($doctor->id);
-        $ordens = Orden::getOrdensForDoctorId($doctor_id);
-        // dd($ordens, $doctor);
-        // $users = User::getPersonal();
+        $ordens = Orden::getOrdensForDoctorId($doctor->id);
+        // $ordens = Orden::getOrdensForDoctorId($doctor_id);
         return view('orden.orden', compact('ordens'));
     }
 
