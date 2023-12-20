@@ -99,5 +99,8 @@ Route::get('/payments/generate_payment', [PaymentController::class, 'generatePay
 //************************* atenciones ****************************/
 Route::post('/attentions/get_attentions_turn', [AtencionController::class, 'getAttentionsDoctor']);
 
+//*********** orden *******************************/
+Route::get('/orden', [OrdenController::class, 'index'])->name('orden_index');
+
 //********************** reporte *********************************/
 Route::get('/report/order/pdf', [OrdenController::class, 'generatePdfOrder']);
