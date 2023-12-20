@@ -17,6 +17,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "sweetalert2": "^11.10.1",
         "alpinejs": "^3.13.3",
         "chart.js": "^4.3.0",
         "chartjs-adapter-moment": "^1.0.1",

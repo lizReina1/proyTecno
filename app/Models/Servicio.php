@@ -15,4 +15,5 @@ class Servicio extends Model
         'atencion',
         'url_imagen'
     ];
+
 }

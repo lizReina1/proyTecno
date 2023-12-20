@@ -1,8 +1,12 @@
 <?php
 
+use App\Http\Controllers\AtencionController;
+use App\Http\Controllers\PaymentController;
+use App\Models\Atencion;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataFeedController;
 use App\Http\Controllers\EstiloController;
+use App\Http\Controllers\OrdenController;
 use App\Http\Controllers\Web\ClienteController;
 use App\Http\Controllers\Web\PersonalController;
 use App\Http\Controllers\Web\ServicioController;
@@ -75,3 +79,24 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
      // Gestionar Servicio
      Route::resource('/servicio', ServicioController::class)->names('servicio');
 });
+
+Route::get('login', function () {
+    return "ir a login";
+})->name('login');
+Route::get('register', function () {
+    return "ir a register";
+})->name('register');
+
+
+Route::post('cambiar-estilo', [EstiloController::class,'cambiarEstilo'])->name('cambiar.estilo');
+// ************** payment *********************
+Route::get('/payments', [PaymentController::class, 'index'])->name('payment_index');
+Route::get('/payments/generate_payment', [PaymentController::class, 'generatePayment']);
+
+//************************* atenciones ****************************/
+Route::post('/attentions/get_attentions_turn', [AtencionController::class, 'getAttentionsDoctor']);
+
+//********************** reporte *********************************/
+Route::get('/report/order/pdf', [OrdenController::class, 'generatePdfOrder']);
+
+
