@@ -59,8 +59,18 @@ class PersonalController extends Controller
             $user->sueldo = $request->sueldo;
             $user->formacion = $request->formacion;
             $user->url_foto = $urlImagen; // Aquí asignamos la URL de la imagen en S3 al usuario.
-            $user->password = Hash::make(bcrypt("12345678"));
+            $user->password = bcrypt("12345678");
             $user->save();
+
+          /*   if($user->tipo == "E"){
+                $user->assignRole('enfermera');
+            }else{
+                if($user->tipo == "M"){
+                $user->assignRole('doctor');
+                }
+            } */
+            
+
             session()->flash('success');
             return redirect()->route('personal.index');
         } else {

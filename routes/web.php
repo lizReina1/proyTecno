@@ -5,6 +5,7 @@ use App\Http\Controllers\PaymentController;
 use App\Models\Atencion;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataFeedController;
+use App\Http\Controllers\EnfermeraController;
 use App\Http\Controllers\EstiloController;
 use App\Http\Controllers\Web\ClienteController;
 use App\Http\Controllers\Web\PersonalController;
@@ -75,8 +76,19 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     // Gestionar Personal
     Route::resource('/personal', PersonalController::class)->names('personal');
-     // Gestionar Servicio
-     Route::resource('/servicio', ServicioController::class)->names('servicio');
+    // Gestionar Servicio
+    Route::resource('/servicio', ServicioController::class)->names('servicio');
+
+    Route::resource('/citas', EnfermeraController::class)->names('citas');
+    Route::resource('/citascreate', EnfermeraController::class)->names('citas.create');
+
+    // Ruta para mostrar el formulario de edición
+    Route::get('/citas/{cita}/edit', [EnfermeraController::class, 'edit'])->name('citas.edit');
+
+    // Ruta para actualizar la cita
+    Route::put('/citas/{cita}', [EnfermeraController::class, 'update'])->name('citas.update');
+    // Ruta para eliminar la cita
+    Route::delete('/citas/{cita}', [EnfermeraController::class, 'destroy'])->name('citas.destroy');
 });
 
 Route::get('login', function () {
@@ -87,11 +99,10 @@ Route::get('register', function () {
 })->name('register');
 
 
-Route::post('cambiar-estilo', [EstiloController::class,'cambiarEstilo'])->name('cambiar.estilo');
+Route::post('cambiar-estilo', [EstiloController::class, 'cambiarEstilo'])->name('cambiar.estilo');
 // ************** payment *********************
 Route::get('/payments', [PaymentController::class, 'index'])->name('payment_index');
 Route::get('/payments/generate_payment', [PaymentController::class, 'generatePayment']);
 
 //************************* atenciones ****************************/
 Route::post('/attentions/get_attentions_turn', [AtencionController::class, 'getAttentionsDoctor']);
-
