@@ -39,6 +39,22 @@ class Orden extends Model
         $siguienteValor = $resultado[0]->siguiente_valor;
         return $siguienteValor + 1;
     }
-
+    // obtiene ordenes y paciente de un doctor
+    static function getOrdensForDoctorId($doctor_id){
+        $ordens = self::select('ordens.*', 'fichas.hora_fin_atencion', 'fichas.hora_inicio_atencion')//, 'users.name', 'users.lastname', 'users.email', 'users.ci', 'users.url_foto')
+                        ->selectRaw('(SELECT name FROM users WHERE id = ordens.paciente_id) AS name')
+                        ->selectRaw('(SELECT lastname FROM users WHERE id = ordens.paciente_id) AS lastname')
+                        ->selectRaw('(SELECT email FROM users WHERE id = ordens.paciente_id) AS email')
+                        ->selectRaw('(SELECT url_foto FROM users WHERE id = ordens.paciente_id) AS url_foto')
+                        ->selectRaw('(SELECT ci FROM users WHERE id = ordens.paciente_id) AS ci')
+                        ->join('fichas', 'fichas.id', 'ordens.ficha_id')
+                        ->join('atencions', 'atencions.id', 'fichas.atencion_id') 
+                        ->join('users', 'users.id', 'atencions.user_id') 
+                        ->where('users.tipo', 'M') 
+                        ->where('users.id', $doctor_id) 
+                        ->orderBy('ordens.fecha_atencion', 'asc')
+                        ->get();
+        return $ordens;
+    }
 
 }

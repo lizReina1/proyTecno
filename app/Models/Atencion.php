@@ -17,4 +17,7 @@ class Atencion extends Model
                     ->where('estado', true)
                     ->first();
     }
+    static function getAtentions(){
+        
+    }
 }
