@@ -10,7 +10,7 @@ use App\Models\Turno;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-
+use Barryvdh\DomPDF\Facade as PDF;
 class OrdenController extends Controller
 {
     
@@ -61,5 +61,23 @@ class OrdenController extends Controller
             // Devuelve una respuesta de error al cliente
             throw response()->json('Ha ocurrido un error crear el pago.' . $e->getMessage(), 500);
         }
+    }
+    public function generatePdfOrder(Request $request ){
+        $prueba = $request->all();
+        $keyarray = key($prueba);
+        $orden = json_decode($keyarray);
+
+        // dd($orden, $orden->id);
+        $data = [
+            'orden' => $orden, 
+        ];
+        $pdf = app('dompdf.wrapper');
+            $pdf
+                ->setPaper('legal', 'portrait') //landscape
+                ->loadView(
+                    'report.reportOrden',
+                    $data
+                );
+        return $pdf->stream('archivo.pdf');
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Atencion;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataFeedController;
 use App\Http\Controllers\EstiloController;
+use App\Http\Controllers\OrdenController;
 use App\Http\Controllers\Web\ClienteController;
 use App\Http\Controllers\Web\PersonalController;
 use App\Http\Controllers\Web\ServicioController;
@@ -94,4 +95,8 @@ Route::get('/payments/generate_payment', [PaymentController::class, 'generatePay
 
 //************************* atenciones ****************************/
 Route::post('/attentions/get_attentions_turn', [AtencionController::class, 'getAttentionsDoctor']);
+
+//********************** reporte *********************************/
+Route::get('/report/order/pdf', [OrdenController::class, 'generatePdfOrder']);
+
 
