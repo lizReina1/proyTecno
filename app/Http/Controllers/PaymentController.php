@@ -13,9 +13,9 @@ class PaymentController extends Controller
 {
     public function index(Request $request)
     {
-        $user_id = 3; // $request->user_id // id del paciente
-        // $user_id = User::find(Auth::user()->id);
-        $paciente = User::find($user_id);
+        // $user_id = 3; // $request->user_id // id del paciente
+        $user_id = User::find(Auth::user()->id);
+        $paciente = User::find($user_id->id);
         $medicos = User::medicosServices($request->servicio_id);
         $horarios = collect([
             ['schedule' => '08:00 am - 12:00 pm', 'id' => 1],
@@ -49,11 +49,11 @@ class PaymentController extends Controller
             $lnTelefono            = $request->cellphone;
             $razon_social          = $request->businessName;
             $lnCiNit               = $request->nit;
-            $lcNroPago             = "grupo01-". $nro_pago;// . $request->nroPago;
+            $lcNroPago             = "Grupo01-". $nro_pago;// . $request->nroPago;
             $costo_total = $request->totalCost;
             $lcCorreo              = $request->email;
-            $lcUrlCallBack         = "http://localhost:8000/";
-            $lcUrlReturn           = "http://localhost:8000/";
+            $lcUrlCallBack         = "https://mail.tecnoweb.org.bo/inf513/grupo01sc/proyTecno/public/api/urlcallback";
+            $lcUrlReturn           = "https://mail.tecnoweb.org.bo/inf513/grupo01sc/proyTecno/public/";
             $laPedidoDetalle       = [
                     "servicio_id"=> $servicio_id,
                     "paciente_id"=>  $paciente->id,
@@ -179,5 +179,35 @@ class PaymentController extends Controller
         // ];
         // Mail::to($correo)->send(new SendCorreo($data));
         // return 'correo enviado';
+    }
+
+    public function urlCallback(Request $request)
+    {
+        //Grupo01-12
+        $Venta = $request->input("PedidoID");
+        $Fecha = $request->input("Fecha");
+        $NuevaFecha = date("Y-m-d", strtotime($Fecha));
+        $Hora = $request->input("Hora");
+        $MetodoPago = $request->input("MetodoPago");
+        $Estado = $request->input("Estado");
+        $Ingreso = true;
+
+        // $cadena = "Grupo01-12";
+        $cadena = $Venta;
+        $partes = explode("-", $cadena);
+        
+        // Acceder al número después del guion
+        $orden_id = $partes[1];
+        $orden = Orden::find($orden_id );
+        $orden->pagado = true;
+        $orden->save();
+        
+        try {
+            $arreglo = ['error' => 0, 'status' => 1, 'message' => "Pago realizado correctamente.", 'values' => true];
+        } catch (\Throwable $th) {
+            $arreglo = ['error' => 1, 'status' => 1, 'messageSistema' => "[TRY/CATCH] " . $th->getMessage(), 'message' => "No se pudo realizar el pago, por favor intente de nuevo.", 'values' => false];
+        }
+
+        return response()->json($arreglo);
     }
 }
