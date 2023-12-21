@@ -84,21 +84,28 @@ class CitaController extends Controller
             return redirect()->route('medico_cita_index');
         }
     }
-    public function medico_cita_delete(Request $request){
-        try {
-            DB::beginTransaction();
-            dd($request->all());
-            // $doctor = User::find(Auth::user()->id);
-            // Formatear la fecha y hora según tu especificación
-            $cita = Cita::find($request->cita_id);
+    public function medico_cita_delete($id){
+        $cita = Cita::find($id);
+        if (isset($cita)) {
             $cita->delete();
-            DB::commit();
-            session()->flash('error');
-            return redirect()->route('medico_cita_index');
-        } catch (\Throwable $th) {
-            DB::rollback();            
-            // session()->flash('error');
-            return redirect()->route('medico_cita_index');
+            return redirect()->route('medico_cita_index')->with('mensaje', "Cita eliminada exitosamente");
+        } else {
+            return redirect()->route('medico_cita_index')->with('error', "Error al eliminar la cita");
         }
+        // try {
+        //     DB::beginTransaction();
+        //     dd($request->all());
+        //     // $doctor = User::find(Auth::user()->id);
+        //     // Formatear la fecha y hora según tu especificación
+        //     $cita = Cita::find($request->cita_id);
+        //     $cita->delete();
+        //     DB::commit();
+        //     session()->flash('error');
+        //     return redirect()->route('medico_cita_index');
+        // } catch (\Throwable $th) {
+        //     DB::rollback();            
+        //     // session()->flash('error');
+        //     return redirect()->route('medico_cita_index');
+        // }
     }
 }

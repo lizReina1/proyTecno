@@ -44,16 +44,16 @@ class ServicioController extends Controller
         //return $usersPorServicio;
         return view('pages.administrador.servicio.index', compact('servicios', 'usersPorServicio'));
     }
-    public function medico_index()
-    {
-        $doctor_id = 2; //17;
-        $doctor = User::find(Auth::user()->id);
-        // $servicios = Servicio::getServicesDoctor($doctor->id);
-        $servicios = Servicio::getServicesDoctor($doctor_id);
-        // dd($servicios);
-        return view('servicio.index', compact('servicios'));
+    // public function medico_index()
+    // {
+    //     $doctor_id = 2; //17;
+    //     $doctor = User::find(Auth::user()->id);
+    //     // $servicios = Servicio::getServicesDoctor($doctor->id);
+    //     $servicios = Servicio::getServicesDoctor($doctor_id);
+    //     // dd($servicios);
+    //     return view('servicio.index', compact('servicios'));
 
-    }
+    // }
     /**
      * Show the form for creating a new resource.
      */
@@ -163,5 +163,18 @@ class ServicioController extends Controller
         } else {
             return redirect()->route('servicio.index')->with('error', "Error al eliminar el servicio");
         }
+    }
+
+    public function medico_servicio_index(){
+        // $doctor_id = 2; //17;
+        $doctor = User::find(Auth::user()->id);
+        $servicios = Servicio::getServicesDoctor($doctor->id);
+        // $servicios = Servicio::getServicesDoctor($doctor_id);
+            // dd($servicios);
+        return view('servicio.index', compact('servicios'));
+    }
+    public function medico_servicio_create(){
+        $pacientes = User::patients();
+        return view('cita.create', compact('pacientes'));
     }
 }

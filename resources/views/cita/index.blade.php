@@ -175,7 +175,18 @@
                                                         {{ $cita->costo_cita }} Bs
                                                     </td>
                                                     <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                        {{ $cita->estado_cita == true ? 'Realizado' : 'Pendiente' }}
+                                                        @if ($cita->estado_cita == true)
+                                                            <div
+                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
+                                                                Realizado
+                                                            </div>
+                                                        @else
+                                                            <div
+                                                                style="color: red; background-color: rgb(234, 194, 194);"
+                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
+                                                                Pendiente
+                                                            </div>
+                                                        @endif
                                                     </td>
                                                     <td class="px-4 py-4 text-sm whitespace-nowrap">
                                                         <td class="px-4 py-4 text-sm whitespace-nowrap">
@@ -192,8 +203,8 @@
                                                                 <div id="myDropdown" class="dropdown-content">
                                                                     <a href="{{ route('medico_cita_edit_store', ['cita_id' => $cita->id]) }}"
                                                                         class="hover:bg-gray-200">Editar</a>
-                                                                    <a href="{{ route('medico_cita_delete', ['cita_id' => $cita->id]) }}" data-id={{ $cita->id }}
-                                                                        data-name="{{ $cita->name }} {{ $cita->lastname }}"
+                                                                    <a href="#" data-id={{ $cita->id }}
+                                                                        data-name="{{ $cita->id }}"
                                                                         class="deleteBtn hover:bg-gray-200">Eliminar</a>
                                                                 </div>
                                                             </div>
@@ -247,6 +258,39 @@
             </div>
         </div>
     </div>
+    
+    <!-- Contenido del modal -->
+    <div id="myModal" class="fixed z-50 inset-0 flex items-center justify-center" style="display: none;"
+        aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <!-- Fondo del modal -->
+        <div class="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+
+        <!-- Contenido del modal -->
+        <div
+            class="bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:w-full sm:max-w-lg">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+
+                </h3>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <form action="" id="form-destroy" method="POST">
+                    @csrf
+                    @method('delete')
+                    <button id="confirmDelete" type="submit"
+                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        Confirmar
+                    </button>
+                </form>
+
+
+                <button id="cancelDelete" type="button"
+                    class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
     <!-- Add a modal for confirmation -->
     <!-- Add a modal for confirmation -->
     {{-- <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
@@ -274,6 +318,19 @@
     {{-- JS --}}
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    
+    @if (session('mensaje'))
+        <script>
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true
+            }
+            console.log("ingresa a success");
+            toastr.success("{{ session('mensaje') }}");
+        </script>
+    @endif
+    
     <script>
         // Obtén todos los menús desplegables
         var dropdowns = document.getElementsByClassName("dropbtn");
@@ -336,6 +393,38 @@
         });
     </script>
 
+<script>
+    $(document).ready(function() {
+        // Cuando el usuario haga clic en "Eliminar", abre el modal
+        // $('#deleteBtn').click(function(e) {
+        //     e.preventDefault();
+        //     console.log("clic delete btn")
+        //     $('#myModal').show();
+        // });
+        $('.deleteBtn').click(function(e) {
+            e.preventDefault();
+            // Obtiene el ID del personal del atributo data-id
+            var cita_id = $(this).data('id');
+            console.log('ID del personal: ', cita_id);
+            // Establece el ID del personal como parte de la acción del formulario
+            var route = "{{ route('medico_cita_delete', 'id') }}";
+            route = route.replace('id', cita_id);
+            $('#form-destroy').attr('action', route);
+            $('#modal-title').text('¿Estás seguro de que quieres eliminar al personal esta cita?');
+            $('#myModal').show();
+
+        });
+        // Cuando el usuario haga clic en "Cancelar", cierra el modal
+        $('#cancelDelete').click(function() {
+            $('#myModal').hide();
+        });
+
+        // Cuando el usuario haga clic en "Confirmar", realiza la acción de eliminación
+        $('#confirmDelete').click(function() {
+            // Aquí puedes poner el código para eliminar el elemento
+        });
+    });
+</script>
     @if (session('success'))
         <script>
             toastr.options = {

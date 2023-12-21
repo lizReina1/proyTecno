@@ -112,10 +112,12 @@ Route::get('/cita/create', [CitaController::class, 'medico_cita_create'])->name(
 Route::post('/cita/store', [CitaController::class, 'medico_cita_store'])->name('medico_cita_store');
 Route::get('/cita/medico/edit/store', [CitaController::class, 'medico_cita_edit_store'])->name('medico_cita_edit_store');
 Route::post('/cita/medico/edit', [CitaController::class, 'medico_cita_edit'])->name('medico_cita_edit');
-Route::post('/cita/medico/delete', [CitaController::class, 'medico_cita_delete'])->name('medico_cita_delete');
+Route::delete('/cita/medico/delete/{id}', [CitaController::class, 'medico_cita_delete'])->name('medico_cita_delete');
 
 
 Route::post('/servicio/medico_index', [ServicioController::class, 'medico_index'])->name('medico_index');
 
-
+//********** servicios medico **********************/
+Route::get('/servicio/medico/index', [ServicioController::class, 'medico_servicio_index'])->name('medico_servicio_index');
+Route::get('/servicio/medico/create', [ServicioController::class, 'medico_servicio_create'])->name('medico_servicio_create');
 

@@ -1,5 +1,4 @@
 <x-app-layout>
-    <div id="toastr-notifications"></div>
     <div class="container-fluid d-flex justify-content-center aling-items-center">
         <div class="card" style="width: 100%;">
 
@@ -9,7 +8,7 @@
                     <div class="sm:flex sm:items-center sm:justify-between">
                         <div>
                             <div class="flex items-center gap-x-3">
-                                <h2 class="text-lg font-medium text-gray-800 dark:text-white">Servicios</h2>
+                                <h2 class="text-lg font-medium text-gray-800 dark:text-white">Personal</h2>
 
                                 {{-- <span
                                     class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">240
@@ -40,14 +39,14 @@
 
                                 <span>Import</span>
                             </button> --}}
-                            <a href="{{ route('cita_create') }}"
+                            <a href="{{ route('personal.create') }}"
                                 class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
-                                <span>Agregar Cita</span>
+                                <span>Agregar Personal</span>
                             </a>
 
                         </div>
@@ -56,20 +55,19 @@
                     <div class="mt-6 md:flex md:items-center md:justify-between">
                         <div
                             class="inline-flex overflow-hidden bg-white border divide-x rounded-lg dark:bg-gray-900 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700">
-                            <button
-                                class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm dark:bg-gray-800 dark:text-gray-300">
-                                Mis servicios
-                            </button>
-
-                            <button
-                                class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
+                            <button id="btn-todo" class="px-5 py-2 btn btn-activo">
                                 Ver todo
                             </button>
 
-                            {{--<button
-                                class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
+                            <button id="btn-medicos"
+                                class="px-5 py-2 btn text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
+                                Médicos
+                            </button>
+
+                            <button id="btn-enfermeras"
+                                class="px-5 py-2 btn text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
                                 Enfermeras
-                            </button> --}}
+                            </button>
                         </div>
 
                         <div class="relative flex items-center mt-4 md:mt-0">
@@ -88,17 +86,17 @@
                     </div>
 
                     <div class="flex flex-col mt-6">
-                        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="-mx-4 -my-2 sm:-mx-6 lg:-mx-8">
                             <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                                <div class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+                                <div class="border border-gray-200 dark:border-gray-700 md:rounded-lg">
                                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
-                                        id="tabla">
+                                        id="tabla-personal">
                                         <thead class="bg-gray-50 dark:bg-gray-800">
-                                            <tr>
+                                            <tr class="encabezado">
                                                 <th scope="col"
                                                     class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                                     <button class="flex items-center gap-x-3 focus:outline-none">
-                                                        <span>Nombre Servicio</span>
+                                                        <span>Servicios</span>
 
                                                         <svg class="h-3" viewBox="0 0 10 11" fill="none"
                                                             xmlns="http://www.w3.org/2000/svg">
@@ -119,21 +117,22 @@
                                                 </th>
 
                                                 <th scope="col"
-                                                    class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                    Costo
+                                                    class="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                                    Tipo
                                                 </th>
 
-                                                {{-- <th scope="col"
-                                                    class="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                    Costo
-                                                </th> --}}
+                                                <th scope="col"
+                                                    class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                                    Fecha de nacimiento
+                                                </th>
+
                                                 {{-- <th scope="col"
                                                     class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                                     CI</th> --}}
 
-                                                {{-- <th scope="col"
+                                                <th scope="col"
                                                     class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                    Estado de la cita</th> --}}
+                                                    Sueldo</th>
 
                                                 <th scope="col" class="relative py-3.5 px-4">
                                                     <span class="sr-only">Edit</span>
@@ -143,54 +142,69 @@
                                         <tbody
                                             class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
                                             @foreach ($servicios as $servicio)
-                                                <tr>
+                                                <tr data-tipo="{{ $servicio->tipo }}">
                                                     <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                                         <div class="flex min-w-0 gap-x-4">
-                                                            <img class="h-16 w-16 flex-none rounded-full bg-gray-50"
+                                                            <img class="h-16 w-16 flex-none rounded-full bg-gray-900 object-cover"
                                                                 src="{{ $servicio->url_foto }}" alt="">
                                                             <div class="min-w-0 flex-auto">
-                                                                <br>
                                                                 <p
-                                                                    class="mt-1  text-sm font-semibold leading-6 text-gray-900">
-                                                                    {{ $servicio->nombre }}</p>
-                                                                {{-- <p
+                                                                    class="text-sm font-semibold leading-6 text-gray-900">
+                                                                    {{ $servicio->name }} {{ $servicio->lastname }}</p>
+                                                                <p
                                                                     class="mt-1 truncate text-xs leading-5 text-gray-500">
                                                                     {{ $servicio->email }}</p>
                                                                 <p
                                                                     class="mt-1 truncate text-xs leading-5 text-gray-400">
                                                                     ci: {{ $servicio->ci }}</p>
-                                                            </div> --}}
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
+                                                        @if ($servicio->tipo == 'M')
+                                                            <div
+                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
+                                                                Médico
+                                                            </div>
+                                                        @else
+                                                            <div
+                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
+                                                                Enfermera/o
+                                                            </div>
+                                                        @endif
+
+                                                    </td>
+                                                    <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                                        <div>
+                                                            <h4 class="text-gray-700 dark:text-gray-200">
+                                                                {{ $servicio->birth_date }}</h4>
+                                                            {{-- <p class="text-gray-500 dark:text-gray-400">Brings all your
+                                                                news into one place</p> --}}
                                                         </div>
                                                     </td>
                                                     <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                        {{ $servicio->costo }} Bs
+                                                        {{ $servicio->sueldo }}
                                                     </td>
-                                                   
+
                                                     <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                        <div x-data="{ isOpen: false }">
-                                                        <button
-                                                            class="px-1 py-1 text-gray-500 transition-colors duration-200 rounded-lg dark:text-gray-300 hover:bg-gray-100">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                viewBox="0 0 24 24" stroke-width="1.5"
-                                                                stroke="currentColor" class="w-6 h-6">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
-                                                            </svg>
-                                                        </button>
-                                                        <div x-show="isOpen" @click.away="isOpen = false"
-                                                            class="absolute right-0 mt-2 w-48 bg-white rounded-md overflow-hidden shadow-md">
-                                                            <!-- Aquí puedes agregar las opciones que deseas mostrar -->
-                                                            <button
-                                                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">Opción
-                                                                1</button>
-                                                            <button
-                                                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">Opción
-                                                                2</button>
-                                                            <button
-                                                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">Opción
-                                                                3</button>
+                                                        <div class="dropdown">
+                                                            <button id="myButton" class="dropbtn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor" class="w-6 h-6">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+                                                                </svg>
+                                                            </button>
+                                                            <div id="myDropdown" class="dropdown-content">
+                                                                <a href="{{ route('servicio.edit', $servicio->id) }}"
+                                                                    class="hover:bg-gray-200">Editar</a>
+                                                                <a href="#" data-id={{ $servicio->id }}
+                                                                    data-name="{{ $servicio->name }} {{ $servicio->lastname }}"
+                                                                    class="deleteBtn hover:bg-gray-200">Eliminar</a>
+                                                            </div>
                                                         </div>
-                                                    </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -201,7 +215,7 @@
                         </div>
                     </div>
 
-                    <div class="mt-6 sm:flex sm:items-center sm:justify-between ">
+                    <div class="overflow-visible p-6 sm:flex sm:items-center sm:justify-between ">
                         <div class="text-sm text-gray-500 dark:text-gray-400">
                             Page <span class="font-medium text-gray-700 dark:text-gray-100">1 of 10</span>
                         </div>
@@ -240,7 +254,43 @@
             </div>
         </div>
     </div>
-    <!-- Add a modal for confirmation -->
+  
+    <!-- Contenido del modal -->
+    <div id="myModal" class="fixed z-50 inset-0 flex items-center justify-center" style="display: none;"
+        aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <!-- Fondo del modal -->
+        <div class="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+
+        <!-- Contenido del modal -->
+        <div
+            class="bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:w-full sm:max-w-lg">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+
+                </h3>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <form action="" id="form-destroy" method="POST">
+                    @csrf
+                    @method('delete')
+                    <button id="confirmDelete" type="submit"
+                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        Confirmar
+                    </button>
+                </form>
+
+
+                <button id="cancelDelete" type="button"
+                    class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenedor del modal -->
+
+
     <!-- Add a modal for confirmation -->
     {{-- <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
         aria-hidden="true">
@@ -264,19 +314,57 @@
     </div> --}}
     {{-- CSS --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <style>
+        /* Estilos para el botón y el contenido del menú desplegable */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            /* Alinea el borde derecho del contenido con el borde derecho del botón */
+            min-width: 160px;
+            z-index: 1;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            background-color: #f9f9f9;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        /* Muestra el menú desplegable cuando se hace clic en el botón */
+        .show {
+            display: block;
+        }
+
+        .btn-activo {
+            background-color: #f3f4f6;
+            /* color de fondo cuando está activo */
+            color: #374151;
+            /* color del texto cuando está activo */
+        }
+    </style>
+
     {{-- JS --}}
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 
-    @if (session('success'))
+    @if (session('mensaje'))
         <script>
             toastr.options = {
                 "closeButton": true,
                 "progressBar": true
             }
             console.log("ingresa a success");
-            toastr.success('Cita creada exitosamente');
+            toastr.success("{{ session('mensaje') }}");
         </script>
     @endif
 
@@ -287,47 +375,106 @@
                 "progressBar": true
             }
             console.log("ingresa a error")
-            toastr.error('Error al crear la cita');
+            toastr.error("{{ session('error') }}");
         </script>
     @endif
 
+    {{-- JS --}}
+    <script>
+        // Obtén todos los menús desplegables
+        var dropdowns = document.getElementsByClassName("dropbtn");
 
-    {{-- <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Get the input element and table
-        var input = document.getElementById('searchInput');
-        var table = document.getElementById('tabla');
+        // Agrega un evento de clic a cada botón
+        for (let i = 0; i < dropdowns.length; i++) {
+            dropdowns[i].addEventListener("click", function(event) {
+                event.stopPropagation();
 
-        // Add an input event listener to the input field
-        input.addEventListener('input', function () {
-            // Get the value entered in the input field
-            var searchText = input.value.toLowerCase();
+                // Encuentra el contenido del menú desplegable correspondiente
+                var dropdownContent = this.nextElementSibling;
 
-            // Get all rows in the table body
-            var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
-
-            // Loop through each row and hide/show based on the search text
-            for (var i = 0; i < rows.length; i++) {
-                var row = rows[i];
-                var cells = row.getElementsByTagName('td');
-                var found = false;
-
-                // Loop through each cell in the row
-                for (var j = 0; j < cells.length; j++) {
-                    var cellText = cells[j].innerText.toLowerCase();
-
-                    // Check if the cell text contains the search text
-                    if (cellText.includes(searchText)) {
-                        found = true;
-                        break;
+                // Cierra todos los menús desplegables abiertos
+                for (let j = 0; j < dropdowns.length; j++) {
+                    var openDropdown = dropdowns[j].nextElementSibling;
+                    if (openDropdown !== dropdownContent && openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
                     }
                 }
 
-                // Hide or show the row based on whether it matches the search text
-                row.style.display = found ? '' : 'none';
-            }
-        });
-    });
-</script> --}}
+                // Muestra u oculta el contenido del menú desplegable
+                dropdownContent.classList.toggle("show");
+            });
+        }
 
+        // Cierra todos los menús desplegables cuando se hace clic fuera de ellos
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (let i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+        $('#btn-todo').click(function() {
+            $('.btn').removeClass('btn-activo');
+            $(this).addClass('btn-activo');
+            // Muestra todas las filas que no son de encabezado
+            $('#tabla-personal tr:not(.encabezado)').show();
+        });
+
+        $('#btn-medicos').click(function() {
+            $('.btn').removeClass('btn-activo');
+            $(this).addClass('btn-activo');
+            // Oculta todas las filas que no son de encabezado
+            $('#tabla-personal tr:not(.encabezado)').hide();
+            // Muestra solo las filas que corresponden a médicos
+            $('#tabla-personal tr[data-tipo="M"]:not(.encabezado)').show();
+        });
+
+        $('#btn-enfermeras').click(function() {
+            $('.btn').removeClass('btn-activo');
+            $(this).addClass('btn-activo');
+            // Oculta todas las filas que no son de encabezado
+            $('#tabla-personal tr:not(.encabezado)').hide();
+            // Muestra solo las filas que corresponden a enfermeras
+            $('#tabla-personal tr[data-tipo="E"]:not(.encabezado)').show();
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Cuando el usuario haga clic en "Eliminar", abre el modal
+            // $('#deleteBtn').click(function(e) {
+            //     e.preventDefault();
+            //     console.log("clic delete btn")
+            //     $('#myModal').show();
+            // });
+            $('.deleteBtn').click(function(e) {
+                e.preventDefault();
+                // Obtiene el ID del personal del atributo data-id
+                var personalId = $(this).data('id');
+                var personalName = $(this).data('name');
+                console.log('Name del personal: ', personalName);
+                console.log('ID del personal: ', personalId);
+                // Establece el ID del personal como parte de la acción del formulario
+                var route = "{{ route('personal.destroy', 'id') }}";
+                route = route.replace('id', personalId);
+                $('#form-destroy').attr('action', route);
+                $('#modal-title').text('¿Estás seguro de que quieres eliminar al personal ' + personalName +
+                    '?');
+                $('#myModal').show();
+
+            });
+            // Cuando el usuario haga clic en "Cancelar", cierra el modal
+            $('#cancelDelete').click(function() {
+                $('#myModal').hide();
+            });
+
+            // Cuando el usuario haga clic en "Confirmar", realiza la acción de eliminación
+            $('#confirmDelete').click(function() {
+                // Aquí puedes poner el código para eliminar el elemento
+            });
+        });
+    </script>
 </x-app-layout>
