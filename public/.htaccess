@@ -17,5 +17,6 @@
     # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [L]
+    RewriteRule ^ https://mail.tecnoweb.org.bo/inf513/grupo01sc/proyTecno/public/index.php 
+   
 </IfModule>
