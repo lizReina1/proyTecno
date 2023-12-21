@@ -387,7 +387,7 @@
             // Llama a tu endpoint para generar el PDF
             // let path = window.location.origin;
             // let url = path + "/report/order/pdf?"+ JSON.stringify(orden);;
-            var url = new URL('/inf513/grupo01sc/proyTecno/public/index.php/report/order/pdf?', 'https://mail.tecnoweb.org.bo');
+            var url = new URL('/inf513/grupo01sc/proyTecno/public/index.php/report/order/pdf?'+ JSON.stringify(orden), 'https://mail.tecnoweb.org.bo');
          
             var win = window.open(url, "_blank");
             win.focus();
