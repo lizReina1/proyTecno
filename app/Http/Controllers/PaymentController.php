@@ -30,7 +30,7 @@ class PaymentController extends Controller
             'day' => 'Martes',
             'paciente' => $paciente,
         ];
-        return view('payments.payment')->with($data);
+        return view('Payments.payment')->with($data);
     }
 
     public function generatePayment(Request $request)
