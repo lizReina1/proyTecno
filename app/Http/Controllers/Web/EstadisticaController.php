@@ -35,7 +35,7 @@ class EstadisticaController extends Controller
             $nombre = 'ordens';
         } else {
             if ($request->table == 'consultas') {
-                $nombre = 'Consultas';
+                $nombre = 'consultas';
             } else {
                 if ($request->table == 'citas') {
                     $nombre = 'citas';
