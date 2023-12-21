@@ -11,12 +11,11 @@
 
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} !^/inf513/grupo01sc/proyTecno/public/
-    RewriteRule ^(.*)$ /inf513/grupo01sc/proyTecno/public/$1 [L]
-    
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
     # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ https://mail.tecnoweb.org.bo/inf513/grupo01sc/proyTecno/public/index.php 
-   
+    RewriteRule ^ index.php [L]
 </IfModule>

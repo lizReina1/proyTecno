@@ -472,9 +472,10 @@
                 'historial_id' : id
             };
             console.log('aaaaaaaaaaaaaaaaaaaa', id, orden);
-            let path = window.location.origin;
-            let url = path + "/consulta/medico/historia_clinica?"+ JSON.stringify(orden);
-
+            // let path = window.location.origin;
+            // let url = path + "/consulta/medico/historia_clinica?"+ JSON.stringify(orden);
+            var url = new URL('/inf513/grupo01sc/proyTecno/public/index.php//consulta/medico/historia_clinica?', 'https://mail.tecnoweb.org.bo');
+         
             var win = window.open(url, "_blank");
             win.focus();
 

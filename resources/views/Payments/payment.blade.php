@@ -344,7 +344,9 @@
             console.log('realiza el pago', data);
             // Con fetch API (sin jQuery)
             showLoadingSpinner();
-            var url = new URL('/payments/generate_payment', window.location.origin);
+            // var url = new URL('/payments/generate_payment', window.location.origin);
+            var url = new URL('/inf513/grupo01sc/proyTecno/public/index.php/attentions//payments/generate_payment', 'https://mail.tecnoweb.org.bo');
+         
             url.search = new URLSearchParams(data).toString();
             fetch(url)
                 .then(response => response.json())
@@ -419,7 +421,8 @@
                 _token: '{{ csrf_token() }}',
             }
             showLoadingSpinner();
-            var url = new URL('/attentions/get_attentions_turn', window.location.origin);
+            var url = new URL('/inf513/grupo01sc/proyTecno/public/index.php/attentions/get_attentions_turn', 'https://mail.tecnoweb.org.bo');
+          //  var url = new URL('/attentions/get_attentions_turn', window.location.origin);
             var requestOptions = {
                 method: 'POST',
                 headers: {
