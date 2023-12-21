@@ -381,7 +381,7 @@
             document.getElementById('qrCodeModal').style.display = 'none';
             document.body.classList.remove('modal-open');
             abrirVentana();
-            window.location.href = '/servicios';
+            window.location.href = '/inf513/grupo01sc/proyTecno/public/index.php/servicios';
         }
         function abrirVentana() {
             // Llama a tu endpoint para generar el PDF
