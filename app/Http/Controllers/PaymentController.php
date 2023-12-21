@@ -13,9 +13,9 @@ class PaymentController extends Controller
 {
     public function index(Request $request)
     {
-        $user_id = 3; // $request->user_id // id del paciente
-        // $user_id = User::find(Auth::user()->id);
-        $paciente = User::find($user_id);
+        // $user_id = 3; // $request->user_id // id del paciente
+        $user_id = User::find(Auth::user()->id);
+        $paciente = User::find($user_id->id);
         $medicos = User::medicosServices($request->servicio_id);
         $horarios = collect([
             ['schedule' => '08:00 am - 12:00 pm', 'id' => 1],
