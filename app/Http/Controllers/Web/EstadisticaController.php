@@ -15,13 +15,14 @@ class EstadisticaController extends Controller
     }
     public function store(StoreEstadisticaRequest $request)
     {
-        return $request;
+
         $resultados = DB::table($request->table)
             ->selectRaw('DATE(created_at) as fecha, COUNT(*) as cantidad')
             ->whereBetween('created_at', [$request->fecha_ini, $request->fecha_fin])
             ->groupBy('fecha')
             ->orderBy('fecha', 'ASC')
             ->get();
+
         $timestamps = [];
         $values = [];
         foreach ($resultados as $resultado) {
@@ -29,18 +30,19 @@ class EstadisticaController extends Controller
             $values[] = $resultado->cantidad;
         }
         $nombre = '';
-        if ($request->table == 'consultation_sheets') {
-            $nombre = 'Fichas';
+        return $timestamps;
+        if ($request->table == 'ordens') {
+            $nombre = 'ordens';
         } else {
-            if ($request->table == 'medical_consultations') {
+            if ($request->table == 'consultas') {
                 $nombre = 'Consultas';
             } else {
-                if ($request->table == 'dates') {
-                    $nombre = 'Citas';
+                if ($request->table == 'citas') {
+                    $nombre = 'citas';
                 }
             }
         }
-        
+
         return view('pages.administrador.estadisticas.show', compact('timestamps', 'values', 'nombre'));
     }
 }
