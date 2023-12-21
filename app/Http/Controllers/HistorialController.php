@@ -18,6 +18,7 @@ class HistorialController extends Controller
         $pacientes = User::getPatientsDoctorId($doctor->id);
         $pacientes_ids = $pacientes->pluck('id'); 
         $historials = Historial::getHistorialPacienteId($pacientes_ids);
+        
         // dd($historials);
         return view('pages.medico.historial.index', compact('historials'));
     }
