@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\Fortify\CreateNewUser;
 use App\Http\Controllers\AtencionController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Web\TurnoController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\EnfermeraController;
 use App\Http\Controllers\EstiloController;
 use App\Http\Controllers\OrdenController;
 use App\Http\Controllers\Web\ClienteController;
+use App\Http\Controllers\Web\EstadisticaController;
 use App\Http\Controllers\Web\PersonalController;
 use App\Http\Controllers\Web\ServicioController;
 use Illuminate\Support\Facades\Route;
@@ -84,6 +86,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::resource('/servicio', ServicioController::class)->names('servicio');
         //Gestionar Turno
         Route::resource('/turno', TurnoController::class)->names('turno');
+        Route::post('/turno/estado', [TurnoController::class, 'finalizarTurno'])->name('turno.finalizar');
+        //Reportes
+        route::resource('/estadistica', EstadisticaController::class)->names('estadistica');
     });
     Route::prefix('enfermeria')->group(function () {
         Route::resource('/citas', EnfermeraController::class)->names('enfermeria.citas');
@@ -102,10 +107,36 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 Route::get('login', function () {
     return view('auth.login');
 })->name('login');
-Route::get('register', function () {
-    return view('auth.register');
-})->name('register');
+Route::post('register', function (CreateNewUser $creator) {
+    // Aquí va la lógica de creación de usuario
 
+    $user = $creator->create(request()->all());
+    Auth::login($user);
+
+    // Personaliza la redirección después del registro
+    return redirect('/'); // Cambia '/home' por la ruta que desees
+})->name('register');
+Route::post('login', function () {
+    // Lógica de autenticación, por ejemplo:
+    $credentials = request()->only('email', 'password');
+
+    if (Auth::attempt($credentials)) {
+        // Autenticación exitosa
+
+        // Obtén al usuario autenticado
+        $user = Auth::user();
+
+        // Verifica el tipo de usuario y redirige en consecuencia
+        if ($user->tipo == 'P') {
+            return redirect('/');
+        } else {
+            return redirect('/dashboard'); // Cambia '/otra-ruta' por la ruta que desees
+        }
+    }
+
+    // Autenticación fallida, puedes manejarlo de acuerdo a tus necesidades
+    return back()->withErrors(['email' => 'Credenciales incorrectas']);
+})->middleware('guest')->name('login');
 
 Route::post('cambiar-estilo', [EstiloController::class, 'cambiarEstilo'])->name('cambiar.estilo');
 // ************** payment *********************

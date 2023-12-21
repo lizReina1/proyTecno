@@ -45,7 +45,7 @@ class CreateNewUser implements CreatesNewUsers
             'birth_date' => $input['birth_date'],
             'celular' => $input['celular'],
             'tipo' => "P",
-            'url_foto' => "vacio",
+            'url_foto' => "https://rekognitions3-bucket.s3.amazonaws.com/Tecno/perfil/usuario_default.jpeg",
             'genero' => $input['genero'],
             'residencia_actual' => $input['residencia_actual'],
             'ocupacion' => $input['ocupacion'],

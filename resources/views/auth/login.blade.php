@@ -1,6 +1,7 @@
 <x-guest-layout>
     <x-authentication-card>
         <x-slot name="logo">
+            <h3 class="text-lg font-medium text-gray-800 dark:text-white justify-center text-center">LOGIN</h3>
             <x-authentication-card-logo />
         </x-slot>
 

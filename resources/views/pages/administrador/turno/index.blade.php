@@ -3,7 +3,7 @@
     <div class="container-fluid d-flex justify-content-center aling-items-center">
         <div class="card" style="width: 100%;">
 
-            <div class="card-body bg-white">
+            <div class="card-body">
                 <!-- component -->
 
                 <!-- component -->
@@ -11,7 +11,7 @@
                     <div class="sm:flex sm:items-center sm:justify-between">
                         <div>
                             <div class="flex items-center gap-x-3">
-                                <h2 class="text-lg font-medium text-gray-800 dark:text-white">Turno</h2>
+                                <h2 class="text-lg font-medium text-gray-700 dark:text-white">Turno</h2>
 
                                 {{-- <span
                                     class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">240
@@ -55,7 +55,7 @@
                             </button>
                         </div> --}}
 
-                        <div class="relative flex items-center mt-4 md:mt-0">
+                        {{-- <div class="relative flex items-center mt-4 md:mt-0">
                             <span class="absolute">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor"
@@ -67,7 +67,7 @@
 
                             <input type="text" placeholder="Search"
                                 class="block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40">
-                        </div>
+                        </div> --}}
                     </div>
 
                     <div class="flex flex-col mt-6">
@@ -110,7 +110,10 @@
                                                     class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                                     Tipo
                                                 </th>
-
+                                                <th scope="col"
+                                                    class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                                    Estado
+                                                </th>
                                                 <th scope="col"
                                                     class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                                     Turno</th>
@@ -147,117 +150,134 @@
                                                     <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
                                                         <div
                                                             class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
-                                                            @if ($atencionTurno->user->tipo=='M')
+                                                            @if ($atencionTurno->user->tipo == 'M')
                                                                 Médico
                                                             @else
                                                                 Enfermería
                                                             @endif
                                                         </div>
                                                     </td>
-                                                    <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                        <div>
-                                                            @php
-                                                                $dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-                                                            @endphp
-                                                            @foreach ($dias as $dia)
-                                                                @php
-                                                                    $atenciones = $atencionTurno->turnos->filter(function ($turno) use ($dia) {
-                                                                        return $turno->dia == $dia;
-                                                                    });
-                                                                @endphp
-                                                                @if (!$atenciones->isEmpty())
-                                                                    <p class="text-gray-500 dark:text-gray-400">
-                                                                        {{ $dia }}</p>
+                                                    <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
+                                                        @if ($atencionTurno->estado)
+                                                            <div
+                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
+                                                                Activo
+                                                            </div>
+                                                        @else
+                                                            <div
+                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-red-400 gap-x-2 bg-red-100/60 dark:bg-gray-800">
+                                                                Finalizado
+                                                            </div>
+                                                        @endif
+                                </div>
+                                </td>
+                                <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                    <div>
+                                        @php
+                                            $dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+                                        @endphp
+                                        @foreach ($dias as $dia)
+                                            @php
+                                                $atenciones = $atencionTurno->turnos->filter(function ($turno) use ($dia) {
+                                                    return $turno->dia == $dia;
+                                                });
+                                            @endphp
+                                            @if (!$atenciones->isEmpty())
+                                                <p class="text-gray-500 dark:text-gray-400">
+                                                    {{ $dia }}</p>
 
-                                                                    @foreach ($atenciones as $atencion)
-                                                                        <p class="text-gray-500 dark:text-gray-400">
-                                                                            {{ $atencion->hora_inicio }} -
-                                                                            {{ $atencion->hora_fin }}</p>
-                                                                    @endforeach
-                                                                @endif
-                                                            @endforeach
-                                                            {{-- <h4 class="text-gray-700 dark:text-gray-200">
+                                                @foreach ($atenciones as $atencion)
+                                                    <p class="text-gray-500 dark:text-gray-400">
+                                                        {{ $atencion->hora_inicio }} -
+                                                        {{ $atencion->hora_fin }}</p>
+                                                @endforeach
+                                            @endif
+                                        @endforeach
+                                        {{-- <h4 class="text-gray-700 dark:text-gray-200">
                                                                 {{ $atencionTurno->turnos->dia }} Bs</h4> --}}
-                                                            {{-- <p class="text-gray-500 dark:text-gray-400">Brings all your
+                                        {{-- <p class="text-gray-500 dark:text-gray-400">Brings all your
                                                                 news
                                                                 into one place</p> --}}
-                                                        </div>
-                                                    </td>
+                                    </div>
+                                </td>
 
 
-                                                    {{-- <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                {{-- <td class="px-4 py-4 text-sm whitespace-nowrap">
                                                         <div
                                                             class="w-48 h-1.5 bg-blue-200 overflow-hidden rounded-full">
                                                             <div class="bg-blue-500 w-2/3 h-1.5"></div>
                                                         </div>
                                                     </td> --}}
 
-                                                    <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                        <div class="dropdown">
-                                                            <button id="myButton" class="dropbtn">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                    viewBox="0 0 24 24" stroke-width="1.5"
-                                                                    stroke="currentColor" class="w-6 h-6">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                                        d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
-                                                                </svg>
-                                                            </button>
-                                                            <div id="myDropdown" class="dropdown-content">
-                                                                <a href="#" class="hover:bg-gray-200">Editar</a>
-                                                                <a href="#" class="hover:bg-gray-200">Personal</a>
-                                                                <a href="#"
-                                                                    class="deleteBtn hover:bg-gray-200">Eliminar</a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
+                                <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                    <div class="dropdown">
+                                        <button id="myButton" class="dropbtn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+                                            </svg>
+                                        </button>
+                                        <div id="myDropdown" class="dropdown-content">
+                                           
+                                            @if ($atencionTurno->estado)
+                                                <a href="#" 
+                                                    data-servicioid={{ $atencionTurno->servicio->id }}
+                                                    data-userid={{$atencionTurno->user->id}}
+                                                    class="deleteBtn hover:bg-gray-200">Finalizar</a>
+                                            @endif
+
+                                        </div>
+                                    </div>
+                                </td>
+                                </tr>
+                                @endforeach
 
 
 
-                                        </tbody>
-                                    </table>
-                                </div>
+                                </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
-
-                    <div class="overflow-visible p-6 sm:flex sm:items-center sm:justify-between ">
-                        <div class="text-sm text-gray-500 dark:text-gray-400">
-                            Page <span class="font-medium text-gray-700 dark:text-gray-100">1 of 10</span>
-                        </div>
-
-                        <div class="flex items-center mt-4 gap-x-4 sm:mt-0">
-                            <a href="#"
-                                class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
-                                </svg>
-
-                                <span>
-                                    previous
-                                </span>
-                            </a>
-
-                            <a href="#"
-                                class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
-                                <span>
-                                    Next
-                                </span>
-
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </section>
             </div>
+
+            {{-- <div class="overflow-visible p-6 sm:flex sm:items-center sm:justify-between ">
+                <div class="text-sm text-gray-500 dark:text-gray-400">
+                    Page <span class="font-medium text-gray-700 dark:text-gray-100">1 of 10</span>
+                </div>
+
+                <div class="flex items-center mt-4 gap-x-4 sm:mt-0">
+                    <a href="#"
+                        class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+                        </svg>
+
+                        <span>
+                            previous
+                        </span>
+                    </a>
+
+                    <a href="#"
+                        class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
+                        <span>
+                            Next
+                        </span>
+
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                        </svg>
+                    </a>
+                </div>
+            </div> --}}
+            </section>
         </div>
+    </div>
     </div>
     <div id="myModal" class="fixed z-50 inset-0 flex items-center justify-center" style="display: none;"
         aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -273,14 +293,16 @@
                 </h3>
             </div>
             <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <form action="" id="form-destroy" method="POST">
+                <form id="formFinalizar" method="POST">
                     @csrf
-                    @method('delete')
+                    <input type="hidden" name="user_id" id="user_id">
+                    <input type="hidden" name="servicio_id" id="servicio_id">
                     <button id="confirmDelete" type="submit"
                         class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
                         Confirmar
                     </button>
                 </form>
+
 
 
                 <button id="cancelDelete" type="button"
@@ -356,6 +378,7 @@
         </script>
     @endif
     {{-- JS --}}
+
     <script>
         // Obtén todos los menús desplegables
         var dropdowns = document.getElementsByClassName("dropbtn");
@@ -429,16 +452,17 @@
             $('.deleteBtn').click(function(e) {
                 e.preventDefault();
                 // Obtiene el ID del personal del atributo data-id
-                var servicioId = $(this).data('id');
-                var servicioName = $(this).data('name');
-                console.log('Name del servicio: ', servicioName);
-                console.log('ID del servicio: ', servicioId);
-                // Establece el ID del personal como parte de la acción del formulario
-                var route = "{{ route('servicio.destroy', 'id') }}";
-                route = route.replace('id', servicioId);
-                $('#form-destroy').attr('action', route);
-                $('#modal-title').text('¿Estás seguro de que quieres eliminar el servicio ' + servicioName +
-                    '?');
+                var userId = $(this).data('userid');
+                var servicioId = $(this).data('servicioid');
+                
+               
+                console.log('ID del user: ', userId);
+                $('#user_id').val(userId)
+                $('#servicio_id').val(servicioId);
+                console.log('ID del servicio: ',servicioId);
+                var route = "{{ route('turno.finalizar') }}";
+                $('#formFinalizar').attr('action', route);
+                $('#modal-title').text('¿Estás seguro de que quieres eliminar el turno de atención?');
                 $('#myModal').show();
 
             });
@@ -449,8 +473,11 @@
 
             // Cuando el usuario haga clic en "Confirmar", realiza la acción de eliminación
             $('#confirmDelete').click(function() {
+
                 // Aquí puedes poner el código para eliminar el elemento
             });
+            //opcion finalizar
+          
         });
     </script>
 </x-app-layout>

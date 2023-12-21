@@ -2,12 +2,12 @@
     <div class="container-fluid d-flex justify-content-center aling-items-center">
         <div class="card" style="width: 100%;">
 
-            <div class="card-body bg-white p-5">
+            <div class="card-bodyp-5">
                 <form action="{{ route('servicio.store') }}" method="POST" enctype="multipart/form-data" id="formServicio">
                     @csrf
                     <div class="space-y-12">
                         <div class="border-b border-gray-900/10 pb-4">
-                            <h2 class="text-base font-semibold leading-7 text-gray-900">Crear servicio</h2>
+                            <h2 class="text-base font-semibold leading-7 text-gray-700">Crear servicio</h2>
                             <p class="mt-1 text-sm leading-6 text-gray-600">Registrar un nuevo servicio.</p>
 
                             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -106,8 +106,8 @@
                         </div>
 
                         <div class="mt-2 flex items-center justify-end gap-x-6">
-                            <button type="button"
-                                class="text-sm font-semibold leading-6 text-gray-900">Cancelar</button>
+                            <a href="{{route('servicio.index')}}"
+                            class="text-sm font-semibold leading-6 text-gray-900">Cancelar</a>
                             <button type="submit"
                                 class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Guardar</button>
                         </div>

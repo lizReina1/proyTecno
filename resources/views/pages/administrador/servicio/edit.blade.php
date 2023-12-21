@@ -2,14 +2,14 @@
     <div class="container-fluid d-flex justify-content-center aling-items-center">
         <div class="card" style="width: 100%;">
 
-            <div class="card-body bg-white p-5">
+            <div class="card-body p-5">
                 <form action="{{ route('servicio.update', $servicio->id) }}" method="POST" enctype="multipart/form-data"
                     id="formServicio">
                     @csrf
                     @method('PUT')
                     <div class="space-y-12">
                         <div class="border-b border-gray-900/10 pb-4">
-                            <h2 class="text-base font-semibold leading-7 text-gray-900">Editar servicio</h2>
+                            <h2 class="text-base font-semibold leading-7 text-gray-700">Editar servicio</h2>
                             <p class="mt-1 text-sm leading-6 text-gray-600">actualizar datos del servicio.</p>
 
                             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -52,8 +52,10 @@
                                         <select type="text" name="forma_compra" id="forma_compra"
                                             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                             <option value="ONLINE"
-                                                {{ $servicio->forma_compra == 'ONLINE' ? 'selected' : '' }}>Online</option>
-                                            <option value="CAJA" {{ $servicio->forma_compra == 'CAJA' ? 'selected' : '' }}>
+                                                {{ $servicio->forma_compra == 'ONLINE' ? 'selected' : '' }}>Online
+                                            </option>
+                                            <option value="CAJA"
+                                                {{ $servicio->forma_compra == 'CAJA' ? 'selected' : '' }}>
                                                 Caja</option>
                                         </select>
                                     </div>
@@ -65,7 +67,8 @@
                                     <div class="mt-2">
                                         <select type="text" name="atencion" id="atencion" autocomplete="atencion"
                                             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                            <option value="MEDICO" {{ $servicio->atencion == 'MEDICO' ? 'selected' : '' }}>
+                                            <option value="MEDICO"
+                                                {{ $servicio->atencion == 'MEDICO' ? 'selected' : '' }}>
                                                 Médica</option>
                                             <option value="ENFERMERIA"
                                                 {{ $servicio->atencion == 'ENFERMERIA' ? 'selected' : '' }}>Enfermería
@@ -81,8 +84,7 @@
                                         <div class="flex items-center space-x-6">
                                             <div class="shrink-0">
                                                 <img id="preview" class="h-16 w-16 object-cover rounded-full"
-                                                    src="{{$servicio->url_imagen}}"
-                                                    alt="Current servicio photo" />
+                                                    src="{{ $servicio->url_imagen }}" alt="Current servicio photo" />
                                                 @error('imagen')
                                                     <div class="error-message mt-1 text-sm leading-6 text-pink-600">
                                                         {{ $message }}</div>
@@ -115,8 +117,8 @@
                         </div>
 
                         <div class="mt-2 flex items-center justify-end gap-x-6">
-                            <button type="button"
-                                class="text-sm font-semibold leading-6 text-gray-900">Cancelar</button>
+                            <a href="{{ route('servicio.index') }}"
+                                class="text-sm font-semibold leading-6 text-gray-900">Cancelar</a>
                             <button type="submit"
                                 class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Guardar</button>
                         </div>

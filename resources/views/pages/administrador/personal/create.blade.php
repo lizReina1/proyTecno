@@ -2,12 +2,12 @@
     <div class="container-fluid d-flex justify-content-center aling-items-center">
         <div class="card" style="width: 100%;">
 
-            <div class="card-body bg-white p-5">
+            <div class="card-body p-5">
                 <form action="{{ route('personal.store') }}" method="POST" enctype="multipart/form-data" id="formPersonal">
                     @csrf
                     <div class="space-y-12">
                         <div class="border-b border-gray-900/10 pb-4">
-                            <h2 class="text-base font-semibold leading-7 text-gray-900">Crear personal</h2>
+                            <h2 class="text-base font-semibold leading-7 text-gray-700">Crear personal</h2>
                             <p class="mt-1 text-sm leading-6 text-gray-600">Registrar un nuevo médico o enfermera/o.</p>
 
                             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">

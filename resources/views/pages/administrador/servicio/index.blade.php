@@ -3,7 +3,7 @@
     <div class="container-fluid d-flex justify-content-center aling-items-center">
         <div class="card" style="width: 100%;">
 
-            <div class="card-body bg-white">
+            <div class="card-body">
                 <!-- component -->
 
                 <!-- component -->
@@ -11,7 +11,7 @@
                     <div class="sm:flex sm:items-center sm:justify-between">
                         <div>
                             <div class="flex items-center gap-x-3">
-                                <h2 class="text-lg font-medium text-gray-800 dark:text-white">Servicios</h2>
+                                <h2 class="text-lg font-medium text-gray-700 dark:text-white">Servicios</h2>
 
                                 {{-- <span
                                     class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">240
@@ -55,7 +55,7 @@
                             </button>
                         </div>
 
-                        <div class="relative flex items-center mt-4 md:mt-0">
+                        {{-- <div class="relative flex items-center mt-4 md:mt-0">
                             <span class="absolute">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor"
@@ -67,7 +67,7 @@
 
                             <input type="text" placeholder="Search"
                                 class="block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40">
-                        </div>
+                        </div> --}}
                     </div>
 
                     <div class="flex flex-col mt-6">
@@ -233,7 +233,7 @@
                         </div>
                     </div>
 
-                    <div class="overflow-visible p-6 sm:flex sm:items-center sm:justify-between ">
+                    {{-- <div class="overflow-visible p-6 sm:flex sm:items-center sm:justify-between ">
                         <div class="text-sm text-gray-500 dark:text-gray-400">
                             Page <span class="font-medium text-gray-700 dark:text-gray-100">1 of 10</span>
                         </div>
@@ -265,7 +265,7 @@
                                 </svg>
                             </a>
                         </div>
-                    </div>
+                    </div> --}}
                 </section>
             </div>
         </div>
