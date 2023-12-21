@@ -32,7 +32,7 @@ class Ficha extends Model
             'cantidad_ficha' => 20,
             'restante_ficha' => 20,
             'hora_inicio_atencion' => $turn->hora_inicio,
-            'hora_fin_atencion' => $turn->hora_inicio,
+            'hora_fin_atencion' => $turn->hora_fin,
             'costo' => $costo,
             'atencion_id' => $atencion_id,
         ]);

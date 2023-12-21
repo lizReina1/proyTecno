@@ -21,7 +21,7 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
-   // use HasRoles;
+    // use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -29,20 +29,20 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-         'ci',
-         'name',
-         'lastname',
-         'birth_date',
-         'celular',
-         'tipo',
-         'genero',
-         'residencia_actual',
-         'email',
-         'password',
-         'url_foto',
-         'formacion',
-         'sueldo',
-         'ocupacion'
+        'ci',
+        'name',
+        'lastname',
+        'birth_date',
+        'celular',
+        'tipo',
+        'genero',
+        'residencia_actual',
+        'email',
+        'password',
+        'url_foto',
+        'formacion',
+        'sueldo',
+        'ocupacion'
     ];
 
     /**
@@ -82,12 +82,12 @@ class User extends Authenticatable
     public static function medicosServices($service_id)
     {
         return self::select('users.*')
-                ->where('tipo', 'M')
-                ->join('atencions', 'atencions.user_id', 'users.id')
-                ->where('servicio_id', $service_id)
-                ->where('estado', true)
-                ->distinct()
-                ->get();
+            ->where('tipo', 'M')
+            ->join('atencions', 'atencions.user_id', 'users.id')
+            ->where('servicio_id', $service_id)
+            ->where('estado', true)
+            ->distinct()
+            ->get();
     }
     public static function personal()
     {
@@ -99,5 +99,32 @@ class User extends Authenticatable
             $query->where('tipo', 'E')
                 ->orWhere('tipo', 'M');
         })->orderBy('updated_at', 'desc')->get();
+    }
+
+    public static function patients()
+    {
+        return self::where('tipo', 'P')->get();
+    }
+
+    public static function getPatientsDoctorId($doctor_id)
+    {
+        $fichas_id = Ficha::join('atencions', 'atencions.id', 'fichas.atencion_id')
+            ->where('atencions.user_id', $doctor_id)
+            ->pluck('fichas.id');
+        return self::select('users.*', 'ordens.servicio')
+            ->join('ordens', 'ordens.paciente_id', 'users.id')
+            ->join('fichas', 'fichas.id', 'ordens.ficha_id')
+            ->whereIn('ordens.ficha_id', $fichas_id)
+            ->get();
+    }
+    public static function patientsWithouthHistorials()
+    {
+        return self::select('users.*')
+            ->whereNotIn('users.id', function ($query) {
+                $query->select('historials.paciente_id')
+                    ->from('historials');
+            })
+            ->where('users.tipo', 'P')
+            ->get();
     }
 }

@@ -57,7 +57,8 @@ class Orden extends Model
                         ->join('atencions', 'atencions.id', 'fichas.atencion_id') 
                         ->join('users', 'users.id', 'atencions.user_id') 
                         ->where('users.tipo', 'M') 
-                        ->where('users.id', $doctor_id) 
+                        ->where('atencions.user_id', $doctor_id) 
+                        ->distinct('ordens.id', 'ordens.fecha_atencion')
                         ->orderBy('ordens.fecha_atencion', 'asc')
                         ->get();
         return $ordens;
