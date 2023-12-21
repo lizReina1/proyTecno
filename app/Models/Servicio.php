@@ -17,12 +17,12 @@ class Servicio extends Model
     ];
 
     static function getServicesDoctor($doctor_id){
-            return self::select('servicios.*')
+            return self::select('servicios.*', 'turnos.dia', 'turnos.hora_inicio', 'turnos.hora_fin')
                     ->join('atencions', 'atencions.servicio_id', 'servicios.id')
-                    // ->join('turnos', 'turnos.id', 'atencions.turno_id')
+                    ->join('turnos', 'turnos.id', 'atencions.turno_id')
                     ->where('atencions.user_id', $doctor_id)
                     ->where('atencions.estado', true)
-                    ->distinct('servicios.id')
+                    // ->distinct('servicios.id')
                     ->get();
     }
     public function atencions(){

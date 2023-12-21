@@ -170,7 +170,8 @@ class ServicioController extends Controller
         $doctor = User::find(Auth::user()->id);
         $servicios = Servicio::getServicesDoctor($doctor->id);
         // $servicios = Servicio::getServicesDoctor($doctor_id);
-            // dd($servicios);
+        $servicios = $servicios->groupBy('id');
+            // dd($servicios_turnos);
         return view('servicio.index', compact('servicios'));
     }
     public function medico_servicio_create(){

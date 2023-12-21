@@ -20,14 +20,14 @@
     <link rel="stylesheet" href="{{ asset('estilos_tecno/css/nav.css') }}">
     <link rel="stylesheet" href="{{ asset('estilos_tecno/css/animacion.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-    <script src="{{ asset('estilos_tecno/js/nav.js') }}"></script>
-    <script src="{{ asset('estilos_tecno/js/carousel.js') }}"></script>
+    <script src="{{ asset('../estilos_tecno/js/nav.js') }}"></script>
+    <script src="{{ asset('../estilos_tecno/js/carousel.js') }}"></script>
     {{-- bootstrap 5 --}}
     {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
 </head>
 
 
-<body class="h-full"  data-bs-theme="light">
+<body class="h-full" data-bs-theme="light">
     <!--
   This example requires updating your template:
 
@@ -60,7 +60,6 @@
                                 <a href="{{ route('pago') }}"
                                     class="menu-link {{ Route::is('pago') ? 'active' : '' }} color-texto ">Pagos</a>
 
-
                             </div>
                         </div>
                     </div>
@@ -86,34 +85,40 @@
                                         id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                         <span class="absolute -inset-1.5"></span>
                                         <span class="sr-only">Open user menu</span>
+                                        @auth
+                                            <img class="h-8 w-8 rounded-full " src="{{ Auth::user()->url_foto }}"
+                                                alt="">
 
-                                        <img class="h-8 w-8 rounded-full "
-                                            src="{{ $logo == 'J' ? asset('estilos_tecno/img/user_blue.png') : asset('estilos_tecno/img/user_white.png') }}"
-                                            alt="">
+                                        @endauth
+                                        @guest
+                                            <img class="h-8 w-8 rounded-full "
+                                                src="{{ $logo == 'J' ? asset('estilos_tecno/img/user_blue.png') : asset('estilos_tecno/img/user_white.png') }}"
+                                                alt="">
+                                        @endguest
+
                                     </button>
                                 </div>
-
-                                <!--
-                  Dropdown menu, show/hide based on menu state.
-  
-                  Entering: "transition ease-out duration-100"
-                    From: "transform opacity-0 scale-95"
-                    To: "transform opacity-100 scale-100"
-                  Leaving: "transition ease-in duration-75"
-                    From: "transform opacity-100 scale-100"
-                    To: "transform opacity-0 scale-95"
-                -->
                                 <div id="user-menu"
                                     class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                                     role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button"
                                     tabindex="-1">
                                     <!-- Active: "bg-gray-100", Not Active: "" -->
                                     @auth
+                                        <div>
+                                            <div class="block px-4 py-2 text-sm text-gray-500 ">
+                                                {{ Auth::user()->name }}
+                                                {{ Auth::user()->lastname }}</div>
+                                            <div class="px-4 pb-2 text-sm text-gray-400">
+                                                {{ Auth::user()->email }}
+                                            </div>
+                                        </div>
+                                        <hr>
                                         <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
                                             tabindex="-1" id="user-menu-item-0">Perfil</a>
                                         @if (Auth::user()->tipo != 'P')
-                                            <a href="{{route('dashboard')}}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
-                                                tabindex="-1" id="user-menu-item-0">Dashboard</a>
+                                            <a href="{{ route('dashboard') }}"
+                                                class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
+                                                id="user-menu-item-0">Dashboard</a>
                                         @endif
 
                                         <a href="{{ route('configuracion') }}"
@@ -126,8 +131,8 @@
 
                                     <!-- Menú si no está autenticado -->
                                     @guest
-                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
-                                            tabindex="-1" id="user-menu-item-0">Register</a>
+                                        <a href="{{ route('register') }}" class="block px-4 py-2 text-sm text-gray-700"
+                                            role="menuitem" tabindex="-1" id="user-menu-item-0">Register</a>
                                         <a href="{{ route('login') }}" class="block px-4 py-2 text-sm text-gray-700"
                                             role="menuitem" tabindex="-1" id="user-menu-item-2">Login</a>
                                         <a href="{{ route('configuracion') }}"
@@ -177,58 +182,132 @@
                         class="menu-link block rounded-md px-3 py-2 text-base font-medium color-texto {{ Route::is('pago') ? 'active' : '' }} color-texto ">Pagos</a>
                     {{-- <a href="#"
                         class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Estilos</a> --}}
+
                 </div>
                 <div class="border-t border-gray-700 pb-3 pt-4">
-                    <div class="flex items-center px-5">
-                        <div class="flex-shrink-0">
-                            <img class="h-10 w-10 rounded-full"
-                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                alt="">
+                    @auth
+                        <div class="flex items-center px-5">
+                            <div class="flex-shrink-0">
+                                <img class="h-10 w-10 rounded-full" src="{{ Auth::user()->url_foto }}" alt="">
+                            </div>
+                            <div class="ml-3">
+                                <div class="text-base font-medium leading-none text-white">{{ Auth::user()->name }}
+                                    {{ Auth::user()->lastname }}</div>
+                                <div class="text-sm font-medium leading-none text-gray-400">{{ Auth::user()->email }}
+                                </div>
+                            </div>
+                            {{-- <button type="button"
+                                class="relative ml-auto flex-shrink-0 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2">
+                                <span class="absolute -inset-1.5"></span>
+                                {{-- <span class="sr-only">View notifications</span> --}}
+                                {{--<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                                </svg>
+                            </button> --}}
                         </div>
-                        <div class="ml-3">
-                            <div class="text-base font-medium leading-none text-white">Tom Cook</div>
-                            <div class="text-sm font-medium leading-none text-gray-400">tom@example.com</div>
+                        <div class="mt-3 space-y-1 px-2">
+                            @if (Auth::user()->tipo != 'P')
+                                <a href="#"
+                                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white color-texto">Perfil</a>
+                                <a href="{{ route('dashboard') }}"
+                                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white color-texto">Dashboard</a>
+                                <a href="{{ route('configuracion') }}"
+                                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white color-texto">Configuración</a>
+
+                                <a href="#"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white color-texto">
+                                    Salir
+                                </a>
+
+                                <form id="logout-form" method="POST" action="{{ route('logout') }}"
+                                    style="display: none;">
+                                    @csrf
+                                </form>
+                            @else
+                                <a href="#"
+                                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white color-texto">Perfil</a>
+                                <a href="{{ route('configuracion') }}"
+                                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white color-texto">Configuración</a>
+
+                                <a href="#"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white color-texto">
+                                    Salir
+                                </a>
+
+                                <form id="logout-form" method="POST" action="{{ route('logout') }}"
+                                    style="display: none;">
+                                    @csrf
+                                </form>
+                            @endif
+
+
                         </div>
-                        <button type="button"
-                            class="relative ml-auto flex-shrink-0 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2">
-                            <span class="absolute -inset-1.5"></span>
-                            <span class="sr-only">View notifications</span>
-                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-                            </svg>
-                        </button>
+                    @endauth
+
+                    @guest
+                        <div class="border-t border-gray-700 pb-3 pt-4">
+                            {{-- <div class="flex-shrink-0">
+                                <img class="h-10 w-10 rounded-full "
+                                    src="{{ $logo == 'J' ? asset('estilos_tecno/img/user_blue.png') : asset('estilos_tecno/img/user_white.png') }}"
+                                    alt="">
+
+                            </div> --}}
+                            <div class="flex items-center px-5">
+                                <div class="flex-shrink-0">
+                                    <img class="h-10 w-10 rounded-full"
+                                        src="{{ $logo == 'J' ? asset('estilos_tecno/img/user_blue.png') : asset('estilos_tecno/img/user_white.png') }}"
+                                        alt="">
+                                </div>
+                                <div class="ml-3">
+                                    {{-- <div class="text-base font-medium leading-none text-white"></div>
+                                    <div class="text-sm font-medium leading-none text-gray-400">tom@example.com</div> --}}
+                                </div>
+                                {{-- <button type="button" class="relative ml-auto flex-shrink-0 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2">
+                                    <span class="absolute -inset-1.5"></span>
+                                    <span class="sr-only">View notifications</span>
+                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                                    </svg>
+                                </button> --}}
+                            </div>
+                            <div class="mt-3 space-y-1 px-2">
+                                <a href="{{ route('register') }}"
+                                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white color-texto">Register</a>
+
+                                <a href="{{ route('login') }}"
+                                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white color-texto">Login</a>
+
+                                <a href="{{ route('configuracion') }}"
+                                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white color-texto">Configuración</a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mt-3 space-y-1 px-2">
-                        <a href="#"
-                            class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white color-texto">Perfil</a>
-                        <a href="{{ route('configuracion') }}"
-                            class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white color-texto">Configuración</a>
-                        <a href="#"
-                            class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white color-texto">Salir</a>
-                    </div>
-                </div>
+                @endguest
             </div>
-        </nav>
+    </div>
+    </nav>
 
 
-        @if (Route::is('welcome'))
-            <header class="bg-white shadow active">
-                <div class="header-container">
-                    <img class="header-image" src="{{ asset('estilos_tecno/img/fondo_consultorio.jpg') }}"
-                        alt="Logo de la empresa">
-                    <div class="title-container" id="titleContainer"></div>
-                    <h1 class="title-static">CONSULTORIO SAN SANTIAGO</h1>
-                </div>
-            </header>
-        @endif
-
-        <main class="body-background">
-            <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-                @yield('contenido')
+    @if (Route::is('welcome'))
+        <header class="bg-white shadow active">
+            <div class="header-container">
+                <img class="header-image" src="{{ asset('estilos_tecno/img/fondo_consultorio.jpg') }}"
+                    alt="Logo de la empresa">
+                <div class="title-container" id="titleContainer"></div>
+                <h1 class="title-static">CONSULTORIO SAN SANTIAGO</h1>
             </div>
-        </main>
+        </header>
+    @endif
+
+    <main class="body-background">
+        <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+            @yield('contenido')
+        </div>
+    </main>
 
     </div>
     <script>

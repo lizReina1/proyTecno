@@ -8,7 +8,7 @@
                     <div class="sm:flex sm:items-center sm:justify-between">
                         <div>
                             <div class="flex items-center gap-x-3">
-                                <h2 class="text-lg font-medium text-gray-800 dark:text-white">Servicio</h2>
+                                <h2 class="text-lg font-medium text-gray-800 dark:text-white">Historial de pacientes</h2>
 
                                 {{-- <span
                                     class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">240
@@ -39,15 +39,15 @@
 
                                 <span>Import</span>
                             </button> --}}
-                            {{-- <a href="{{ route('personal.create') }}"
+                            <a href="{{ route('medico_historial_create') }}"
                                 class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
-                                <span>Agregar Personal</span>
-                            </a> --}}
+                                <span>Crear Historial</span>
+                            </a>
 
                         </div>
 
@@ -56,15 +56,15 @@
                         <div
                             class="inline-flex overflow-hidden bg-white border divide-x rounded-lg dark:bg-gray-900 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700">
                             <button id="btn-todo" class="px-5 py-2 btn btn-activo">
-                                Mis servicios
+                                historiales
                             </button>
 
                             {{-- <button id="btn-medicos"
                                 class="px-5 py-2 btn text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
-                                Ver todo
-                            </button> --}}
+                                Médicos
+                            </button>
 
-                            {{-- <button id="btn-enfermeras"
+                            <button id="btn-enfermeras"
                                 class="px-5 py-2 btn text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
                                 Enfermeras
                             </button> --}}
@@ -96,7 +96,7 @@
                                                 <th scope="col"
                                                     class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                                     <button class="flex items-center gap-x-3 focus:outline-none">
-                                                        <span>Servicios</span>
+                                                        <span>Pacientes</span>
 
                                                         <svg class="h-3" viewBox="0 0 10 11" fill="none"
                                                             xmlns="http://www.w3.org/2000/svg">
@@ -118,12 +118,12 @@
 
                                                 <th scope="col"
                                                     class="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                    Costo
+                                                    Celular
                                                 </th>
 
                                                 <th scope="col"
                                                     class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                    Turno
+                                                    Genero
                                                 </th>
 
                                                 {{-- <th scope="col"
@@ -132,7 +132,7 @@
 
                                                 {{-- <th scope="col"
                                                     class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                    Sueldo</th> --}}
+                                                    Servicio que atiendo</th> --}}
 
                                                 <th scope="col" class="relative py-3.5 px-4">
                                                     <span class="sr-only">Edit</span>
@@ -141,68 +141,59 @@
                                         </thead>
                                         <tbody
                                             class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                                            @foreach ($servicios as $servicio)
-                                            @php
-                                                // $primer_servicio = $servicio[0]->dia; 
-                                                // dd($servicio[0]->dia);
-                                            @endphp
-                                                <tr data-tipo="{{ $servicio[0]->tipo }}">
+                                            @foreach ($historials as $historial)
+                                                <tr data-tipo="{{ $historial->tipo }}">
                                                     <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                                         <div class="flex min-w-0 gap-x-4">
                                                             <img class="h-16 w-16 flex-none rounded-full bg-gray-900 object-cover"
-                                                                src="{{ $servicio[0]->url_foto }}" alt="">
+                                                                src="{{ $historial->url_foto }}" alt="">
                                                             <div class="min-w-0 flex-auto">
-                                                                <br>
                                                                 <p
                                                                     class="text-sm font-semibold leading-6 text-gray-900">
-                                                                    {{ $servicio[0]->nombre }}</p>
-                                                                {{-- <p
+                                                                    {{ $historial->name }} {{ $historial->lastname }}</p>
+                                                                <p
                                                                     class="mt-1 truncate text-xs leading-5 text-gray-500">
-                                                                    {{ $servicio[0]->email }}</p>
+                                                                    {{ $historial->email }}</p>
                                                                 <p
                                                                     class="mt-1 truncate text-xs leading-5 text-gray-400">
-                                                                    ci: {{ $servicio[0]->ci }}</p> --}}
+                                                                    ci: {{ $historial->ci }}</p>
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    {{-- <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
-                                                        @if ($servicio[0]->tipo == 'M')
+                                                    <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
+                                                        {{-- @if ($historial->tipo == 'P') --}}
                                                             <div
                                                                 class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
-                                                                Médico
+                                                                {{$historial->celular}}
                                                             </div>
-                                                        @else
+                                                        {{-- @else
                                                             <div
                                                                 class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
                                                                 Enfermera/o
                                                             </div>
-                                                        @endif
+                                                        @endif --}}
 
-                                                    </td> --}}
+                                                    </td>
                                                     <td class="px-4 py-4 text-sm whitespace-nowrap">
                                                         <div>
-                                                            <h4 class="text-gray-700 dark:text-gray-200">
-                                                                {{ $servicio[0]->costo }}</h4>
-                                                            {{-- <p class="text-gray-500 dark:text-gray-400">Brings all your
-                                                                news into one place</p> --}}
+                                                           @if ($historial->genero == 'M')
+                                                           <div
+                                                           class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
+                                                           Masculino
+                                                       </div>
+                                                   @else
+                                                       <div
+                                                           class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
+                                                           Femenino
+                                                       </div>
+                                                   @endif
                                                         </div>
                                                     </td>
                                                     <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                        @foreach ($servicio as $item)
-                                                        <div
-                                                            class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
-                                                            {{$item->dia}}
-                                                        </div>
-                                                             <br>
-                                                            {{$item->hora_inicio}} -  {{$item->hora_fin}} <br>
-
-                                                        @endforeach
-                                                        {{-- {{ $servicio[0]->forma_compra }}
-                                                        {{ $servicio[0]->forma_compra }}
-                                                        {{ $servicio[0]->forma_compra }} --}}
+                                                        {{ $historial->servicio }}
                                                     </td>
 
-                                                    {{-- <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                                    <td class="px-4 py-4 text-sm whitespace-nowrap">
                                                         <div class="dropdown">
                                                             <button id="myButton" class="dropbtn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -214,14 +205,21 @@
                                                                 </svg>
                                                             </button>
                                                             <div id="myDropdown" class="dropdown-content">
-                                                                <a href="{{ route('servicio.edit', $servicio->id) }}"
-                                                                    class="hover:bg-gray-200">Editar</a>
-                                                                <a href="#" data-id={{ $servicio->id }}
-                                                                    data-name="{{ $servicio->name }} {{ $servicio->lastname }}"
-                                                                    class="deleteBtn hover:bg-gray-200">Eliminar</a>
+                                                                <a href="{{ route('medico_historial_edit', ['historial_id' => $historial->id]) }}"
+                                                                    class="hover:bg-gray-200">Ver Historial</a>
+                                                                <a href="{{ route('medico_consulta_index', ['historial_id' => $historial->id]) }}"
+                                                                    class="hover:bg-gray-200">Consultas</a>
+                                                                
+                                                                    <a href="#" onclick="console.log('Llamando a reporte'); reporte({{ $historial->id }})" class="hover:bg-gray-200">Historia clínica</a>
+
+                                                                {{-- <a href="#" id="historiaClinicaLink" onclick="console.log('Llamando a reporte');reporte($historial->id)"
+                                                                    class="hover:bg-gray-200">Historia clinica</a> --}}
+                                                                    {{-- <a href="#" data-id={{ $historial->id }}
+                                                                    data-name="{{ $historial->name }} {{ $historial->lastname }}"
+                                                                    class="deleteBtn hover:bg-gray-200">Consultas</a> --}}
                                                             </div>
                                                         </div>
-                                                    </td> --}}
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -383,7 +381,16 @@
             toastr.success("{{ session('mensaje') }}");
         </script>
     @endif
-
+    @if (session('success'))
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true
+        }
+        console.log("ingresa a success");
+        toastr.success("Historial creado satisfactoriamente");
+    </script>
+@endif
     @if (session('error'))
         <script>
             toastr.options = {
@@ -457,6 +464,21 @@
             // Muestra solo las filas que corresponden a enfermeras
             $('#tabla-personal tr[data-tipo="E"]:not(.encabezado)').show();
         });
+        
+        function reporte(id) {
+            console.log('ingresa');
+            // Llama a tu endpoint para generar el PDF
+            orden = {
+                'historial_id' : id
+            };
+            console.log('aaaaaaaaaaaaaaaaaaaa', id, orden);
+            let path = window.location.origin;
+            let url = path + "/consulta/medico/historia_clinica?"+ JSON.stringify(orden);
+
+            var win = window.open(url, "_blank");
+            win.focus();
+
+        }
     </script>
     <script>
         $(document).ready(function() {

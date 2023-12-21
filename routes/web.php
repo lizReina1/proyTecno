@@ -2,16 +2,21 @@
 
 use App\Http\Controllers\AtencionController;
 use App\Http\Controllers\CitaController;
+use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Web\TurnoController;
 use App\Models\Atencion;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataFeedController;
+use App\Http\Controllers\EnfermeraController;
 use App\Http\Controllers\EstiloController;
+use App\Http\Controllers\HistorialController;
 use App\Http\Controllers\OrdenController;
 use App\Http\Controllers\Web\ClienteController;
 use App\Http\Controllers\Web\PersonalController;
 use App\Http\Controllers\Web\ServicioController;
+use App\Http\Controllers\Web\UserController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -76,20 +81,35 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('pages/utility/404');
     });
 
+    //ADMINISTRADOR
     // Gestionar Personal
-    Route::resource('/personal', PersonalController::class)->names('personal');
-    // Gestionar Servicio
-    Route::resource('/servicio', ServicioController::class)->names('servicio');
-    //Gestionar Turno
-    Route::resource('/turno', TurnoController::class)->names('turno');
+    Route::prefix('admin')->group(function () {
+        Route::resource('/personal', PersonalController::class)->names('personal');
+        // Gestionar Servicio
+        Route::resource('/servicio', ServicioController::class)->names('servicio');
+        //Gestionar Turno
+        Route::resource('/turno', TurnoController::class)->names('turno');
+    });
+    Route::prefix('enfermeria')->group(function () {
+        Route::resource('/citas', EnfermeraController::class)->names('enfermeria.citas');
+        Route::resource('/citascreate', EnfermeraController::class)->names('enfermeria.citas.create');
+
+        // Ruta para mostrar el formulario de edición
+        Route::get('/citas/{cita}/edit', [EnfermeraController::class, 'edit'])->name('enfermeria.citas.edit');
+
+        // Ruta para actualizar la cita
+        // Route::put('/citas/{cita}', [EnfermeraController::class, 'update'])->name('enfermeria.citas.update');
+        // Ruta para eliminar la cita
+        Route::delete('/citas/{cita}', [EnfermeraController::class, 'destroy'])->name('enfermeria.citas.destroy');
+    });
 });
 
-// Route::get('login', function () {
-//     return "ir a login";
-// })->name('login');
-// Route::get('register', function () {
-//     return "ir a register";
-// })->name('register');
+Route::get('login', function () {
+    return view('auth.login');
+})->name('login');
+Route::get('register', function () {
+    return view('auth.register');
+})->name('register');
 
 
 Route::post('cambiar-estilo', [EstiloController::class, 'cambiarEstilo'])->name('cambiar.estilo');
@@ -99,7 +119,6 @@ Route::get('/payments/generate_payment', [PaymentController::class, 'generatePay
 
 //************************* atenciones ****************************/
 Route::post('/attentions/get_attentions_turn', [AtencionController::class, 'getAttentionsDoctor']);
-
 //*********** orden *******************************/
 Route::get('/orden', [OrdenController::class, 'index'])->name('orden_index');
 
@@ -107,7 +126,7 @@ Route::get('/orden', [OrdenController::class, 'index'])->name('orden_index');
 Route::get('/report/order/pdf', [OrdenController::class, 'generatePdfOrder']);
 
 //************************* cita  *********************/
-Route::get('/cita', [CitaController::class, 'medico_cita_index'])->name('medico_cita_index');
+Route::get('/cita/medico/index', [CitaController::class, 'medico_cita_index'])->name('medico_cita_index');
 Route::get('/cita/create', [CitaController::class, 'medico_cita_create'])->name('medico_cita_create');
 Route::post('/cita/store', [CitaController::class, 'medico_cita_store'])->name('medico_cita_store');
 Route::get('/cita/medico/edit/store', [CitaController::class, 'medico_cita_edit_store'])->name('medico_cita_edit_store');
@@ -120,4 +139,21 @@ Route::post('/servicio/medico_index', [ServicioController::class, 'medico_index'
 //********** servicios medico **********************/
 Route::get('/servicio/medico/index', [ServicioController::class, 'medico_servicio_index'])->name('medico_servicio_index');
 Route::get('/servicio/medico/create', [ServicioController::class, 'medico_servicio_create'])->name('medico_servicio_create');
+
+// ********************** paciente de medico **************************************
+Route::get('/paciente/medico/index', [UserController::class, 'medico_paciente_index'])->name('medico_paciente_index');
+
+// ************************** historial medico ********************//
+Route::get('/historial/medico/index', [HistorialController::class, 'medico_historial_index'])->name('medico_historial_index');
+Route::get('/historial/medico/create', [HistorialController::class, 'medico_historial_create'])->name('medico_historial_create');
+Route::post('/historial/medico/store', [HistorialController::class, 'medico_historial_store'])->name('medico_historial_store');
+Route::get('/historial/medico/edit', [HistorialController::class, 'medico_historial_edit'])->name('medico_historial_edit');
+
+//************* consulta medico  ***********************/
+Route::get('/consulta/medico/index', [ConsultaController::class, 'medico_consulta_index'])->name('medico_consulta_index');
+Route::get('/consulta/medico/create', [ConsultaController::class, 'medico_consulta_create'])->name('medico_consulta_create');
+Route::post('/consulta/medico/store', [ConsultaController::class, 'medico_consulta_store'])->name('medico_consulta_store');
+Route::get('/consulta/medico/index2', [ConsultaController::class, 'medico_consulta_index2'])->name('medico_consulta_index2');
+Route::get('/consulta/medico/show', [ConsultaController::class, 'medico_consulta_show'])->name('medico_consulta_show');
+Route::get('/consulta/medico/historia_clinica', [ConsultaController::class, 'medico_historia_clinica_report'])->name('medico_historia_clinica_report');
 

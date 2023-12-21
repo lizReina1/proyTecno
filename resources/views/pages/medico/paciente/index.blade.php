@@ -8,7 +8,7 @@
                     <div class="sm:flex sm:items-center sm:justify-between">
                         <div>
                             <div class="flex items-center gap-x-3">
-                                <h2 class="text-lg font-medium text-gray-800 dark:text-white">Servicio</h2>
+                                <h2 class="text-lg font-medium text-gray-800 dark:text-white">Pacientes</h2>
 
                                 {{-- <span
                                     class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">240
@@ -56,15 +56,15 @@
                         <div
                             class="inline-flex overflow-hidden bg-white border divide-x rounded-lg dark:bg-gray-900 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700">
                             <button id="btn-todo" class="px-5 py-2 btn btn-activo">
-                                Mis servicios
+                                Mis pacientes
                             </button>
 
                             {{-- <button id="btn-medicos"
                                 class="px-5 py-2 btn text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
-                                Ver todo
-                            </button> --}}
+                                Médicos
+                            </button>
 
-                            {{-- <button id="btn-enfermeras"
+                            <button id="btn-enfermeras"
                                 class="px-5 py-2 btn text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
                                 Enfermeras
                             </button> --}}
@@ -96,7 +96,7 @@
                                                 <th scope="col"
                                                     class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                                     <button class="flex items-center gap-x-3 focus:outline-none">
-                                                        <span>Servicios</span>
+                                                        <span>Pacientes</span>
 
                                                         <svg class="h-3" viewBox="0 0 10 11" fill="none"
                                                             xmlns="http://www.w3.org/2000/svg">
@@ -118,21 +118,21 @@
 
                                                 <th scope="col"
                                                     class="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                    Costo
+                                                    Celular
                                                 </th>
 
                                                 <th scope="col"
                                                     class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                    Turno
+                                                    Fecha de nacimiento
                                                 </th>
 
                                                 {{-- <th scope="col"
                                                     class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                                     CI</th> --}}
 
-                                                {{-- <th scope="col"
+                                                <th scope="col"
                                                     class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                    Sueldo</th> --}}
+                                                    Servicio que atiendo</th>
 
                                                 <th scope="col" class="relative py-3.5 px-4">
                                                     <span class="sr-only">Edit</span>
@@ -141,65 +141,49 @@
                                         </thead>
                                         <tbody
                                             class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                                            @foreach ($servicios as $servicio)
-                                            @php
-                                                // $primer_servicio = $servicio[0]->dia; 
-                                                // dd($servicio[0]->dia);
-                                            @endphp
-                                                <tr data-tipo="{{ $servicio[0]->tipo }}">
+                                            @foreach ($pacientes as $paciente)
+                                                <tr data-tipo="{{ $paciente->tipo }}">
                                                     <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                                         <div class="flex min-w-0 gap-x-4">
                                                             <img class="h-16 w-16 flex-none rounded-full bg-gray-900 object-cover"
-                                                                src="{{ $servicio[0]->url_foto }}" alt="">
+                                                                src="{{ $paciente->url_foto }}" alt="">
                                                             <div class="min-w-0 flex-auto">
-                                                                <br>
                                                                 <p
                                                                     class="text-sm font-semibold leading-6 text-gray-900">
-                                                                    {{ $servicio[0]->nombre }}</p>
-                                                                {{-- <p
+                                                                    {{ $paciente->name }} {{ $paciente->lastname }}</p>
+                                                                <p
                                                                     class="mt-1 truncate text-xs leading-5 text-gray-500">
-                                                                    {{ $servicio[0]->email }}</p>
+                                                                    {{ $paciente->email }}</p>
                                                                 <p
                                                                     class="mt-1 truncate text-xs leading-5 text-gray-400">
-                                                                    ci: {{ $servicio[0]->ci }}</p> --}}
+                                                                    ci: {{ $paciente->ci }}</p>
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    {{-- <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
-                                                        @if ($servicio[0]->tipo == 'M')
+                                                    <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
+                                                        {{-- @if ($paciente->tipo == 'P') --}}
                                                             <div
                                                                 class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
-                                                                Médico
+                                                                {{$paciente->celular}}
                                                             </div>
-                                                        @else
+                                                        {{-- @else
                                                             <div
                                                                 class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
                                                                 Enfermera/o
                                                             </div>
-                                                        @endif
+                                                        @endif --}}
 
-                                                    </td> --}}
+                                                    </td>
                                                     <td class="px-4 py-4 text-sm whitespace-nowrap">
                                                         <div>
                                                             <h4 class="text-gray-700 dark:text-gray-200">
-                                                                {{ $servicio[0]->costo }}</h4>
+                                                                {{ $paciente->birth_date }}</h4>
                                                             {{-- <p class="text-gray-500 dark:text-gray-400">Brings all your
                                                                 news into one place</p> --}}
                                                         </div>
                                                     </td>
                                                     <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                        @foreach ($servicio as $item)
-                                                        <div
-                                                            class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
-                                                            {{$item->dia}}
-                                                        </div>
-                                                             <br>
-                                                            {{$item->hora_inicio}} -  {{$item->hora_fin}} <br>
-
-                                                        @endforeach
-                                                        {{-- {{ $servicio[0]->forma_compra }}
-                                                        {{ $servicio[0]->forma_compra }}
-                                                        {{ $servicio[0]->forma_compra }} --}}
+                                                        {{ $paciente->servicio }}
                                                     </td>
 
                                                     {{-- <td class="px-4 py-4 text-sm whitespace-nowrap">
@@ -214,10 +198,10 @@
                                                                 </svg>
                                                             </button>
                                                             <div id="myDropdown" class="dropdown-content">
-                                                                <a href="{{ route('servicio.edit', $servicio->id) }}"
+                                                                <a href="{{ route('personal.edit', $personal->id) }}"
                                                                     class="hover:bg-gray-200">Editar</a>
-                                                                <a href="#" data-id={{ $servicio->id }}
-                                                                    data-name="{{ $servicio->name }} {{ $servicio->lastname }}"
+                                                                <a href="#" data-id={{ $personal->id }}
+                                                                    data-name="{{ $personal->name }} {{ $personal->lastname }}"
                                                                     class="deleteBtn hover:bg-gray-200">Eliminar</a>
                                                             </div>
                                                         </div>

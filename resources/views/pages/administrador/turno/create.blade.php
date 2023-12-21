@@ -3,7 +3,8 @@
         <div class="card" style="width: 100%;">
 
             <div class="card-body bg-white p-5">
-                <form action="{{ route('servicio.store') }}" method="POST" enctype="multipart/form-data" id="formServicio">
+                <div class="dias" data-dias="<?php echo htmlspecialchars(json_encode($dias)); ?>" hidden></div>
+                <form action="{{ route('turno.store') }}" method="POST" enctype="multipart/form-data" id="formServicio">
                     @csrf
                     <div class="space-y-12">
                         <div class="border-b border-gray-900/10 pb-4">
@@ -11,7 +12,7 @@
                             <p class="mt-1 text-sm leading-6 text-gray-600">Registrar un nuevo servicio.</p>
 
                             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                                <div class="sm:col-span-3">
+                                {{-- <div class="sm:col-span-3">
                                     <label for="nombre"
                                         class="block text-sm font-medium leading-6 text-gray-900">Nombre del
                                         servicio</label>
@@ -39,38 +40,66 @@
                                         <span id="errorCosto"
                                             class="error-message mt-1 text-sm leading-6 text-pink-600"></span>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="sm:col-span-3">
                                     <label for="dia"
                                         class="block text-sm font-medium leading-6 text-gray-900">Día</label>
                                     <div class="mt-2">
                                         <select type="text" name="dia" id="dia"
                                             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                               <option value="Lunes" selected>Lunes</option>
-                                               <option value="Martes">Martes</option>
-                                               <option value="Miercoles">Miercoles</option>
-                                               <option value="Jueves">Jueves</option>
-                                               <option value="Viernes">Viernes</option>
-                                               <option value="Sabado">Sabado</option>
-                                               <option value="Domingo">Domingo</option>
+                                            <option value="Lunes" selected>Lunes</option>
+                                            <option value="Martes">Martes</option>
+                                            <option value="Miércoles">Miercoles</option>
+                                            <option value="Jueves">Jueves</option>
+                                            <option value="Viernes">Viernes</option>
+                                            <option value="Sábado">Sabado</option>
+                                            <option value="Domingo">Domingo</option>
 
                                         </select>
                                     </div>
                                 </div>
 
                                 <div class="sm:col-span-3">
-                                    <label for="atencion"
+                                    <label for="turno_id"
                                         class="block text-sm font-medium leading-6 text-gray-900">Horario</label>
                                     <div class="mt-2">
-                                        <select type="text" name="atencion" id="atencion" autocomplete="atencion"
+                                        <select type="text" name="turno_id" id="turno_id" autocomplete="atencion"
                                             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                           @foreach ($dias["Lunes"] as $horario)
-                                               <option value={{$horario->id}}>{{$horario['']}}</option>
-                                           @endforeach
+
+                                            @foreach ($dias['Lunes'] as $horario)
+                                                <option value={{ $horario['id'] }}>{{ $horario['hora_inicio'] }} -
+                                                    {{ $horario['hora_fin'] }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-span-full">
+                                <div class="sm:col-span-3">
+                                    <label for="tipo"
+                                        class="block text-sm font-medium leading-6 text-gray-900">Tipo</label>
+                                    <div class="mt-2">
+                                        <select type="text" name="tipo" id="tipo" autocomplete="atencion"
+                                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                            <option value="M" selected>Médico</option>
+                                            <option value="E">Enfermera</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="sm:col-span-3">
+                                    <label for="tipo"
+                                        class="block text-sm font-medium leading-6 text-gray-900">Tipo</label>
+                                    <div class="mt-2">
+                                        <select type="text" name="tipo" id="tipo" autocomplete="atencion"
+                                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+
+                                            @foreach ($servicios['MEDICO'] as $servicio)
+                                                <option value="{{ $servicio['id'] }}">{{ $servicio['nombre'] }}</option>
+                                            @endforeach
+
+
+                                        </select>
+                                    </div>
+                                </div>
+                                {{-- <div class="col-span-full">
                                     <label for="photo"
                                         class="block text-sm font-medium leading-6 text-gray-900">Imagen</label>
                                     <div class="mt-2 flex items-center gap-x-3">
@@ -106,8 +135,8 @@
                                         {{-- <div class="bg-white p7 rounded w-9/12 mx-auto">
                                          
                                         </div> --}}
-                                    </div>
-                                </div>
+                                {{-- </div>
+                                </div> --}}
                             </div>
                         </div>
 
@@ -122,4 +151,23 @@
             </div>
         </div>
     </div>
+
+    {{-- JS --}}
+    <script>
+        var dias = $('.dias').data('dias');
+        console.log(dias);
+        $('#dia').change(function() {
+            var dia = $(this).val(); // obtén el día seleccionado
+            var turnos = dias[dia]; // obtén los turnos para ese día
+
+            var $turnoId = $('#turno_id');
+            $turnoId.empty(); // limpia las opciones existentes
+
+            // agrega nuevas opciones basadas en los turnos recibidos
+            $.each(turnos, function(index, turno) {
+                $turnoId.append($('<option>').val(turno.id).text(turno.hora_inicio + ' - ' + turno
+                    .hora_fin));
+            });
+        });
+    </script>
 </x-app-layout>

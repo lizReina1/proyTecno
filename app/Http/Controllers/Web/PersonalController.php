@@ -8,6 +8,7 @@ use App\Http\Requests\Personal\UpdatePersonalRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 
 class PersonalController extends Controller
 {
@@ -62,7 +63,8 @@ class PersonalController extends Controller
             $user->password = bcrypt("12345678");
             $user->save();
 
-            return redirect()->route('personal.index')->with('mensaje', "Personal creado exitosamente");
+            session()->flash('success');
+            return redirect()->route('personal.index');
         } else {
 
             return redirect()->route('personal.index')->with('error', "Error al crear el personal, intente denuevo");
@@ -83,6 +85,7 @@ class PersonalController extends Controller
     public function edit(string $id)
     {
         $personal = User::find($id);
+
         return view('pages.administrador.personal.edit', compact('personal'));
     }
 
@@ -91,7 +94,7 @@ class PersonalController extends Controller
      */
     public function update(UpdatePersonalRequest $request, string $id)
     {
-
+       // return $request;
         $urlImagen = null;
         $user = User::find($id);
         if (isset($user)) {
@@ -128,6 +131,7 @@ class PersonalController extends Controller
             $user->genero = $request->genero;
             $user->residencia_actual = $request->residencia;
             $user->sueldo = $request->sueldo;
+           
             $user->formacion = $request->formacion;
             $user->password = bcrypt("12345678");
             $user->save();
@@ -146,7 +150,7 @@ class PersonalController extends Controller
         $user = User::find($id);
         if (isset($user)) {
             $user->delete();
-            return redirect()->route('personal.index')->with('mensaje', "Personal ".$user->name." ".$user->lastname." eliminado exitosamente");
+            return redirect()->route('personal.index')->with('mensaje', "Personal " . $user->name . " " . $user->lastname . " eliminado exitosamente");
         } else {
             return redirect()->route('personal.index')->with('error', "Error al eliminar al personal");
         }
