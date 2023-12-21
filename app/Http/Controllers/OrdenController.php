@@ -21,6 +21,7 @@ class OrdenController extends Controller
         $doctor = User::find(Auth::user()->id);
         $ordens = Orden::getOrdensForDoctorId($doctor->id);
         // $ordens = Orden::getOrdensForDoctorId($doctor_id);
+        // dd($ordens, $doctor, Atencion::where('user_id', $doctor->id )->get());
         return view('orden.orden', compact('ordens'));
     }
 

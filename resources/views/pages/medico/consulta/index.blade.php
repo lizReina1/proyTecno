@@ -1,5 +1,4 @@
 <x-app-layout>
-    <div id="toastr-notifications"></div>
     <div class="container-fluid d-flex justify-content-center aling-items-center">
         <div class="card" style="width: 100%;">
 
@@ -9,7 +8,7 @@
                     <div class="sm:flex sm:items-center sm:justify-between">
                         <div>
                             <div class="flex items-center gap-x-3">
-                                <h2 class="text-lg font-medium text-gray-800 dark:text-white">Cita</h2>
+                                <h2 class="text-lg font-medium text-gray-800 dark:text-white">Historial de Consultas</h2>
 
                                 {{-- <span
                                     class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">240
@@ -40,14 +39,14 @@
 
                                 <span>Import</span>
                             </button> --}}
-                            <a href="{{ route('medico_cita_create') }}"
+                            <a href="{{ route('medico_consulta_create', ['historial_id' => $historial_id]) }}"
                                 class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
-                                <span>Agregar Cita</span>
+                                <span>Crear Consulta</span>
                             </a>
 
                         </div>
@@ -56,18 +55,17 @@
                     <div class="mt-6 md:flex md:items-center md:justify-between">
                         <div
                             class="inline-flex overflow-hidden bg-white border divide-x rounded-lg dark:bg-gray-900 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700">
-                            <button
-                                class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm dark:bg-gray-800 dark:text-gray-300">
-                                Ver todo
+                            <button id="btn-todo" class="px-5 py-2 btn btn-activo">
+                                Consultas
                             </button>
 
-                            {{-- <button
-                                class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
+                            {{-- <button id="btn-medicos"
+                                class="px-5 py-2 btn text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
                                 Médicos
                             </button>
 
-                            <button
-                                class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
+                            <button id="btn-enfermeras"
+                                class="px-5 py-2 btn text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
                                 Enfermeras
                             </button> --}}
                         </div>
@@ -88,17 +86,17 @@
                     </div>
 
                     <div class="flex flex-col mt-6">
-                        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="-mx-4 -my-2 sm:-mx-6 lg:-mx-8">
                             <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                                <div class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+                                <div class="border border-gray-200 dark:border-gray-700 md:rounded-lg">
                                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
-                                        id="tabla">
+                                        id="tabla-personal">
                                         <thead class="bg-gray-50 dark:bg-gray-800">
-                                            <tr>
-                                                <th scope="col"
+                                            <tr class="encabezado">
+                                                {{-- <th scope="col"
                                                     class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                                     <button class="flex items-center gap-x-3 focus:outline-none">
-                                                        <span>Paciente</span>
+                                                        <span>Pacientes</span>
 
                                                         <svg class="h-3" viewBox="0 0 10 11" fill="none"
                                                             xmlns="http://www.w3.org/2000/svg">
@@ -116,24 +114,25 @@
                                                                 stroke-width="0.3" />
                                                         </svg>
                                                     </button>
+                                                </th> --}}
+
+                                                <th scope="col"
+                                                    class="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                                    Fecha
                                                 </th>
 
                                                 <th scope="col"
                                                     class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                    Fecha Atencion
+                                                    Motivo
                                                 </th>
 
-                                                <th scope="col"
-                                                    class="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                    Costo
-                                                </th>
                                                 {{-- <th scope="col"
                                                     class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                                     CI</th> --}}
 
-                                                <th scope="col"
+                                                {{-- <th scope="col"
                                                     class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                    Estado de la cita</th>
+                                                    Servicio que atiendo</th> --}}
 
                                                 <th scope="col" class="relative py-3.5 px-4">
                                                     <span class="sr-only">Edit</span>
@@ -142,73 +141,81 @@
                                         </thead>
                                         <tbody
                                             class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                                            @foreach ($citas as $cita)
-                                                <tr>
-                                                    <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                                            @foreach ($consultas as $historial)
+                                                <tr data-tipo="{{ $historial->tipo }}">
+                                                    {{-- <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                                         <div class="flex min-w-0 gap-x-4">
-                                                            <img class="h-16 w-16 flex-none rounded-full bg-gray-50"
-                                                                src="{{ $cita->url_foto }}" alt="">
+                                                            <img class="h-16 w-16 flex-none rounded-full bg-gray-900 object-cover"
+                                                                src="{{ $historial->url_foto }}" alt="">
                                                             <div class="min-w-0 flex-auto">
                                                                 <p
                                                                     class="text-sm font-semibold leading-6 text-gray-900">
-                                                                    {{ $cita->name }} {{ $cita->lastname }}</p>
+                                                                    {{ $historial->name }} {{ $historial->lastname }}</p>
                                                                 <p
                                                                     class="mt-1 truncate text-xs leading-5 text-gray-500">
-                                                                    {{ $cita->email }}</p>
+                                                                    {{ $historial->email }}</p>
                                                                 <p
                                                                     class="mt-1 truncate text-xs leading-5 text-gray-400">
-                                                                    ci: {{ $cita->ci }}</p>
+                                                                    ci: {{ $historial->ci }}</p>
                                                             </div>
                                                         </div>
-                                                    </td>
-                                                    <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                        <div>
-                                                            <h4 class="text-gray-700 dark:text-gray-200">
-                                                                {{ date('Y-m-d', strtotime($cita->fecha_cita)) }}</h4>
-                                                            {{ date('H:i:s', strtotime($cita->fecha_cita)) }}</h4>
+                                                    </td> --}}
+                                                    <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
+                                                        {{-- @if ($historial->tipo == 'P') --}}
+                                                            <div
+                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
+                                                                {{$historial->fecha}}
+                                                            </div>
+                                                        {{-- @else
+                                                            <div
+                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
+                                                                Enfermera/o
+                                                            </div>
+                                                        @endif --}}
 
-                                                            {{-- <p class="text-gray-500 dark:text-gray-400">Brings all your
-                                                                news into one place</p> --}}
+                                                    </td>
+                                                    <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                                                {{$historial->motivo}}
+                                                                {{-- <div>
+                                                                    @if ($historial->motivo == 'M')
+                                                                    <div
+                                                                    class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
+                                                                    Masculino
+                                                                </div>
+                                                            @else
+                                                                <div
+                                                                    class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
+                                                                    Femenino
+                                                                </div>
+                                                            @endif --}}
                                                         </div>
                                                     </td>
                                                     <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                        {{ $cita->costo_cita }} Bs
+                                                        {{ $historial->servicio }}
                                                     </td>
+
                                                     <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                        @if ($cita->estado_cita == true)
-                                                            <div
-                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
-                                                                Realizado
+                                                        <div class="dropdown">
+                                                            <button id="myButton" class="dropbtn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor" class="w-6 h-6">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+                                                                </svg>
+                                                            </button>
+                                                            <div id="myDropdown" class="dropdown-content">
+                                                                <a href="{{ route('medico_consulta_show', ['consulta' => $historial->id]) }}"
+                                                                    class="hover:bg-gray-200">Ver Consulta</a>
+                                                                {{-- <a href="{{ route('medico_consulta_index', ['historial_id' => $historial->id]) }}"
+                                                                    class="hover:bg-gray-200">Consultas</a> --}}
+                                                                
+                                                                    {{-- <a href="#" data-id={{ $historial->id }}
+                                                                    data-name="{{ $historial->name }} {{ $historial->lastname }}"
+                                                                    class="deleteBtn hover:bg-gray-200">Consultas</a> --}}
                                                             </div>
-                                                        @else
-                                                            <div
-                                                                style="color: red; background-color: rgb(234, 194, 194);"
-                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
-                                                                Pendiente
-                                                            </div>
-                                                        @endif
-                                                    </td>
-                                                    <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                        <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                            <div class="dropdown">
-                                                                <button id="myButton" class="dropbtn">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                        viewBox="0 0 24 24" stroke-width="1.5"
-                                                                        stroke="currentColor" class="w-6 h-6">
-                                                                        <path stroke-linecap="round"
-                                                                            stroke-linejoin="round"
-                                                                            d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
-                                                                    </svg>
-                                                                </button>
-                                                                <div id="myDropdown" class="dropdown-content">
-                                                                    <a href="{{ route('medico_cita_edit_store', ['cita_id' => $cita->id]) }}"
-                                                                        class="hover:bg-gray-200">Editar</a>
-                                                                    <a href="#" data-id={{ $cita->id }}
-                                                                        data-name="{{ $cita->id }}"
-                                                                        class="deleteBtn hover:bg-gray-200">Eliminar</a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -219,7 +226,7 @@
                         </div>
                     </div>
 
-                    <div class="mt-6 sm:flex sm:items-center sm:justify-between ">
+                    <div class="overflow-visible p-6 sm:flex sm:items-center sm:justify-between ">
                         <div class="text-sm text-gray-500 dark:text-gray-400">
                             Page <span class="font-medium text-gray-700 dark:text-gray-100">1 of 10</span>
                         </div>
@@ -258,7 +265,7 @@
             </div>
         </div>
     </div>
-    
+  
     <!-- Contenido del modal -->
     <div id="myModal" class="fixed z-50 inset-0 flex items-center justify-center" style="display: none;"
         aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -291,7 +298,10 @@
             </div>
         </div>
     </div>
-    <!-- Add a modal for confirmation -->
+
+    <!-- Contenedor del modal -->
+
+
     <!-- Add a modal for confirmation -->
     {{-- <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
         aria-hidden="true">
@@ -315,11 +325,49 @@
     </div> --}}
     {{-- CSS --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <style>
+        /* Estilos para el botón y el contenido del menú desplegable */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            /* Alinea el borde derecho del contenido con el borde derecho del botón */
+            min-width: 160px;
+            z-index: 1;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            background-color: #f9f9f9;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        /* Muestra el menú desplegable cuando se hace clic en el botón */
+        .show {
+            display: block;
+        }
+
+        .btn-activo {
+            background-color: #f3f4f6;
+            /* color de fondo cuando está activo */
+            color: #374151;
+            /* color del texto cuando está activo */
+        }
+    </style>
+
     {{-- JS --}}
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    
+
     @if (session('mensaje'))
         <script>
             toastr.options = {
@@ -330,10 +378,32 @@
             toastr.success("{{ session('mensaje') }}");
         </script>
     @endif
-    
+    @if (session('success'))
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true
+        }
+        console.log("ingresa a success");
+        toastr.success("consulta creada satisfactoriamente");
+    </script>
+@endif
+    @if (session('error'))
+        <script>
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true
+            }
+            console.log("ingresa a error")
+            toastr.error("{{ session('error') }}");
+        </script>
+    @endif
+
+    {{-- JS --}}
     <script>
         // Obtén todos los menús desplegables
         var dropdowns = document.getElementsByClassName("dropbtn");
+
         // Agrega un evento de clic a cada botón
         for (let i = 0; i < dropdowns.length; i++) {
             dropdowns[i].addEventListener("click", function(event) {
@@ -392,134 +462,39 @@
             $('#tabla-personal tr[data-tipo="E"]:not(.encabezado)').show();
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            // Cuando el usuario haga clic en "Eliminar", abre el modal
+            // $('#deleteBtn').click(function(e) {
+            //     e.preventDefault();
+            //     console.log("clic delete btn")
+            //     $('#myModal').show();
+            // });
+            $('.deleteBtn').click(function(e) {
+                e.preventDefault();
+                // Obtiene el ID del personal del atributo data-id
+                var personalId = $(this).data('id');
+                var personalName = $(this).data('name');
+                console.log('Name del personal: ', personalName);
+                console.log('ID del personal: ', personalId);
+                // Establece el ID del personal como parte de la acción del formulario
+                var route = "{{ route('personal.destroy', 'id') }}";
+                route = route.replace('id', personalId);
+                $('#form-destroy').attr('action', route);
+                $('#modal-title').text('¿Estás seguro de que quieres eliminar al personal ' + personalName +
+                    '?');
+                $('#myModal').show();
 
-<script>
-    $(document).ready(function() {
-        // Cuando el usuario haga clic en "Eliminar", abre el modal
-        // $('#deleteBtn').click(function(e) {
-        //     e.preventDefault();
-        //     console.log("clic delete btn")
-        //     $('#myModal').show();
-        // });
-        $('.deleteBtn').click(function(e) {
-            e.preventDefault();
-            // Obtiene el ID del personal del atributo data-id
-            var cita_id = $(this).data('id');
-            console.log('ID del personal: ', cita_id);
-            // Establece el ID del personal como parte de la acción del formulario
-            var route = "{{ route('medico_cita_delete', 'id') }}";
-            route = route.replace('id', cita_id);
-            $('#form-destroy').attr('action', route);
-            $('#modal-title').text('¿Estás seguro de que quieres eliminar al personal esta cita?');
-            $('#myModal').show();
+            });
+            // Cuando el usuario haga clic en "Cancelar", cierra el modal
+            $('#cancelDelete').click(function() {
+                $('#myModal').hide();
+            });
 
+            // Cuando el usuario haga clic en "Confirmar", realiza la acción de eliminación
+            $('#confirmDelete').click(function() {
+                // Aquí puedes poner el código para eliminar el elemento
+            });
         });
-        // Cuando el usuario haga clic en "Cancelar", cierra el modal
-        $('#cancelDelete').click(function() {
-            $('#myModal').hide();
-        });
-
-        // Cuando el usuario haga clic en "Confirmar", realiza la acción de eliminación
-        $('#confirmDelete').click(function() {
-            // Aquí puedes poner el código para eliminar el elemento
-        });
-    });
-</script>
-    @if (session('success'))
-        <script>
-            toastr.options = {
-                "closeButton": true,
-                "progressBar": true
-            }
-            console.log("ingresa a success");
-            toastr.success('Cita creada exitosamente');
-        </script>
-    @endif
-    <style>
-        /* Estilos para el botón y el contenido del menú desplegable */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            right: 0;
-            /* Alinea el borde derecho del contenido con el borde derecho del botón */
-            min-width: 160px;
-            z-index: 1;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-            background-color: #f9f9f9;
-        }
-
-        .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-
-        /* Muestra el menú desplegable cuando se hace clic en el botón */
-        .show {
-            display: block;
-        }
-
-        .btn-activo {
-            background-color: #f3f4f6;
-            /* color de fondo cuando está activo */
-            color: #374151;
-            /* color del texto cuando está activo */
-        }
-    </style>
-    @if (session('error'))
-        <script>
-            toastr.options = {
-                "closeButton": true,
-                "progressBar": true
-            }
-            console.log("ingresa a error")
-            toastr.error('cita eliminada');
-        </script>
-    @endif
-
-
-    {{-- <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Get the input element and table
-        var input = document.getElementById('searchInput');
-        var table = document.getElementById('tabla');
-
-        // Add an input event listener to the input field
-        input.addEventListener('input', function () {
-            // Get the value entered in the input field
-            var searchText = input.value.toLowerCase();
-
-            // Get all rows in the table body
-            var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
-
-            // Loop through each row and hide/show based on the search text
-            for (var i = 0; i < rows.length; i++) {
-                var row = rows[i];
-                var cells = row.getElementsByTagName('td');
-                var found = false;
-
-                // Loop through each cell in the row
-                for (var j = 0; j < cells.length; j++) {
-                    var cellText = cells[j].innerText.toLowerCase();
-
-                    // Check if the cell text contains the search text
-                    if (cellText.includes(searchText)) {
-                        found = true;
-                        break;
-                    }
-                }
-
-                // Hide or show the row based on whether it matches the search text
-                row.style.display = found ? '' : 'none';
-            }
-        });
-    });
-</script> --}}
-
+    </script>
 </x-app-layout>
