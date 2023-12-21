@@ -345,7 +345,7 @@
             // Con fetch API (sin jQuery)
             showLoadingSpinner();
             // var url = new URL('/payments/generate_payment', window.location.origin);
-            var url = new URL('/inf513/grupo01sc/proyTecno/public/index.php/attentions//payments/generate_payment', 'https://mail.tecnoweb.org.bo');
+            var url = new URL('/inf513/grupo01sc/proyTecno/public/index.php/attentions/payments/generate_payment', 'https://mail.tecnoweb.org.bo');
          
             url.search = new URLSearchParams(data).toString();
             fetch(url)
